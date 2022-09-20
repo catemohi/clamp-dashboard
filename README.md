@@ -5,4 +5,4 @@ dashboard-tpkk-spb
 -------------
 
 План разработки:
-* Установить uvicorn
+* Установить и настроить uvicorn и nginx
