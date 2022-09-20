@@ -1,0 +1,32 @@
+version: "3.1"
+
+services:
+
+  db:
+   image: postgres
+   container_name: dashboard_postgress
+   restart: always
+   environment:
+      POSTGRES_PASSWORD: qwerty#dash
+      POSTGRES_USER: dashboard
+      POSTGRES_DB: naumen_db
+      PGDATE: /home/catemohi/postgres/data
+      POOSTGRES_INITDB_ARGS: "-A md5"
+   ports:
+     - "54321:5432"
+
+  redis:
+    container_name: dashboard_redis
+    image: redis
+    restart: always
+    ports:
+      - "16379:6379"
+
+  webapp:
+    container_name: dashboard_web
+    restart: always
+    build:
+      context: ./
+    ports:
+      - "80:8000"
+    command: [ "python3", "./src/manage.py", "runserver", "0.0.0.0:8000" ]
