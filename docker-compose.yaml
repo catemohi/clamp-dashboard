@@ -26,7 +26,15 @@ services:
     container_name: dashboard_web
     restart: always
     build:
+      dockerfile: Dockerfile.django
       context: ./
     ports:
       - "80:8000"
     command: [ "python3", "./src/manage.py", "runserver", "0.0.0.0:8000" ]
+
+  nginx:
+    container_name: dashboard_nginx
+    build:
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "80:8000"
