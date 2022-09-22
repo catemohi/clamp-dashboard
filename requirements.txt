@@ -27,3 +27,4 @@ beautifulsoup4==4.11.1
 gunicorn
 uvicorn
 psycopg2-binary
+channels

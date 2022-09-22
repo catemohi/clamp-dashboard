@@ -3,17 +3,17 @@ version: "3.1"
 services:
 
   db:
-   image: postgres
-   container_name: dashboard_postgress
-   restart: always
-   environment:
+    image: postgres
+    container_name: dashboard_postgress
+    restart: always
+    environment:
       POSTGRES_PASSWORD: qwerty#dash
       POSTGRES_USER: dashboard
       POSTGRES_DB: naumen_db
       PGDATE: ./postgres/data
       POOSTGRES_INITDB_ARGS: "-A md5"
-   ports:
-     - "5432:5432"
+    expose:
+      - 5432
 
   redis:
     container_name: dashboard_redis
@@ -23,7 +23,7 @@ services:
       - "16379:6379"
 
   webapp:
-    container_name: dashboard_web
+    container_name: dashboard_gunicorn
     restart: always
     volumes:
       - .static:/static
@@ -32,8 +32,8 @@ services:
     build:
       dockerfile: Dockerfile.django
       context: .
-    ports:
-      - "8000:8000"
+    expose:
+      - 8000
 
   nginx:
     container_name: dashboard_nginx
@@ -44,4 +44,3 @@ services:
       - "80:80"
     depends_on:
       - webapp
-
