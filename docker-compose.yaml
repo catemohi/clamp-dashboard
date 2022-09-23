@@ -19,21 +19,30 @@ services:
     container_name: dashboard_redis
     image: redis
     restart: always
-    ports:
-      - "16379:6379"
 
   webapp:
-    container_name: dashboard_gunicorn
+    container_name: dashboard_webapp
     restart: always
     volumes:
       - .static:/static
     env_file:
       - .env
     build:
-      dockerfile: Dockerfile.django
+      dockerfile: Dockerfile.webapp
       context: .
     expose:
       - 8000
+
+  celery_worker:
+    container_name: celery_worker
+    restart: always
+    volumes:
+      - .static:/static
+    env_file:
+      - .env
+    build:
+      dockerfile: Dockerfile.celery_worker
+      context: .
 
   nginx:
     container_name: dashboard_nginx

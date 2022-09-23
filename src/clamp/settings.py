@@ -22,7 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
+
+#DEBUG = True
 DEBUG = bool(int(environ.get('DEBUG')))
+
+#ALLOWED_HOSTS= ['*',]
 ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS').split()
 _ = [
         [
@@ -43,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'channels',
+
+    'dashboard',
 ]
 
 MIDDLEWARE = [
@@ -131,3 +137,6 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+CELERY_BROKER_URL = "redis://redis:6379/0"
