@@ -30,4 +30,7 @@ dashboard-tpkk-spb
   - [Celerybeat + Django + Docker = Cat Downloader с задачами по расписанию.](https://www.youtube.com/watch?v=cojaefzhChI&t=366s)
   - [Celerybeat + Django + Docker = Cat Downloader с задачами по расписанию.](https://www.youtube.com/watch?v=cojaefzhChI&t=366s)
   
+* ~Установить Django-channels~
+
+  Материалы:
   
