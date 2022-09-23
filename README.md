@@ -13,12 +13,21 @@ dashboard-tpkk-spb
   - [Как настроить приложение ASGI Django с Postgres, Nginx и Uvicorn в Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-asgi-django-app-with-postgres-nginx-and-uvicorn-on-ubuntu-20-04)
   - [DevOps для начинающих. Docker -compose, docker, php, nginx](https://www.youtube.com/watch?v=chqEQM3gwcc)
   
-* Установить daphni для обработки websocket
+* ~Установить daphni для обработки websocket~
 
   Материалы:
 
-* Установить Redis
+* ~Установить Redis~
+
+  Материалы:
+
+* Установить Celery и Celery Beat
 
   Материалы:
   
-
+  - [Дружим Django и Celery, Celery Result, Celery Beat](https://www.youtube.com/watch?v=jac2LQN6aYs&t=377s)
+  - [Celery + Django + Docker = Cat Downloader - Demo-проект, демонстрирующий принципы работы Celery](https://www.youtube.com/watch?v=EUZJcy_dfCs&t=919s)
+  - [Celerybeat + Django + Docker = Cat Downloader с задачами по расписанию.](https://www.youtube.com/watch?v=cojaefzhChI&t=366s)
+  - [Celerybeat + Django + Docker = Cat Downloader с задачами по расписанию.](https://www.youtube.com/watch?v=cojaefzhChI&t=366s)
+  
+  
