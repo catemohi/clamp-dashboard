@@ -34,7 +34,7 @@ dashboard-tpkk-spb
 
   Материалы:
 
-* Установить postgreSQL
+* ~Установить postgreSQL~
 
   Материалы:
   
