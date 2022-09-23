@@ -33,4 +33,9 @@ dashboard-tpkk-spb
 * ~Установить Django-channels~
 
   Материалы:
+
+* Установить postgreSQL
+
+  Материалы:
   
+  - [Докеризация Django с помощью Postgres, Gunicorn и Nginx](https://django.fun/ru/articles/tutorials/dokerizaciya-django-s-pomoshyu-postgres-gunicorn-i-nginx/)
