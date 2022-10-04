@@ -87,12 +87,12 @@ ASGI_APPLICATION = 'clamp.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': 'db',
-	'PORT': 5432,
-	'USER': 'dashboard',
-	'PASSWORD': 'qwerty#dash',
-	'NAME': 'naumen_db',
+        'ENGINE':  environ.get('SQL_ENGINE'),
+        'HOST': environ.get('SQL_HOST'),
+	    'PORT': int(environ.get('SQL_PORT')),
+	    'USER': environ.get('SQL_USER'),
+	    'PASSWORD': environ.get('SQL_PASSWORD'),
+	    'NAME': environ.get('SQL_NAME'),
     }
 }
 

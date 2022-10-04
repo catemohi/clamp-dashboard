@@ -6,12 +6,10 @@ services:
     image: postgres
     container_name: dashboard_postgress
     restart: always
-    environment:
-      POSTGRES_PASSWORD: qwerty#dash
-      POSTGRES_USER: dashboard
-      POSTGRES_DB: naumen_db
-      PGDATE: ./postgres/data
-      POOSTGRES_INITDB_ARGS: "-A md5"
+    env_file:
+      - .env.db
+    volumes:
+      - .:/var/lib/postgresql/data
     expose:
       - 5432
 
