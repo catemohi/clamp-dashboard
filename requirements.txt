@@ -9,6 +9,7 @@ click-plugins==1.1.1
 click-repl==0.2.0
 Deprecated==1.2.13
 Django==4.1.1
+django-celery-beat
 django-celery-results==2.4.0
 django-redis==5.2.0
 kombu==5.2.4
@@ -28,3 +29,4 @@ gunicorn
 uvicorn
 psycopg2-binary
 channels
+daphne

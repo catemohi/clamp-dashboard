@@ -47,8 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'channels',
-
     'dashboard',
+    'naumen'
 ]
 
 MIDDLEWARE = [

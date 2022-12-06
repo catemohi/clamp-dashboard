@@ -6,8 +6,8 @@ from logging import getLogger
  
 from django.conf import settings
 
-from naumen_api import naumen_api
-from naumen_api.config.config import CONFIG
+from naumen_api.naumen_api.naumen_api import Client
+from naumen_api.naumen_api.config.config import CONFIG
 
 from .exceptions import NaumenBadRequestError, NaumenConnectionError
 from .exceptions import NaumenServiceError
@@ -38,17 +38,17 @@ def parse_naumen_api_responce(responce: str) -> Sequence:
     return status_code, status_message, description, content
 
 
-def get_connect_to_naumen() -> naumen_api.Client:
+def get_connect_to_naumen() -> Client:
 
     """Создание сессии с CRM, для взаимодействия.
 
     Returns:
-        naumen_api.Client: клиент взаимодействия.
+        Client: клиент взаимодействия.
     """
 
-    CONFIG.config_path = '../.venv/config.json'
+    CONFIG.config_path = 'config.json'
     CONFIG.load_config()
-    client = naumen_api.Client()
+    client = Client()
     responce = client.connect(username=settings.NAUMEN_LOGIN,
                               password=settings.NAUMEN_PASSWORD,
                               domain='CORP.ERTELECOM.LOC')
@@ -73,10 +73,10 @@ def client_validation(func: Callable) -> Callable:
 
         global NAUMEN_CLIENT
 
-        if not isinstance(NAUMEN_CLIENT, naumen_api.Client):
+        if not isinstance(NAUMEN_CLIENT, Client):
             NAUMEN_CLIENT = get_connect_to_naumen()
             # Попытка переподнять соединение
-            if not isinstance(NAUMEN_CLIENT, naumen_api.Client):
+            if not isinstance(NAUMEN_CLIENT, Client):
                 raise NaumenConnectionError('Failed to connect to CRM NAUMEN')
         return func(*args, **kwargs)
 
@@ -476,14 +476,15 @@ def crud_issues(*args, **kwargs) -> None:
     content = response_analysis(responce)
 
     for issue in content:
-        try:
-            create_or_update_trouble_ticket_model(issue)
-        except NaumenServiceError as err:
-            LOGGER.exception(err)
+        print(issue)
+    #     try:
+    #         create_or_update_trouble_ticket_model(issue)
+    #     except NaumenServiceError as err:
+    #         LOGGER.exception(err)
 
-    for obj in TroubleTicket.objects.all():
-        if obj.uuid_ticket not in [issue['uuid'] for issue in content]:
-            delete_trouble_ticket_model(obj.uuid_ticket)
+    # for obj in TroubleTicket.objects.all():
+    #     if obj.uuid_ticket not in [issue['uuid'] for issue in content]:
+    #         delete_trouble_ticket_model(obj.uuid_ticket)
 
 
 # TODO функция котороя сравнивает из переданной коллекции и его 
