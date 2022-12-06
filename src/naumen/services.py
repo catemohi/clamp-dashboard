@@ -84,6 +84,25 @@ def client_validation(func: Callable) -> Callable:
     return wrapper
 
 
+def add_months(start_date: date, months: int) -> date:
+
+    """Функция для прибавления месяцев.
+
+    Args:
+        start_date (date): начальная дата.
+        months (int): количество месяцев котррые необходимо прибавить.
+
+    Returns:
+        date: новая дата
+    """
+
+    month = start_date.month - 1 + months
+    year = int(start_date.year + month / 12)
+    month = month % 12 + 1
+    day = min(start_date.day, monthrange(year, month)[1])
+    return date(year, month, day)
+
+
 def get_dates_for_report() -> Tuple[str, str]:
 
     """Получение дат для отчета. Первый день, нынешнего месяца
@@ -92,24 +111,6 @@ def get_dates_for_report() -> Tuple[str, str]:
     Returns:
         Tuple(str, str): Первый день, нынешнего месяц и следующего.
     """
-
-    def add_months(start_date: date, months: int) -> date:
-
-        """Функция для прибавления месяцев.
-
-        Args:
-            start_date (date): начальная дата.
-            months (int): количество месяцев котррые необходимо прибавить.
-
-        Returns:
-            date: новая дата
-        """
-
-        month = start_date.month - 1 + months
-        year = int(start_date.year + month / 12)
-        month = month % 12 + 1
-        day = min(start_date.day, monthrange(year, month)[1])
-        return date(year, month, day)
 
     date_now = datetime.now()
     month, year = date_now.month, date_now.year
@@ -382,7 +383,7 @@ def crud_service_level(*args, **kwargs) -> None:
 
     for day_report in content:
         for group_report in day_report:
-            group =  day_report.pop("group")
+            group = day_report.pop("group")
             report_date = date(_.year, _.month, int(day_report.pop("day")))
             try:
                 create_or_update_service_level_report_model(report_date,
@@ -480,14 +481,14 @@ def crud_issues(*args, **kwargs) -> None:
 
     for issue in content:
         print(issue)
-    #     try:
-    #         create_or_update_trouble_ticket_model(issue)
-    #     except NaumenServiceError as err:
-    #         LOGGER.exception(err)
+        try:
+            create_or_update_trouble_ticket_model(issue)
+        except NaumenServiceError as err:
+            LOGGER.exception(err)
 
-    # for obj in TroubleTicket.objects.all():
-    #     if obj.uuid_ticket not in [issue['uuid'] for issue in content]:
-    #         delete_trouble_ticket_model(obj.uuid_ticket)
+    for obj in TroubleTicket.objects.all():
+        if obj.uuid_ticket not in [issue['uuid'] for issue in content]:
+            delete_trouble_ticket_model(obj.uuid_ticket)
 
 
 # TODO функция котороя сравнивает из переданной коллекции и его 
