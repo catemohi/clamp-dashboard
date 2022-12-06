@@ -1,13 +1,13 @@
 from calendar import monthrange
 from datetime import date, datetime
 from json import loads
-from typing import Callable, Sequence, Tuple
 from logging import getLogger
- 
+from typing import Callable, Sequence, Tuple
+
 from django.conf import settings
 
-from naumen_api.naumen_api.naumen_api import Client
 from naumen_api.naumen_api.config.config import CONFIG
+from naumen_api.naumen_api.naumen_api import Client
 
 from .exceptions import NaumenBadRequestError, NaumenConnectionError
 from .exceptions import NaumenServiceError
@@ -16,7 +16,7 @@ from .models import MeanTimeToResponseReport, ServiceLevelReport
 
 
 NAUMEN_CLIENT = None
-LOGGER =  getLogger(__name__)
+LOGGER = getLogger(__name__)
 
 
 def parse_naumen_api_responce(responce: str) -> Sequence:
@@ -254,7 +254,7 @@ def create_or_update_service_level_report_model(date: date, group: str,
 
 def create_or_update_group_mttr_report_model(report: dict) -> None:
 
-    """Создание или обновление обьекта отчета MTTR. 
+    """Создание или обновление обьекта отчета MTTR.
 
     Args:
         report (dict): словарь параметров отчета.
