@@ -45,10 +45,11 @@ def get_connect_to_naumen() -> Client:
     Returns:
         Client: клиент взаимодействия.
     """
-
     CONFIG.config_path = 'config.json'
     CONFIG.load_config()
     client = Client()
+    print([settings.NAUMEN_LOGIN])
+    print([settings.NAUMEN_PASSWORD])
     responce = client.connect(username=settings.NAUMEN_LOGIN,
                               password=settings.NAUMEN_PASSWORD,
                               domain='CORP.ERTELECOM.LOC')
@@ -216,7 +217,7 @@ def get_naumen_api_report(report_name: str, *args, **kwargs) -> Sequence:
         raise NaumenBadRequestError('Report name not found')
 
     responce = report(*report_args, **report_kwargs)
-    return response_analysis(responce)
+    return responce
 
 
 def create_or_update_service_level_report_model(date: date, group: str,
@@ -465,6 +466,8 @@ def crud_issues(*args, **kwargs) -> None:
     """Функция для синзронизации отчетов SL Naumen и db.
 
     Args:
+        *args: позиционные аргументы, не используются.
+        *args: позиционные аргументы, не используются.
         *args: позиционные аргументы, не используются.
 
     Kwargs:
