@@ -480,7 +480,7 @@ def crud_issues(*args, **kwargs) -> None:
     content = response_analysis(responce)
 
     for issue in content:
-        print(issue)
+        issue = _converter_timestring_to_timeobj_for_obj(issue)
         try:
             create_or_update_trouble_ticket_model(issue)
         except NaumenServiceError as err:
@@ -490,6 +490,28 @@ def crud_issues(*args, **kwargs) -> None:
         if obj.uuid_ticket not in [issue['uuid'] for issue in content]:
             delete_trouble_ticket_model(obj.uuid_ticket)
 
+
+def _converter_timestring_to_timeobj_for_obj(obj: dict) -> dict:
+    """Конвертация временные строки в обьекты datetime
+
+    Args:
+        obj(dict): обьект в котором необходимо преобразровать строчки
+
+    Returns:
+        dict
+    """
+
+    for key, val in obj.items():
+
+        try:
+
+            val = datetime.strptime(val, '%d.%m.%Y %H:%M:%S')
+            obj[key] = val
+
+        except ValueError:
+            pass
+
+    return obj
 
 # TODO функция котороя сравнивает из переданной коллекции и его
 # TODO актуальную копию в базе. Если коллекция е передана, просто восзваращает
