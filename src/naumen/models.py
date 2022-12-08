@@ -25,7 +25,7 @@ class TroubleTicket(models.Model):
         max_length=50, verbose_name='Тип обращения',
         )
     step = models.CharField(
-        max_length=20, verbose_name='Шаг',
+        max_length=40, verbose_name='Шаг',
         )
     step_time = models.DurationField(
         default=timedelta(0, 0), verbose_name='Время шага', db_index=True,
