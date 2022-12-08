@@ -1,5 +1,5 @@
 from calendar import monthrange
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from json import loads
 from logging import getLogger
 from typing import Callable, Sequence, Tuple
@@ -501,15 +501,18 @@ def _converter_timestring_to_timeobj_for_obj(obj: dict) -> dict:
         dict
     """
 
-    for key, val in obj.items():
+    for key, value in obj.items():
 
         try:
 
-            val = datetime.strptime(val, '%d.%m.%Y %H:%M:%S')
-            obj[key] = val
+            value = datetime.strptime(value, '%d.%m.%Y %H:%M:%S')
+            obj[key] = value
 
         except (ValueError, TypeError):
             pass
+
+    if 'step_time' in obj:
+        obj['step_time'] = timedelta(seconds=obj['step_time'])
 
     return obj
 
