@@ -508,7 +508,7 @@ def _converter_timestring_to_timeobj_for_obj(obj: dict) -> dict:
             val = datetime.strptime(val, '%d.%m.%Y %H:%M:%S')
             obj[key] = val
 
-        except ValueError:
+        except (ValueError, TypeError):
             pass
 
     return obj
