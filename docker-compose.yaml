@@ -42,6 +42,17 @@ services:
       dockerfile: Dockerfile.celery_worker
       context: .
 
+  celery_beat:
+    container_name: celery_beat
+    restart: always
+    volumes:
+      - .static:/static
+    env_file:
+      - .env
+    build:
+      dockerfile: Dockerfile.celery_beat
+      context: .
+
   nginx:
     container_name: dashboard_nginx
     build: ./nginx

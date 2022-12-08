@@ -229,7 +229,7 @@ def create_or_update_service_level_report_model(date: date, group: str,
     Args:
         date (datetime): дата отчета.
         group (str): группа отчета.
-        attributes (dict): атрибуты для создания/обновления модели. 
+        attributes (dict): атрибуты для создания/обновления модели.
     """
 
     try:
@@ -276,7 +276,7 @@ def create_or_update_group_mttr_report_model(report: dict) -> None:
 
 def create_or_update_group_flr_report_model(report: dict) -> None:
 
-    """Создание или обновление обьекта отчета FLR. 
+    """Создание или обновление обьекта отчета FLR.
 
     Args:
         report (dict): словарь параметров отчета.
@@ -300,7 +300,7 @@ def create_or_update_group_flr_report_model(report: dict) -> None:
 
 def create_or_update_trouble_ticket_model(trouble_ticket: dict) -> None:
 
-    """Создание или обновление обьекта обращения. 
+    """Создание или обновление обьекта обращения.
 
     Args:
         trouble_ticket (dict): словарь параметров обращения.
@@ -491,6 +491,6 @@ def crud_issues(*args, **kwargs) -> None:
             delete_trouble_ticket_model(obj.uuid_ticket)
 
 
-# TODO функция котороя сравнивает из переданной коллекции и его 
-# актуальную копию в базе. Если коллекция е передана, просто восзваращает 
-# коллекцию актуальных тикетов
+# TODO функция котороя сравнивает из переданной коллекции и его
+# TODO актуальную копию в базе. Если коллекция е передана, просто восзваращает
+# TODO коллекцию актуальных тикетов

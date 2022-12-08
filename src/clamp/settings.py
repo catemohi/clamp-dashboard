@@ -23,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
-#DEBUG = True
+# DEBUG = True
 DEBUG = bool(int(environ.get('DEBUG')))
 
-#ALLOWED_HOSTS= ['*',]
+# ALLOWED_HOSTS= ['*',]
 ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS').split()
 _ = [
         [
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_beat',
 
     'channels',
     'dashboard',
@@ -89,10 +90,10 @@ DATABASES = {
     'default': {
         'ENGINE':  environ.get('SQL_ENGINE'),
         'HOST': environ.get('SQL_HOST'),
-	    'PORT': int(environ.get('SQL_PORT')),
-	    'USER': environ.get('SQL_USER'),
-	    'PASSWORD': environ.get('SQL_PASSWORD'),
-	    'NAME': environ.get('SQL_NAME'),
+        'PORT': int(environ.get('SQL_PORT')),
+        'USER': environ.get('SQL_USER'),
+        'PASSWORD': environ.get('SQL_PASSWORD'),
+        'NAME': environ.get('SQL_NAME'),
     }
 }
 
@@ -101,16 +102,20 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.\
+            password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.\
+            password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.\
+            password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.\
+            password_validation.NumericPasswordValidator',
     },
 ]
 
