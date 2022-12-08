@@ -44,8 +44,8 @@ class TroubleTicket(models.Model):
     uuid_service = models.CharField(
         max_length=100, null=True, verbose_name='Идентификатор услуги',
         )
-    name_service = models.CharField(
-        max_length=100, null=True, verbose_name='Услуги',
+    name_service = models.TextField(
+        null=True, verbose_name='Услуги',
         )
     uuid_contractor = models.CharField(
         max_length=100, null=True, verbose_name='Идентификатор контрагента',
