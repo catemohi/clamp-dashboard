@@ -38,8 +38,8 @@ class TroubleTicket(models.Model):
         )
     vip_contractor = models.BooleanField(
         default=False, verbose_name='VIP статус контрагента')
-    create_date = models.CharField(
-        max_length=15, null=True, verbose_name='Дата создания',
+    create_date = models.DateTimeField(
+        auto_now=False, auto_now_add=False, verbose_name='Дата создания',
         )
     uuid_service = models.CharField(
         max_length=100, null=True, verbose_name='Идентификатор услуги',
