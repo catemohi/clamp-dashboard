@@ -468,8 +468,6 @@ def crud_issues(*args, **kwargs) -> None:
 
     Args:
         *args: позиционные аргументы, не используются.
-        *args: позиционные аргументы, не используются.
-        *args: позиционные аргументы, не используются.
 
     Kwargs:
         *kwargs: именнованные аргуметы, пробрасываются в naumen_api.
@@ -478,6 +476,7 @@ def crud_issues(*args, **kwargs) -> None:
 
     responce = get_naumen_api_report("issues", **kwargs)
     content = response_analysis(responce)
+    is_vip = kwargs.get('is_vip', False)
 
     for issue in content:
         issue = _converter_timestring_to_timeobj_for_obj(issue)
@@ -486,7 +485,7 @@ def crud_issues(*args, **kwargs) -> None:
         except NaumenServiceError as err:
             LOGGER.exception(err)
 
-    for obj in TroubleTicket.objects.all():
+    for obj in TroubleTicket.objects.filter(vip_contractor=is_vip):
         if obj.uuid_ticket not in [issue['uuid'] for issue in content]:
             delete_trouble_ticket_model(obj.uuid_ticket)
 
