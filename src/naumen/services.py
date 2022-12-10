@@ -380,11 +380,10 @@ def crud_service_level(*args, **kwargs) -> None:
     responce = get_naumen_api_report("service_level", **kwargs)
     content = response_analysis(responce)
     _ = datetime.strptime(start_date, "%d.%m.%Y")
-
     for day_report in content:
         for group_report in day_report:
-            group = day_report.pop("group")
-            report_date = date(_.year, _.month, int(day_report.pop("day")))
+            group = group_report.pop("group")
+            report_date = date(_.year, _.month, int(group_report.pop("day")))
             try:
                 create_or_update_service_level_report_model(report_date,
                                                             group,
