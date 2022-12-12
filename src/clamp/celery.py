@@ -16,6 +16,6 @@ app = Celery("clamp")
 # Для получения настроек Django, связываем префикс "CELERY" с настройкой celery
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.timezone = 'Europe/Moscow'
-
+app.conf.task_routes = {'naumen.tasks.*': {'queue': 'naumen_crud'}}
 # загрузка tasks.py в приложение django
 app.autodiscover_tasks()
