@@ -261,7 +261,7 @@ def create_or_update_group_mttr_report_model(report: dict) -> None:
     """
 
     try:
-        obj = MeanTimeToResponseReport.objects.get(date=report['День'])
+        obj = MeanTimeToResponseReport.objects.get(date=report['date'])
     except MeanTimeToResponseReport.DoesNotExist:
         obj = MeanTimeToResponseReport()
     except:
@@ -283,7 +283,7 @@ def create_or_update_group_flr_report_model(report: dict) -> None:
     """
 
     try:
-        obj = FlrReport.objects.get(date=report['День'])
+        obj = FlrReport.objects.get(date=report['date'])
     except FlrReport.DoesNotExist:
         obj = FlrReport()
     except:
