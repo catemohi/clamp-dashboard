@@ -300,37 +300,37 @@ def create_or_update_group_flr_report_model(report: dict) -> None:
     obj.save()
 
 
-def create_or_update_trouble_ticket_model(trouble_ticket: dict) -> None:
+def create_or_update_trouble_ticket_model(issue: dict) -> None:
 
     """Создание или обновление обьекта обращения.
 
     Args:
-        trouble_ticket (dict): словарь параметров обращения.
+        issue (dict): словарь параметров обращения.
     """
-
+    print(issue)
     try:
-        obj = TroubleTicket.objects.get(uuid=trouble_ticket['uuid'])
+        obj = TroubleTicket.objects.get(uuid=issue['uuid'])
     except TroubleTicket.DoesNotExist:
         obj = TroubleTicket()
     except:
         raise NaumenServiceError
 
-    obj.uuid = trouble_ticket['uuid']
-    obj.number = trouble_ticket['number']
-    obj.name = trouble_ticket['name']
-    obj.issue_type = trouble_ticket['issue_type']
-    obj.step = trouble_ticket['step']
-    obj.step_time = trouble_ticket['step_time']
-    obj.responsible = trouble_ticket['responsible']
-    obj.last_edit_time = trouble_ticket['last_edit_time']
-    obj.vip_contragent = trouble_ticket['vip_contragent']
-    obj.creation_date = trouble_ticket['creation_date']
-    obj.uuid_service = trouble_ticket['uuid_service']
-    obj.name_service = trouble_ticket['name_service']
-    obj.uuid_contragent = trouble_ticket['uuid_contragent']
-    obj.name_contragent = trouble_ticket['name_contragent']
-    obj.return_to_work_time = trouble_ticket['return_to_work_time']
-    obj.description = trouble_ticket['description']
+    obj.uuid = issue['uuid']
+    obj.number = issue['number']
+    obj.name = issue['name']
+    obj.issue_type = issue['issue_type']
+    obj.step = issue['step']
+    obj.step_time = issue['step_time']
+    obj.responsible = issue['responsible']
+    obj.last_edit_time = issue['last_edit_time']
+    obj.vip_contragent = issue['vip_contragent']
+    obj.creation_date = issue['creation_date']
+    obj.uuid_service = issue['uuid_service']
+    obj.name_service = issue['name_service']
+    obj.uuid_contragent = issue['uuid_contragent']
+    obj.name_contragent = issue['name_contragent']
+    obj.return_to_work_time = issue['return_to_work_time']
+    obj.description = issue['description']
 
     obj.save()
 
