@@ -7,6 +7,7 @@ from typing import Callable, Sequence, Tuple
 from django.conf import settings
 from django.db import models
 from django.core import serializers
+from django.utils.timezone import make_aware
 
 from naumen_api.naumen_api.config.config import CONFIG
 from naumen_api.naumen_api.naumen_api import Client
@@ -542,14 +543,14 @@ def _converter_timestring_to_timeobj_for_obj(obj: dict) -> dict:
 
         try:
 
-            value = datetime.strptime(value, '%d.%m.%Y %H:%M:%S')
+            value = make_aware(datetime.strptime(value, '%d.%m.%Y %H:%M:%S'))
             obj[key] = value
 
         except (ValueError, TypeError):
             pass
 
     if 'step_time' in obj:
-        obj['step_time'] = timedelta(seconds=obj['step_time'])
+        obj['step_time'] = int(seconds=obj['step_time'])
 
     return obj
 

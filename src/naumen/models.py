@@ -27,8 +27,8 @@ class TroubleTicket(models.Model):
     step = models.CharField(
         max_length=100, verbose_name='Шаг',
         )
-    step_time = models.DurationField(
-        default=timedelta(0, 0), verbose_name='Время шага', db_index=True,
+    step_time = models.IntegerField(
+        default=0, verbose_name='Время шага (сек.)', db_index=True,
         )
     responsible = models.CharField(
         max_length=50, verbose_name='Ответственный за шаг')
