@@ -15,5 +15,5 @@ RUN python3 naumen_api/setup.py install
 
 COPY ./src .
 COPY .venv/config.json .
-
+CMD ['sleep', '10']
 CMD [ "celery", "-A", "clamp", "worker", "-c", "1", "-Q", "naumen_crud" ]
