@@ -61,7 +61,6 @@ def update_flr_level():
 @shared_task
 def crud_issue(*args, **kwargs):
     issue = kwargs.get('issue')
-    print(issue)
     try:
         if kwargs.get('is_delete'):
             delete_trouble_ticket_model(issue.get('uuid'))

@@ -306,7 +306,6 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
     Args:
         issue (dict): словарь параметров обращения.
     """
-    print(issue)
     try:
         obj = TroubleTicket.objects.get(uuid=issue['uuid'])
     except TroubleTicket.DoesNotExist:
