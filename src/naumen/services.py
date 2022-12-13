@@ -569,14 +569,13 @@ def get_json(obj: models.Model, *args, **kwargs):
         qs = obj.objects.filter(**kwargs)
     else:
         qs = obj.objects.all()
-    print(serializers.serialize('json', qs))
     return serializers.serialize('json', qs)
 
 
 def issues_list_synchronization(*args, **kwargs):
     """Функция сравнивает переданные обращения и обращение в базе. 
     """ 
-
+    kwargs.update({'vip_contragent': kwargs.pop('is_vip', False)})
     issues_from_naumen = kwargs.pop("issues")
     issues_from_db = [{'uuid': issue.get('pk'),**issue.get("fields")} for issue in loads(get_json(TroubleTicket, **kwargs))]
     uuids_from_naumen = set([issue['uuid'] for issue in issues_from_naumen])
