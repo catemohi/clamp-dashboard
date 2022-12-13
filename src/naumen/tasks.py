@@ -1,7 +1,7 @@
 from celery import shared_task
 from logging import getLogger
 
-from .services import crud_issues, crud_service_level
+from .services import crud_service_level
 from .services import crud_mttr, crud_flr, download_issues
 from .services import issues_list_synchronization
 from .services import delete_trouble_ticket_model
