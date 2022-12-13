@@ -17,3 +17,4 @@ COPY ./src .
 COPY .venv/config.json .
 
 CMD [ "celery", "-A", "clamp", "worker", "-l", "info", "-c", "1", "-Q", "naumen_crud" ]
+CMD [ "celery", "-A", "clamp", "worker", "-l", "info", "-c", "10", "-Q", "celery" ]
