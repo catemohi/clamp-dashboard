@@ -42,11 +42,11 @@ class FlrReportAdmin(admin.ModelAdmin):
 
 class TroubleTicketAdmin(admin.ModelAdmin):
 
-    list_display = ('number', 'name', 'last_edit_time', 'ticket_type',
-                    'name_contractor', 'vip_contractor', 'name_service',
+    list_display = ('number', 'name', 'last_edit_time', 'issue_type',
+                    'name_contragent', 'vip_contragent', 'name_service',
                     'responsible', 'step', 'step_time')
     list_display_links = ('number', 'name')
-    search_fields = ('number', 'name_contractor', 'responsible', 'step',
+    search_fields = ('number', 'name_contragent', 'responsible', 'step',
                      'last_edit_time', 'step_time')
 
 
