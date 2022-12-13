@@ -15,5 +15,7 @@ RUN python3 naumen_api/setup.py install
 
 COPY ./src .
 COPY .venv/config.json .
+COPY ./worker.entrypoint.sh ./
+RUN chmod 744 entrypoint.sh
+ENTRYPOINT [ "./worker.entrypoint.sh"]
 
-CMD [ "celery", "-A", "clamp", "worker", "-l", "info", "-c", "1", "-Q", "naumen_crud", "&", "celery", "-A", "clamp", "worker", "-l", "info", "-c", "10", "-Q", "celery" ]
