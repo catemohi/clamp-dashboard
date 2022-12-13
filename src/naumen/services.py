@@ -347,7 +347,8 @@ def delete_trouble_ticket_model(uuid: str) -> bool:
     try:
         obj = TroubleTicket.objects.get(uuid_ticket=uuid)
     except TroubleTicket.DoesNotExist:
-        return False
+        raise NaumenServiceError('Не удалось удалить обьект обращение с UUID: '
+                                 '%s' % uuid)
 
     obj.delete()
     return True
@@ -461,10 +462,56 @@ def crud_flr(*args, **kwargs) -> None:
             LOGGER.exception(err)
 
 
-def crud_issues(*args, **kwargs) -> None:
+# def crud_issues(*args, **kwargs) -> None:
 
-    """Функция для синзронизации отчетов SL Naumen и db.
+#     """Функция для синзронизации отчетов SL Naumen и db.
 
+#     Args:
+#         *args: позиционные аргументы, не используются.
+
+#     Kwargs:
+#         *kwargs: именнованные аргуметы, пробрасываются в naumen_api.
+
+#     """
+
+#     responce = get_naumen_api_report("issues", **kwargs)
+#     content = response_analysis(responce)
+#     is_vip = kwargs.get('is_vip', False)
+
+#     for issue in content:
+#         issue = _converter_timestring_to_timeobj_for_obj(issue)
+#         try:
+#             create_or_update_trouble_ticket_model(issue)
+#         except NaumenServiceError as err:
+#             LOGGER.exception(err)
+
+#     for obj in TroubleTicket.objects.filter(vip_contractor=is_vip):
+#         if obj.uuid_ticket not in [issue['uuid'] for issue in content]:
+#             delete_trouble_ticket_model(obj.uuid_ticket)
+
+
+def download_issues(*args, **kwargs) -> str:
+
+    """Функция для загрузки тикетов из CRM Naumen.
+
+    Args:
+        *args: позиционные аргументы, не используются.
+
+    Kwargs:
+        *kwargs: именнованные аргуметы, пробрасываются в naumen_api.
+
+    Returns:
+        str: json строка с данными
+
+    """
+    responce = get_naumen_api_report("issues", **kwargs)
+    content = response_analysis(responce)
+    return content
+
+
+def crud_issue(*args, **kwargs) -> None:
+
+    """Создание обьекта обращения в базе данных
     Args:
         *args: позиционные аргументы, не используются.
 
@@ -473,20 +520,12 @@ def crud_issues(*args, **kwargs) -> None:
 
     """
 
-    responce = get_naumen_api_report("issues", **kwargs)
-    content = response_analysis(responce)
-    is_vip = kwargs.get('is_vip', False)
-
-    for issue in content:
-        issue = _converter_timestring_to_timeobj_for_obj(issue)
-        try:
-            create_or_update_trouble_ticket_model(issue)
-        except NaumenServiceError as err:
-            LOGGER.exception(err)
-
-    for obj in TroubleTicket.objects.filter(vip_contractor=is_vip):
-        if obj.uuid_ticket not in [issue['uuid'] for issue in content]:
-            delete_trouble_ticket_model(obj.uuid_ticket)
+    try:
+        if kwargs.get('is_delete', False):
+            delete_trouble_ticket_model(kwargs.get("issue").get('uuid'))
+        create_or_update_trouble_ticket_model(kwargs.get("issue"))
+    except NaumenServiceError as err:
+        LOGGER.exception(err)
 
 
 def _converter_timestring_to_timeobj_for_obj(obj: dict) -> dict:

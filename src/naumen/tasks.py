@@ -1,6 +1,6 @@
 from celery import shared_task
 from .services import crud_issues, crud_service_level
-from .services import crud_mttr, crud_flr
+from .services import crud_mttr, crud_flr, download_issues
 
 
 @shared_task
@@ -47,3 +47,13 @@ def update_flr_level():
     """
     crud_flr()
     return True
+
+def _crud_issue(*args, )
+
+@shared_task
+def update_issues(*args, **kwargs):
+    """Задача для обновления обращений в базе данных
+    """
+    issues = download_issues(*args, **kwargs)
+
+
