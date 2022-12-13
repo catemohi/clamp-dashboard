@@ -50,8 +50,6 @@ def get_connect_to_naumen() -> Client:
     CONFIG.config_path = 'config.json'
     CONFIG.load_config()
     client = Client()
-    print([settings.NAUMEN_LOGIN])
-    print([settings.NAUMEN_PASSWORD])
     responce = client.connect(username=settings.NAUMEN_LOGIN,
                               password=settings.NAUMEN_PASSWORD,
                               domain='CORP.ERTELECOM.LOC')
@@ -582,16 +580,12 @@ def issues_list_synchronization(*args, **kwargs):
     issues_from_db = [issue.get("fields") for issue in loads(get_json(TroubleTicket, **kwargs))]
     uuids_from_naumen = set([issue['uuid'] for issue in issues_from_naumen])
     uuids_from_db = set([issue['uuid'] for issue in issues_from_db])
-    print(uuids_from_naumen, uuids_from_db)
     new_uuids, updated_uuids, deleted_uuids = ((uuids_from_naumen - uuids_from_db),
-                                                 (uuids_from_naumen & uuids_from_db),
-                                                 (uuids_from_db - uuids_from_naumen))
-    print(new_uuids, updated_uuids, deleted_uuids)
+                                               (uuids_from_naumen & uuids_from_db),
+                                               (uuids_from_db - uuids_from_naumen))
     new_issues = [issue for issue in issues_from_naumen if issue['uuid'] in new_uuids]
     updated_issues = [issue for issue in issues_from_naumen if issue['uuid'] in updated_uuids]
     deleted_issues = [issue for issue in issues_from_db if issue['uuid'] in deleted_uuids]
-    print(new_issues)
-    print(deleted_issues)
     return (new_issues, updated_issues, deleted_issues)
 
 # TODO функция котороя сравнивает из переданной коллекции и его

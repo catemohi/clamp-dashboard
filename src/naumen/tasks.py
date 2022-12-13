@@ -78,12 +78,10 @@ def update_issues(*args, **kwargs):
 
     issues = download_issues(*args, **kwargs)
     kwargs["issues"] = issues
-    print(kwargs)
     new_issues, updated_issues, deleted_issues = \
         issues_list_synchronization(*args, **kwargs)
     print('NEW Issues')
     print(new_issues)
-    [crud_issue.delay({**kwargs, 'is_delete': True, 'issue': issue}) for issue in deleted_issues]
-    new_issues = new_issues + updated_issues
-    [crud_issue.delay({**kwargs, 'is_delete': False, 'issue': issue}) for issue in new_issues]
+    [crud_issue.delay(**{**kwargs, 'is_delete': True, 'issue': issue}) for issue in deleted_issues]
+    [crud_issue.delay(**{**kwargs, 'is_delete': False, 'issue': issue}) for issue in new_issues]
     return True
