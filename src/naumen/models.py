@@ -11,7 +11,7 @@ class TroubleTicket(models.Model):
     Модель обращения
     """
 
-    uuid_ticket = models.CharField(
+    uuid = models.CharField(
         primary_key=True, max_length=100,
         verbose_name='Идентификатор обращения',
         )
@@ -21,7 +21,7 @@ class TroubleTicket(models.Model):
     name = models.CharField(
         max_length=120, verbose_name='Название',
         )
-    ticket_type = models.CharField(
+    issue_type = models.CharField(
         max_length=50, verbose_name='Тип обращения',
         )
     step = models.CharField(
@@ -36,9 +36,9 @@ class TroubleTicket(models.Model):
         auto_now=False, auto_now_add=False,
         verbose_name=('Последнее изменение состояния'), db_index=True,
         )
-    vip_contractor = models.BooleanField(
+    vip_contragent = models.BooleanField(
         default=False, verbose_name='VIP статус контрагента')
-    create_date = models.DateTimeField(
+    creation_date = models.DateTimeField(
         auto_now=False, auto_now_add=False, verbose_name='Дата создания',
         )
     uuid_service = models.CharField(
@@ -47,10 +47,10 @@ class TroubleTicket(models.Model):
     name_service = models.TextField(
         null=True, verbose_name='Услуги',
         )
-    uuid_contractor = models.CharField(
+    uuid_contragent = models.CharField(
         max_length=100, null=True, verbose_name='Идентификатор контрагента',
         )
-    name_contractor = models.CharField(
+    name_contragent = models.CharField(
         max_length=50, null=True, verbose_name='Контрагент',
         )
     return_to_work_time = models.DateTimeField(

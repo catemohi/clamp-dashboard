@@ -5,6 +5,8 @@ from logging import getLogger
 from typing import Callable, Sequence, Tuple
 
 from django.conf import settings
+from django.db import models
+from django.core import serializers
 
 from naumen_api.naumen_api.config.config import CONFIG
 from naumen_api.naumen_api.naumen_api import Client
@@ -307,26 +309,26 @@ def create_or_update_trouble_ticket_model(trouble_ticket: dict) -> None:
     """
 
     try:
-        obj = TroubleTicket.objects.get(uuid_ticket=trouble_ticket['uuid'])
+        obj = TroubleTicket.objects.get(uuid=trouble_ticket['uuid'])
     except TroubleTicket.DoesNotExist:
         obj = TroubleTicket()
     except:
         raise NaumenServiceError
 
-    obj.uuid_ticket = trouble_ticket['uuid']
+    obj.uuid = trouble_ticket['uuid']
     obj.number = trouble_ticket['number']
     obj.name = trouble_ticket['name']
-    obj.ticket_type = trouble_ticket['issue_type']
+    obj.issue_type = trouble_ticket['issue_type']
     obj.step = trouble_ticket['step']
     obj.step_time = trouble_ticket['step_time']
     obj.responsible = trouble_ticket['responsible']
     obj.last_edit_time = trouble_ticket['last_edit_time']
-    obj.vip_contractor = trouble_ticket['vip_contragent']
-    obj.create_date = trouble_ticket['creation_date']
+    obj.vip_contragent = trouble_ticket['vip_contragent']
+    obj.creation_date = trouble_ticket['creation_date']
     obj.uuid_service = trouble_ticket['uuid_service']
     obj.name_service = trouble_ticket['name_service']
-    obj.uuid_contractor = trouble_ticket['uuid_contragent']
-    obj.name_contractor = trouble_ticket['name_contragent']
+    obj.uuid_contragent = trouble_ticket['uuid_contragent']
+    obj.name_contragent = trouble_ticket['name_contragent']
     obj.return_to_work_time = trouble_ticket['return_to_work_time']
     obj.description = trouble_ticket['description']
 
@@ -345,7 +347,7 @@ def delete_trouble_ticket_model(uuid: str) -> bool:
     """
 
     try:
-        obj = TroubleTicket.objects.get(uuid_ticket=uuid)
+        obj = TroubleTicket.objects.get(uuid=uuid)
     except TroubleTicket.DoesNotExist:
         raise NaumenServiceError('Не удалось удалить обьект обращение с UUID: '
                                  '%s' % uuid)
@@ -486,8 +488,8 @@ def crud_flr(*args, **kwargs) -> None:
 #             LOGGER.exception(err)
 
 #     for obj in TroubleTicket.objects.filter(vip_contractor=is_vip):
-#         if obj.uuid_ticket not in [issue['uuid'] for issue in content]:
-#             delete_trouble_ticket_model(obj.uuid_ticket)
+#         if obj.uuid not in [issue['uuid'] for issue in content]:
+#             delete_trouble_ticket_model(obj.uuid)
 
 
 def download_issues(*args, **kwargs) -> str:
@@ -552,6 +554,44 @@ def _converter_timestring_to_timeobj_for_obj(obj: dict) -> dict:
         obj['step_time'] = timedelta(seconds=obj['step_time'])
 
     return obj
+
+
+def get_json(obj: models.Model, *args, **kwargs):
+    """Сериализация моделей в json.
+
+    Args:
+        obj (models.Model): модели которые необходимо сериализовать.
+
+    Kwargs:
+        **kwargs: сюда передаются именнованные аргументы для фильтрации моделей.
+    """
+
+    if kwargs:
+        qs = obj.objects.filter(**kwargs)
+    else:
+        qs = obj.objects.all()
+
+    return serializers.serialize('json', qs)
+
+
+def issues_list_synchronization(*args, **kwargs):
+    """Функция сравнивает переданные обращения и обращение в базе. 
+    """ 
+
+    issues_from_naumen = kwargs.pop("issues")
+    issues_from_db = [issue.get("fields") for issue in get_json(**kwargs)]
+    uuids_from_naumen = set([issue['uuid'] for issue in issues_from_naumen])
+    uuids_from_db = set([issue['uuid'] for issue in issues_from_db])
+
+    new_uuids, updated_uuids, deleted_uuids = ((uuids_from_naumen - uuids_from_db),
+                                                 (uuids_from_naumen & uuids_from_db),
+                                                 (uuids_from_db - uuids_from_naumen))
+
+    new_issues = [issue for issue in issues_from_naumen if issue['uuid'] in new_uuids]
+    updated_issues = [issue for issue in issues_from_naumen if issue['uuid'] in updated_uuids]
+    deleted_issues = [issue for issue in issues_from_db if issue['uuid'] in deleted_uuids]
+
+    return (new_issues, updated_issues, deleted_issues)
 
 # TODO функция котороя сравнивает из переданной коллекции и его
 # TODO актуальную копию в базе. Если коллекция е передана, просто восзваращает
