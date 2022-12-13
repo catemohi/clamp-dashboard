@@ -578,9 +578,9 @@ def issues_list_synchronization(*args, **kwargs):
     """ 
 
     issues_from_naumen = kwargs.pop("issues")
-    issues_from_db = [issue.get("fields") for issue in loads(get_json(TroubleTicket, **kwargs))]
+    issues_from_db = [{'uuid': issue.get('pk'),**issue.get("fields")} for issue in loads(get_json(TroubleTicket, **kwargs))]
     uuids_from_naumen = set([issue['uuid'] for issue in issues_from_naumen])
-    uuids_from_db = set([issue['pk'] for issue in issues_from_db])
+    uuids_from_db = set([issue['uuid'] for issue in issues_from_db])
     new_uuids, updated_uuids, deleted_uuids = ((uuids_from_naumen - uuids_from_db),
                                                (uuids_from_naumen & uuids_from_db),
                                                (uuids_from_db - uuids_from_naumen))
