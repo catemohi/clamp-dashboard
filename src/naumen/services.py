@@ -583,8 +583,8 @@ def issues_list_synchronization(*args, **kwargs):
     new_uuids, updated_uuids, deleted_uuids = ((uuids_from_naumen - uuids_from_db),
                                                (uuids_from_naumen & uuids_from_db),
                                                (uuids_from_db - uuids_from_naumen))
-    new_issues = [issue for issue in issues_from_naumen if issue['uuid'] in new_uuids]
-    updated_issues = [issue for issue in issues_from_naumen if issue['uuid'] in updated_uuids]
+    new_issues = [_converter_timestring_to_timeobj_for_obj(issue) for issue in issues_from_naumen if issue['uuid'] in new_uuids]
+    updated_issues = [_converter_timestring_to_timeobj_for_obj(issue) for issue in issues_from_naumen if issue['uuid'] in updated_uuids]
     deleted_issues = [issue for issue in issues_from_db if issue['uuid'] in deleted_uuids]
     return (new_issues, updated_issues, deleted_issues)
 
