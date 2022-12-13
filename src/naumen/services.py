@@ -570,7 +570,7 @@ def get_json(obj: models.Model, *args, **kwargs):
         qs = obj.objects.filter(**kwargs)
     else:
         qs = obj.objects.all()
-
+    print(serializers.serialize('json', qs))
     return serializers.serialize('json', qs)
 
 
@@ -579,7 +579,7 @@ def issues_list_synchronization(*args, **kwargs):
     """ 
 
     issues_from_naumen = kwargs.pop("issues")
-    issues_from_db = [issue.get("fields") for issue in get_json(TroubleTicket, **kwargs)]
+    issues_from_db = [issue.get("fields") for issue in loads(get_json(TroubleTicket, **kwargs))]
     uuids_from_naumen = set([issue['uuid'] for issue in issues_from_naumen])
     uuids_from_db = set([issue['uuid'] for issue in issues_from_db])
 
