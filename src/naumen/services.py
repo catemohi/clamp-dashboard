@@ -550,7 +550,7 @@ def _converter_timestring_to_timeobj_for_obj(obj: dict) -> dict:
             pass
 
     if 'step_time' in obj:
-        obj['step_time'] = int(seconds=obj['step_time'])
+        obj['step_time'] = int(obj['step_time'])
 
     return obj
 
