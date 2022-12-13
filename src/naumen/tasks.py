@@ -81,7 +81,8 @@ def update_issues(*args, **kwargs):
     print(kwargs)
     new_issues, updated_issues, deleted_issues = \
         issues_list_synchronization(*args, **kwargs)
-    print(new_issues, updated_issues, deleted_issues)
+    print('NEW Issues')
+    print(new_issues)
     [crud_issue.delay({**kwargs, 'is_delete': True, 'issue': issue}) for issue in deleted_issues]
     new_issues = new_issues + updated_issues
     [crud_issue.delay({**kwargs, 'is_delete': False, 'issue': issue}) for issue in new_issues]
