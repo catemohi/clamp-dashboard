@@ -548,6 +548,7 @@ def issues_list_synchronization(*args, **kwargs):
     """ 
     kwargs.update({'vip_contragent': kwargs.pop('is_vip', False)})
     issues_from_naumen = kwargs.pop("issues")
+    kwargs.pop("parse_issues_cards")
     issues_from_db = [{'uuid': issue.get('pk'),**issue.get("fields")} for issue in loads(get_json(TroubleTicket, **kwargs))]
     uuids_from_naumen = set([issue['uuid'] for issue in issues_from_naumen])
     uuids_from_db = set([issue['uuid'] for issue in issues_from_db])
