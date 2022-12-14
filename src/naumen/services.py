@@ -548,7 +548,7 @@ def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
     """
 
     responce = get_naumen_api_report("issue_card",
-                                     {**kwargs, 'naumen_uuid': issue['uuid']},
+                                     **{**kwargs, 'naumen_uuid': issue['uuid']},
                                     )
     content = response_analysis(responce)[0]
     print(content)
