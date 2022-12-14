@@ -1,7 +1,7 @@
 from celery import shared_task
 from logging import getLogger
 
-from .services import crud_service_level
+from .services import crud_service_level, parse_issue_card
 from .services import crud_mttr, crud_flr, download_issues
 from .services import issues_list_synchronization
 from .services import delete_trouble_ticket_model
@@ -43,6 +43,7 @@ def crud_issue(*args, **kwargs):
         if kwargs.get('is_delete'):
             delete_trouble_ticket_model(issue.get('uuid'))
         else:
+            issue = parse_issue_card(issue)
             create_or_update_trouble_ticket_model(issue)
     except NaumenServiceError as err:
             LOGGER.exception(err)
