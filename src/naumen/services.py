@@ -552,6 +552,7 @@ def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
                                     )
     content = response_analysis(responce)[0]
     print(content)
+    print(issue)
     return issue
 
 
@@ -570,7 +571,7 @@ def issues_list_synchronization(*args, **kwargs):
     new_issues = [_converter_timestring_to_timeobj_for_obj(issue) for issue in issues_from_naumen if issue['uuid'] in new_uuids]
     updated_issues = [_converter_timestring_to_timeobj_for_obj(issue) for issue in issues_from_naumen if issue['uuid'] in updated_uuids]
     deleted_issues = [issue for issue in issues_from_db if issue['uuid'] in deleted_uuids]
-    for issue in new_issues:
+    for issue in updated_issues:
         parse_issue_card(issue)
     return (new_issues, updated_issues, deleted_issues)
 
