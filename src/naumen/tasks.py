@@ -12,28 +12,6 @@ from .exceptions import NaumenServiceError
 LOGGER = getLogger(__name__)
 
 
-# @shared_task
-# def update_issues():
-#     """Задача обновления обращений первой линии.
-
-#     Returns:
-#         bool: True
-#     """
-#     crud_issues(**{'parse_issues_cards': True})
-#     return True
-
-
-# @shared_task
-# def update_vip_issues():
-#     """Задача обновления обращений VIP линии.
-
-#     Returns:
-#         bool: True
-#     """
-#     crud_issues(**{'is_vip': True, 'parse_issues_cards': True})
-#     return True
-
-
 @shared_task
 def update_service_level():
     """Функция обновления уровня SL

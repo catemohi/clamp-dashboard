@@ -462,34 +462,6 @@ def crud_flr(*args, **kwargs) -> None:
             LOGGER.exception(err)
 
 
-# def crud_issues(*args, **kwargs) -> None:
-
-#     """Функция для синзронизации отчетов SL Naumen и db.
-
-#     Args:
-#         *args: позиционные аргументы, не используются.
-
-#     Kwargs:
-#         *kwargs: именнованные аргуметы, пробрасываются в naumen_api.
-
-#     """
-
-#     responce = get_naumen_api_report("issues", **kwargs)
-#     content = response_analysis(responce)
-#     is_vip = kwargs.get('is_vip', False)
-
-#     for issue in content:
-#         issue = _converter_timestring_to_timeobj_for_obj(issue)
-#         try:
-#             create_or_update_trouble_ticket_model(issue)
-#         except NaumenServiceError as err:
-#             LOGGER.exception(err)
-
-#     for obj in TroubleTicket.objects.filter(vip_contractor=is_vip):
-#         if obj.uuid not in [issue['uuid'] for issue in content]:
-#             delete_trouble_ticket_model(obj.uuid)
-
-
 def download_issues(*args, **kwargs) -> str:
 
     """Функция для загрузки тикетов из CRM Naumen.
