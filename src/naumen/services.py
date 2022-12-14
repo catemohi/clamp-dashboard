@@ -2,7 +2,7 @@ from calendar import monthrange
 from datetime import date, datetime, timedelta
 from json import loads
 from logging import getLogger
-from typing import Callable, Sequence, Tuple
+from typing import Callable, Sequence, Tuple, Mapping
 
 from django.conf import settings
 from django.db import models
@@ -543,12 +543,24 @@ def get_json(obj: models.Model, *args, **kwargs):
     return serializers.serialize('json', qs)
 
 
+def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
+    """Функция для парсинга карточек обращений и добавления параметров. 
+    """
+
+    responce = get_naumen_api_report("issue_card",
+                                     {**kwargs, 'naumen_uuid': issue['uuid']},
+                                    )
+    content = response_analysis(responce)[0]
+    print(content)
+    return issue
+
+
 def issues_list_synchronization(*args, **kwargs):
     """Функция сравнивает переданные обращения и обращение в базе. 
     """ 
+
     kwargs.update({'vip_contragent': kwargs.pop('is_vip', False)})
     issues_from_naumen = kwargs.pop("issues")
-    kwargs.pop("parse_issues_cards")
     issues_from_db = [{'uuid': issue.get('pk'),**issue.get("fields")} for issue in loads(get_json(TroubleTicket, **kwargs))]
     uuids_from_naumen = set([issue['uuid'] for issue in issues_from_naumen])
     uuids_from_db = set([issue['uuid'] for issue in issues_from_db])
@@ -558,8 +570,13 @@ def issues_list_synchronization(*args, **kwargs):
     new_issues = [_converter_timestring_to_timeobj_for_obj(issue) for issue in issues_from_naumen if issue['uuid'] in new_uuids]
     updated_issues = [_converter_timestring_to_timeobj_for_obj(issue) for issue in issues_from_naumen if issue['uuid'] in updated_uuids]
     deleted_issues = [issue for issue in issues_from_db if issue['uuid'] in deleted_uuids]
+    for issue in new_issues:
+        parse_issue_card(issue)
     return (new_issues, updated_issues, deleted_issues)
 
+
+
+    
 # TODO функция котороя сравнивает из переданной коллекции и его
 # TODO актуальную копию в базе. Если коллекция е передана, просто восзваращает
 # TODO коллекцию актуальных тикетов
