@@ -545,12 +545,34 @@ def get_json(obj: models.Model, *args, **kwargs):
 
 def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
     """Функция для парсинга карточек обращений и добавления параметров. 
+
+    Args:
+        issue (Mapping): обращение для которого необходимо спарсить карточку
+
+    Kwargs:
+        is_repeated (bool): флаг для повторного запроса парсинга карточки
+
+    Returns:
+        issue (Mapping): обновленное обращение
+
+    Raises:
+        NaumenConnectionError: в случае 2ух неудач парсинга.
     """
 
-    responce = get_naumen_api_report("issue_card",
-                                     **{**kwargs, 'naumen_uuid': issue['uuid']},
-                                    )
-    content = response_analysis(responce)[0]
+    try:
+        responce = get_naumen_api_report("issue_card",
+                                         **{**kwargs, 'naumen_uuid': issue['uuid']},
+                                        )
+        content = response_analysis(responce)[0]
+    except (NaumenConnectionError) as err:
+
+        if kwargs.get('is_repeated', False):
+            LOGGER.error(f'Issue: {issue["name"]} not parse. UUID: {issue["uuid"]}. Repeat error!')
+            raise NaumenConnectionError
+
+        LOGGER.error(f'Issue: {issue["name"]} not parse. UUID: {issue["uuid"]}')
+        parse_issue_card(issue, is_repeated=True)
+
     [issue.update({key: value}) for key, value in content.items() if value]
     issue = _converter_timestring_to_timeobj_for_obj(issue)
     return issue
@@ -565,17 +587,10 @@ def issues_list_synchronization(*args, **kwargs):
     issues_from_db = [{'uuid': issue.get('pk'),**issue.get("fields")} for issue in loads(get_json(TroubleTicket, **kwargs))]
     uuids_from_naumen = set([issue['uuid'] for issue in issues_from_naumen])
     uuids_from_db = set([issue['uuid'] for issue in issues_from_db])
-    new_uuids, updated_uuids, deleted_uuids = ((uuids_from_naumen - uuids_from_db),
+    new_uuids, unioned_uuids, deleted_uuids = ((uuids_from_naumen - uuids_from_db),
                                                (uuids_from_naumen & uuids_from_db),
                                                (uuids_from_db - uuids_from_naumen))
     new_issues = [issue for issue in issues_from_naumen if issue['uuid'] in new_uuids]
-    updated_issues = [issue for issue in issues_from_naumen if issue['uuid'] in updated_uuids]
+    unioned_issues = [issue for issue in issues_from_naumen if issue['uuid'] in unioned_uuids]
     deleted_issues = [issue for issue in issues_from_db if issue['uuid'] in deleted_uuids]
-    return (new_issues, updated_issues, deleted_issues)
-
-
-
-    
-# TODO функция котороя сравнивает из переданной коллекции и его
-# TODO актуальную копию в базе. Если коллекция е передана, просто восзваращает
-# TODO коллекцию актуальных тикетов
+    return (new_issues, unioned_issues, deleted_issues)
