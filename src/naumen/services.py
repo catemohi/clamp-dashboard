@@ -626,7 +626,7 @@ def checking_issues_changes(old_issue: TroubleTicket, new_issue: Mapping) -> Map
                                       new_issue["return_to_work_time"])
     # action['return_to_work_time'][int(return_to_work_time_is_changed)]
     old_return_to_work_time = old_issue.return_to_work_time.astimezone(timezone(settings.TIME_ZONE))
-    old_return_to_work_time = old_return_to_work_time.strptime('%d.%m.%Y %H:%M:%S')
+    old_return_to_work_time = old_return_to_work_time.strftime('%d.%m.%Y %H:%M:%S')
     print(old_return_to_work_time != new_issue["return_to_work_time"])
     print(old_return_to_work_time, new_issue["return_to_work_time"])
     issue_is_changed = any([responsible_is_changed,
