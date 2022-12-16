@@ -313,7 +313,7 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
         obj = TroubleTicket.objects.get(uuid=issue['uuid'])
         checking_issues_changes(obj, issue)
     except TroubleTicket.DoesNotExist:
-        notify_issue(issue, 'new')
+        notify_issue(issue, **{"type": "new_issue"})
         obj = TroubleTicket()
     except:
         raise NaumenServiceError
@@ -339,7 +339,7 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
     obj.save()
 
 
-def delete_trouble_ticket_model(uuid: str) -> bool:
+def delete_trouble_ticket_model(issue: dict) -> bool:
 
     """Удаление обьекта обращения.
 
@@ -349,14 +349,14 @@ def delete_trouble_ticket_model(uuid: str) -> bool:
     Returns:
         bool: результат попытки удаления обьекта.
     """
-
     try:
-        obj = TroubleTicket.objects.get(uuid=uuid)
+        obj = TroubleTicket.objects.get(uuid=issue.get('uuid'))
     except TroubleTicket.DoesNotExist:
         raise NaumenServiceError('Не удалось удалить обьект обращение с UUID: '
-                                 '%s' % uuid)
+                                 '%s' % issue.get('uuid'))
 
     obj.delete()
+    notify_issue(issue, **{"type": "delete_issue"})
     return True
 
 
@@ -622,10 +622,10 @@ def checking_issues_changes(old_issue: TroubleTicket, new_issue: Mapping) -> Map
                             step_is_changed,
                             return_to_work_time_is_changed])
     if issue_is_changed:
-        chenged_dict = {'responsible': responsible_is_changed,
+        changed_dict = {'responsible': responsible_is_changed,
                         'step': step_is_changed,
                         'return_to_work_time': return_to_work_time_is_changed}
 
-        notify_issue(new_issue, **{"type": "update_issues","is_chenged": chenged_dict})
+        notify_issue(new_issue, **{"type": "update_issue","is_changed": changed_dict})
 
     return issue_is_changed

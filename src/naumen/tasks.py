@@ -41,7 +41,7 @@ def crud_issue(*args, **kwargs):
     issue = kwargs.get('issue')
     try:
         if kwargs.get('is_delete'):
-            delete_trouble_ticket_model(issue.get('uuid'))
+            delete_trouble_ticket_model(issue)
         else:
             issue = parse_issue_card(issue)
             create_or_update_trouble_ticket_model(issue)
