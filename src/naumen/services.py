@@ -604,22 +604,22 @@ def checking_issues_changes(old_issue: TroubleTicket, new_issue: Mapping) -> Map
         old_issues (Mapping): старое обращения.
         old_issues (Mapping): новое обращение.
     """
-    action = {'step': {1: notify_issue(new_issue, 'step_is_changed'), 0: lambda: None},
-              'responsible': {1: notify_issue(new_issue, 'responsible_is_changed'), 0: lambda: None},
-              'return_to_work_time': {1: notify_issue(new_issue, 'return_to_work_time'), 0: lambda: None}}
+    action = {'step': {1: notify_issue(new_issue, 'step_is_changed'), 0: None},
+              'responsible': {1: notify_issue(new_issue, 'responsible_is_changed'), 0: None},
+              'return_to_work_time': {1: notify_issue(new_issue, 'return_to_work_time'), 0: None}}
 
     step_is_changed = old_issue.step != new_issue["step"]
-    action['step'][int(step_is_changed)]()
+    action['step'][int(step_is_changed)]
 
     responsible_is_changed = (old_issue.responsible
                               != 
                               new_issue["responsible"])
-    action['responsible'][int(responsible_is_changed)]()
+    action['responsible'][int(responsible_is_changed)]
 
     return_to_work_time_is_changed = (old_issue.return_to_work_time
                                       != 
                                       new_issue["return_to_work_time"])
-    action['return_to_work_time'][int(return_to_work_time_is_changed)]()
+    action['return_to_work_time'][int(return_to_work_time_is_changed)]
 
     issue_is_changed = any([responsible_is_changed,
                             step_is_changed,
