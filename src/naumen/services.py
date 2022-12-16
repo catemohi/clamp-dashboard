@@ -609,18 +609,23 @@ def checking_issues_changes(old_issue: TroubleTicket, new_issue: Mapping) -> Map
               'return_to_work_time': {1: notify_issue(new_issue, 'return_to_work_time'), 0: None}}
 
     step_is_changed = old_issue.step != new_issue["step"]
+    print(old_issue.step, new_issue["step"]) 
+    print(old_issue.step != new_issue["step"])
     action['step'][int(step_is_changed)]
 
     responsible_is_changed = (old_issue.responsible
                               != 
                               new_issue["responsible"])
+    print(old_issue.responsible != new_issue["responsible"])
+    print(old_issue.responsible, new_issue["responsible"])
     action['responsible'][int(responsible_is_changed)]
 
     return_to_work_time_is_changed = (old_issue.return_to_work_time
                                       != 
                                       new_issue["return_to_work_time"])
     action['return_to_work_time'][int(return_to_work_time_is_changed)]
-
+    print(old_issue.return_to_work_time != new_issue["return_to_work_time"])
+    print(old_issue.return_to_work_time, new_issue["return_to_work_time"])
     issue_is_changed = any([responsible_is_changed,
                             step_is_changed,
                             return_to_work_time_is_changed])
