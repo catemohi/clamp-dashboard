@@ -1,4 +1,5 @@
 from calendar import monthrange
+from pytz import timezone
 from datetime import date, datetime, timedelta
 from json import loads
 from logging import getLogger
@@ -625,7 +626,7 @@ def checking_issues_changes(old_issue: TroubleTicket, new_issue: Mapping) -> Map
                                       new_issue["return_to_work_time"])
     action['return_to_work_time'][int(return_to_work_time_is_changed)]
     print(old_issue.return_to_work_time != new_issue["return_to_work_time"])
-    print(old_issue.return_to_work_time, new_issue["return_to_work_time"])
+    print(old_issue.return_to_work_time.astimezone(timezone(settings.TIME_ZONE)), new_issue["return_to_work_time"])
     issue_is_changed = any([responsible_is_changed,
                             step_is_changed,
                             return_to_work_time_is_changed])
