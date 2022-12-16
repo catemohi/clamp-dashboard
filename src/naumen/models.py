@@ -16,13 +16,13 @@ class TroubleTicket(models.Model):
         verbose_name='Идентификатор обращения',
         )
     number = models.CharField(
-        max_length=20, verbose_name='Номер',
+        max_length=50, verbose_name='Номер',
         )
     name = models.CharField(
         max_length=250, verbose_name='Название',
         )
     issue_type = models.CharField(
-        max_length=50, verbose_name='Тип обращения',
+        max_length=100, verbose_name='Тип обращения',
         )
     step = models.CharField(
         max_length=100, verbose_name='Шаг',
@@ -51,7 +51,7 @@ class TroubleTicket(models.Model):
         max_length=100, null=True, verbose_name='Идентификатор контрагента',
         )
     name_contragent = models.CharField(
-        max_length=50, null=True, verbose_name='Контрагент',
+        max_length=100, null=True, verbose_name='Контрагент',
         )
     return_to_work_time = models.DateTimeField(
         auto_now=False, null=True, auto_now_add=False,
