@@ -19,7 +19,7 @@ class TroubleTicket(models.Model):
         max_length=20, verbose_name='Номер',
         )
     name = models.CharField(
-        max_length=120, verbose_name='Название',
+        max_length=250, verbose_name='Название',
         )
     issue_type = models.CharField(
         max_length=50, verbose_name='Тип обращения',
