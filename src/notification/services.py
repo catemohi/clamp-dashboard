@@ -4,9 +4,9 @@ from json import dumps
 from .models import StepNotificationSetting
 
 
-def notify_issue(issue: Mapping, notifi_type: str):
+def notify_issue(issue: Mapping, *args, **kwargs):
     """Уведомление о новом обращении.
     """
-    print(("issue_notifi", {"type": notifi_type, "text": issue}))
-    resilt = ("issue_notifi", {"type": notifi_type, "text": dumps(issue)})
+    print(("issue_notifi", {"type": kwargs.get('type'), "is_changed": kwargs.get('is_changed'),"text": issue}))
+    resilt = ("issue_notifi", {"type": kwargs.get('type'), "is_changed": kwargs.get('is_changed'), "text": dumps(issue)})
     return resilt
