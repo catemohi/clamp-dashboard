@@ -56,9 +56,10 @@ def update_issues(*args, **kwargs):
 
     issues = download_issues(*args, **kwargs)
     kwargs["issues"] = issues
-    new_issues, unioned_issues, deleted_issues = \
+    crud_issues, deleted_issues = \
         issues_list_synchronization(*args, **kwargs)
-    deep_parsed_issues = new_issues + unioned_issues
-    [crud_issue.delay(**{**kwargs, 'is_delete': True, 'issue': issue}) for issue in deleted_issues]
-    [crud_issue.delay(**{**kwargs, 'is_delete': False, 'issue': issue}) for issue in deep_parsed_issues]
+    [crud_issue.delay(**{**kwargs, 'is_delete': True, 'issue': issue}) \
+     for issue in deleted_issues]
+    [crud_issue.delay(**{**kwargs, 'is_delete': False, 'issue': issue}) \
+     for issue in crud_issues]
     return True

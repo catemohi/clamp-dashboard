@@ -16,6 +16,7 @@ from .exceptions import NaumenBadRequestError, NaumenConnectionError
 from .exceptions import NaumenServiceError
 from .models import FlrReport, TroubleTicket
 from .models import MeanTimeToResponseReport, ServiceLevelReport
+from notification.services import notify_issue
 
 
 NAUMEN_CLIENT = None
@@ -308,10 +309,14 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
     """
     try:
         obj = TroubleTicket.objects.get(uuid=issue['uuid'])
+        checking_issues_changes(obj, issue)
     except TroubleTicket.DoesNotExist:
+        notify_issue(issue, 'new')
         obj = TroubleTicket()
     except:
         raise NaumenServiceError
+
+    issue = _converter_timestring_to_timeobj_for_obj(issue)
 
     obj.uuid = issue['uuid']
     obj.number = issue['number']
@@ -526,7 +531,7 @@ def _converter_timestring_to_timeobj_for_obj(obj: dict) -> dict:
     return obj
 
 
-def get_json(obj: models.Model, *args, **kwargs):
+def get_issues_from_db(obj: models.Model, *args, **kwargs):
     """Сериализация моделей в json.
 
     Args:
@@ -574,7 +579,6 @@ def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
         parse_issue_card(issue, is_repeated=True)
 
     [issue.update({key: value}) for key, value in content.items() if value]
-    issue = _converter_timestring_to_timeobj_for_obj(issue)
     return issue
 
 
@@ -584,13 +588,41 @@ def issues_list_synchronization(*args, **kwargs):
 
     kwargs.update({'vip_contragent': kwargs.pop('is_vip', False)})
     issues_from_naumen = kwargs.pop("issues")
-    issues_from_db = [{'uuid': issue.get('pk'),**issue.get("fields")} for issue in loads(get_json(TroubleTicket, **kwargs))]
+    issues_from_db = [{'uuid': issue.get('pk'),**issue.get("fields")} for issue in loads(get_issues_from_db(TroubleTicket, **kwargs))]
     uuids_from_naumen = set([issue['uuid'] for issue in issues_from_naumen])
     uuids_from_db = set([issue['uuid'] for issue in issues_from_db])
-    new_uuids, unioned_uuids, deleted_uuids = ((uuids_from_naumen - uuids_from_db),
-                                               (uuids_from_naumen & uuids_from_db),
-                                               (uuids_from_db - uuids_from_naumen))
-    new_issues = [issue for issue in issues_from_naumen if issue['uuid'] in new_uuids]
-    unioned_issues = [issue for issue in issues_from_naumen if issue['uuid'] in unioned_uuids]
+    deleted_uuids = (uuids_from_db - uuids_from_naumen)
+    crud_issues = [issue for issue in issues_from_naumen if issue['uuid'] not in deleted_uuids]
     deleted_issues = [issue for issue in issues_from_db if issue['uuid'] in deleted_uuids]
-    return (new_issues, unioned_issues, deleted_issues)
+    return (crud_issues, deleted_issues)
+
+
+def checking_issues_changes(old_issue: TroubleTicket, new_issue: Mapping) -> Mapping:
+    """Функиция для проверки изменений в обращении.
+
+    Args:
+        old_issues (Mapping): старое обращения.
+        old_issues (Mapping): новое обращение.
+    """
+    action = {'step_is_changed': {1: notify_issue(new_issue, 'step_is_changed'), 0: lambda: None},
+              'responsible_is_changed': {1: notify_issue(new_issue, 'responsible_is_changed'), 0: lambda: None},
+              'return_to_work_time': {1: notify_issue(new_issue, 'return_to_work_time'), 0: lambda: None}}
+
+    step_is_changed = old_issue.step != new_issue["step"]
+    action['step_is_changed'][int(step_is_changed)]()
+
+    responsible_is_changed = (old_issue.responsible
+                              != 
+                              new_issue["responsible"])
+    action['responsible_is_changed'][int(responsible_is_changed)]()
+
+    return_to_work_time_is_changed = (old_issue.return_to_work_time
+                                      != 
+                                      new_issue["return_to_work_time"])
+    action['return_to_work_time_is_changed'][int(return_to_work_time_is_changed)]()
+
+    issue_is_changed = any([responsible_is_changed,
+                            step_is_changed,
+                            return_to_work_time_is_changed])
+
+    return issue_is_changed
