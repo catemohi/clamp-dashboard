@@ -60,6 +60,13 @@ class TroubleTicket(models.Model):
     description = models.CharField(
         max_length=250, null=True, verbose_name='Описание обращения',
         )
+    alarm_return_to_work = models.BooleanField(
+        default=False, verbose_name='Статус уведомление о возврате в работу',
+    )
+    alarm_deadline = models.BooleanField(
+        default=False,
+        verbose_name='Статус уведомление привышении лимита',
+    )
 
     def __str__(self):
         return f'{self.name}'

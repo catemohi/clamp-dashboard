@@ -7,7 +7,7 @@ from .services import issues_list_synchronization
 from .services import delete_trouble_ticket_model
 from .services import create_or_update_trouble_ticket_model
 from .services import get_issues_from_db
-from .services import check_issue_deadline_and_timers
+from .services import check_issue_return_timers, check_issue_deadline
 from .exceptions import NaumenServiceError
 
 
@@ -48,7 +48,7 @@ def crud_issue(*args, **kwargs):
             issue = parse_issue_card(issue)
             create_or_update_trouble_ticket_model(issue)
     except NaumenServiceError as err:
-            LOGGER.exception(err)
+        LOGGER.exception(err)
 
 
 @shared_task
@@ -60,9 +60,9 @@ def update_issues(*args, **kwargs):
     kwargs["issues"] = issues
     crud_issues, deleted_issues = \
         issues_list_synchronization(*args, **kwargs)
-    [crud_issue.delay(**{**kwargs, 'is_delete': True, 'issue': issue}) \
+    [crud_issue.delay(**{**kwargs, 'is_delete': True, 'issue': issue})
      for issue in deleted_issues]
-    [crud_issue.delay(**{**kwargs, 'is_delete': False, 'issue': issue}) \
+    [crud_issue.delay(**{**kwargs, 'is_delete': False, 'issue': issue})
      for issue in crud_issues]
     return True
 
@@ -74,7 +74,8 @@ def check_issue_deadline_and_timer(issue: dict, *args, **kwargs):
     Args:
         issue (dict): обращение которое необходимо проверить
     """
-    check_issue_deadline_and_timers(issue, *args, **kwargs)
+    check_issue_deadline(issue, *args, **kwargs)
+    check_issue_return_timers(issue, *args, **kwargs)
 
 
 @shared_task

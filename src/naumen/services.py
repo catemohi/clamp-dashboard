@@ -228,6 +228,39 @@ def get_naumen_api_report(report_name: str, *args, **kwargs) -> Sequence:
     return responce
 
 
+def change_model_fields(model: models.Model, search_field: dict,
+                        set_fields: dict, *args, **kwargs) -> None:
+    """
+    Изменение полей модели.
+
+    Args:
+        model (models.Model): модель
+        search_field (dict): поля по которому будет найдена модель
+        set_fields (dict): поля которые требуется изменить.
+    """
+    if not kwargs.get('is_created', True):
+        obj = model()
+
+    else:
+        queryset = model.objects.filter(**search_field)
+
+        if len(queryset) > 1:
+            raise NaumenServiceError(f'По полю {search_field},'
+                                     f' найдено {len(queryset)}.'
+                                     ' Уточните данные.')
+        if not queryset:
+            raise NaumenServiceError(f'По полю {search_field},'
+                                     f'не найдено обьектов.'
+                                     ' Уточните данные.')
+
+        obj = queryset[0]
+
+    for field, value in set_fields:
+        setattr(obj, field, value)
+
+    obj.save()
+
+
 def create_or_update_service_level_report_model(date: date, group: str,
                                                 attributes: dict) -> None:
 
@@ -315,32 +348,23 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
 
     try:
         obj = TroubleTicket.objects.get(uuid=issue['uuid'])
-        checking_issues_changes(obj, issue)
+        status = checking_issues_changes(obj, issue)
+        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+                            {"alarm_deadline": not status,
+                             "alarm_return_to_work": not status,
+                             **_converter_timestring_to_timeobj_for_obj(issue),
+                             },
+                            )
+
     except TroubleTicket.DoesNotExist:
         notify_issue(issue, **{"type": "new_issue"})
-        obj = TroubleTicket()
+        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+                            {"alarm_deadline": False,
+                             "alarm_return_to_work": False,
+                             **_converter_timestring_to_timeobj_for_obj(issue),
+                             }, is_created=False)
     except:
         raise NaumenServiceError
-
-    issue = _converter_timestring_to_timeobj_for_obj(issue)
-    obj.uuid = issue['uuid']
-    obj.number = issue['number']
-    obj.name = issue['name']
-    obj.issue_type = issue['issue_type']
-    obj.step = issue['step']
-    obj.step_time = issue['step_time']
-    obj.responsible = issue['responsible']
-    obj.last_edit_time = issue['last_edit_time']
-    obj.vip_contragent = issue['vip_contragent']
-    obj.creation_date = issue['creation_date']
-    obj.uuid_service = issue['uuid_service']
-    obj.name_service = issue['name_service']
-    obj.uuid_contragent = issue['uuid_contragent']
-    obj.name_contragent = issue['name_contragent']
-    obj.return_to_work_time = issue['return_to_work_time']
-    obj.description = issue['description']
-
-    obj.save()
 
 
 def delete_trouble_ticket_model(issue: dict) -> bool:
@@ -657,7 +681,92 @@ def checking_issues_changes(old_issue: TroubleTicket,
     return issue_is_changed
 
 
-def check_issue_deadline_and_timers(issue: Mapping, *args, **kwargs) -> None:
+# def check_issue_deadline_and_timers(issue: Mapping, *args, **kwargs) -> None:
+#     """Проверка времени отработки на шаге и таймера возврата в работу.
+
+#     Args:
+#         issue (TroubleTicket): обращение которое необходимо проверить
+#     """
+
+#     issue_step = issue['step']
+#     step_deadlines = StepNotificationSetting.objects.filter(step=issue_step)
+#     step_timers = RetrunToWorkNotificationSetting.objects.filter(
+#         step=issue_step)
+
+#     if step_deadlines and step_timers:
+#         raise NaumenServiceError(f'Для шага {issue_step}, найдено и '
+#                                  'время отработки и таймер уведомления '
+#                                  'возврата к работе.')
+
+#     if len(step_deadlines) > 1:
+#         LOGGER.warning('Найдено более 1 лимита '
+#                        f'отработки для шага {issue_step}. Берем первый.')
+
+#     if len(step_timers) > 1:
+#         LOGGER.warning('Найдено более 1 таймера уведомлений возврата в работу '
+#                        f'для шага {issue_step}. Берем первый.')
+
+#     if step_deadlines:
+#         step_deadlines = step_deadlines[0]
+#         time_difference = step_deadlines.step_time - issue['step_time']
+#         pushing = 0 < time_difference < step_deadlines.alarm_time
+
+#         if pushing is True and not issue['alarm_deadline']:
+#             notify_issue(issue, type='step_deadlines_alarm')
+#             change_model_fields(TroubleTicket,
+#                                 {'uuid': issue.get('uuid')},
+#                                 {"alarm_deadline": True})
+
+#     elif step_timers:
+#         step_timers = step_timers[0]
+#         issue_return_to_work_time = \
+#             datetime.strptime(issue['return_to_work_time'],
+#                               '%Y-%m-%dT%H:%M:%SZ')
+#         time_difference = (issue_return_to_work_time - datetime.now()).seconds
+#         pushing = 0 < time_difference < step_timers.alarm_time
+
+#         if pushing is True and not issue['alarm_return_to_work']:
+#             notify_issue(issue, type='alarm_return_to_work')
+#             change_model_fields(TroubleTicket,
+#                                 {'uuid': issue.get('uuid')},
+#                                 {"alarm_return_to_work": True})
+
+
+def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
+    """Проверка таймера возврата в работу.
+
+    Args:
+        issue (TroubleTicket): обращение которое необходимо проверить
+    """
+
+    issue_step = issue['step']
+    try:
+        timer = RetrunToWorkNotificationSetting.objects.get(step=issue_step)
+
+    except RetrunToWorkNotificationSetting.MultipleObjectsReturned:
+        LOGGER.error('Найдено более 1 настроки уведомления о возврате'
+                     f'для {issue_step}.Пропуск обращения.')
+        return
+
+    except RetrunToWorkNotificationSetting.DoesNotExist:
+        LOGGER.error('Не найдено настроки уведомления о возврате'
+                     f'для {issue_step}.Пропуск обращения.')
+        return
+
+    issue_return_to_work_time = datetime.strptime(
+                                            issue['return_to_work_time'],
+                                            '%Y-%m-%dT%H:%M:%SZ')
+
+    time_difference = (issue_return_to_work_time - datetime.now()).seconds
+    pushing = 0 < time_difference < timer.alarm_time
+
+    if pushing is True and not issue['alarm_return_to_work']:
+        notify_issue(issue, type='alarm_return_to_work')
+        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+                            {"alarm_return_to_work": True})
+
+
+def check_issue_deadline(issue: Mapping, *args, **kwargs) -> None:
     """Проверка времени отработки на шаге и таймера возврата в работу.
 
     Args:
@@ -665,38 +774,23 @@ def check_issue_deadline_and_timers(issue: Mapping, *args, **kwargs) -> None:
     """
 
     issue_step = issue['step']
-    step_deadlines = StepNotificationSetting.objects.filter(step=issue_step)
-    step_timers = RetrunToWorkNotificationSetting.objects.filter(
-        step=issue_step)
+    try:
+        deadline = StepNotificationSetting.objects.get(step=issue_step)
 
-    if step_deadlines and step_timers:
-        raise NaumenServiceError(f'Для шага {issue_step}, найдено и '
-                                 'время отработки и таймер уведомления '
-                                 'возврата к работе.')
+    except StepNotificationSetting.MultipleObjectsReturned:
+        LOGGER.error('Найдено более 1 настроки уведомления о времени отработки'
+                     f'для {issue_step}.Пропуск обращения.')
+        return
 
-    if len(step_deadlines) > 1:
-        LOGGER.warning('Найдено более 1 лимита '
-                       f'отработки для шага {issue_step}. Берем первый.')
+    except StepNotificationSetting.DoesNotExist:
+        LOGGER.error('Не найдено настроки уведомления о о времени отработки'
+                     f'для {issue_step}.Пропуск обращения.')
+        return
 
-    if len(step_timers) > 1:
-        LOGGER.warning('Найдено более 1 таймера уведомлений возврата в работу '
-                       f'для шага {issue_step}. Берем первый.')
+    time_difference = deadline.step_time - issue['step_time']
+    pushing = 0 < time_difference < deadline.alarm_time
 
-    if step_deadlines:
-        step_deadlines = step_deadlines[0]
-        time_difference = step_deadlines.step_time - issue['step_time']
-        pushing = 0 < time_difference < step_deadlines.alarm_time
-
-        if pushing is True:
-            notify_issue(issue, type='step_deadlines_alarm')
-
-    elif step_timers:
-        step_timers = step_timers[0]
-        issue_return_to_work_time = \
-            datetime.strptime(issue['return_to_work_time'],
-                              '%Y-%m-%dT%H:%M:%SZ')
-        time_difference = (issue_return_to_work_time - datetime.now()).seconds
-        pushing = 0 < time_difference < step_timers.alarm_time
-
-        if pushing is True:
-            notify_issue(issue, type='retern_to_work_alarm')
+    if pushing is True and not issue['alarm_deadline']:
+        notify_issue(issue, type='step_deadlines_alarm')
+        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+                            {"alarm_deadline": True})
