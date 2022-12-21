@@ -1,12 +1,12 @@
 from calendar import monthrange
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from json import loads
 from logging import getLogger
-from typing import Callable, Sequence, Tuple, Mapping
+from typing import Callable, Mapping, Sequence, Tuple
 
 from django.conf import settings
-from django.db import models
 from django.core import serializers
+from django.db import models
 from django.utils.timezone import make_aware
 
 from naumen_api.naumen_api.config.config import CONFIG
@@ -533,7 +533,7 @@ def get_json(obj: models.Model, *args, **kwargs):
         obj (models.Model): модели которые необходимо сериализовать.
 
     Kwargs:
-        **kwargs: сюда передаются именнованные аргументы для фильтрации моделей.
+        **kwargs: передаются именнованные аргументы для фильтрации моделей.
     """
 
     if kwargs:
@@ -544,7 +544,7 @@ def get_json(obj: models.Model, *args, **kwargs):
 
 
 def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
-    """Функция для парсинга карточек обращений и добавления параметров. 
+    """Функция для парсинга карточек обращений и добавления параметров.
 
     Args:
         issue (Mapping): обращение для которого необходимо спарсить карточку
@@ -556,21 +556,27 @@ def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
         issue (Mapping): обновленное обращение
 
     Raises:
-        NaumenConnectionError: в случае 2ух неудач парсинга.
+        NaumenConnectionError: в случае двух неудач парсинга.
     """
 
     try:
         responce = get_naumen_api_report("issue_card",
-                                         **{**kwargs, 'naumen_uuid': issue['uuid']},
-                                        )
+                                         **{**kwargs,
+                                            'naumen_uuid': issue['uuid']},
+                                         )
         content = response_analysis(responce)[0]
-    except (NaumenConnectionError) as err:
+
+    except (NaumenConnectionError):
 
         if kwargs.get('is_repeated', False):
-            LOGGER.error(f'Issue: {issue["name"]} not parse. UUID: {issue["uuid"]}. Repeat error!')
+            LOGGER.error('Issue: {issue["name"]} not parse.'
+                         f'UUID: {issue["uuid"]}. Repeat error!')
+
             raise NaumenConnectionError
 
-        LOGGER.error(f'Issue: {issue["name"]} not parse. UUID: {issue["uuid"]}')
+        LOGGER.error(f'Issue: {issue["name"]} not parse. '
+                     f'UUID: {issue["uuid"]}')
+
         parse_issue_card(issue, is_repeated=True)
 
     [issue.update({key: value}) for key, value in content.items() if value]
@@ -579,18 +585,30 @@ def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
 
 
 def issues_list_synchronization(*args, **kwargs):
-    """Функция сравнивает переданные обращения и обращение в базе. 
-    """ 
+    """Функция сравнивает переданные обращения и обращение в базе.
+    """
 
     kwargs.update({'vip_contragent': kwargs.pop('is_vip', False)})
     issues_from_naumen = kwargs.pop("issues")
-    issues_from_db = [{'uuid': issue.get('pk'),**issue.get("fields")} for issue in loads(get_json(TroubleTicket, **kwargs))]
+
+    issues_from_db = [{'uuid': issue.get('pk'), **issue.get("fields")}
+                      for issue in loads(get_json(TroubleTicket, **kwargs))]
+
     uuids_from_naumen = set([issue['uuid'] for issue in issues_from_naumen])
     uuids_from_db = set([issue['uuid'] for issue in issues_from_db])
-    new_uuids, unioned_uuids, deleted_uuids = ((uuids_from_naumen - uuids_from_db),
-                                               (uuids_from_naumen & uuids_from_db),
-                                               (uuids_from_db - uuids_from_naumen))
-    new_issues = [issue for issue in issues_from_naumen if issue['uuid'] in new_uuids]
-    unioned_issues = [issue for issue in issues_from_naumen if issue['uuid'] in unioned_uuids]
-    deleted_issues = [issue for issue in issues_from_db if issue['uuid'] in deleted_uuids]
+
+    new_uuids, unioned_uuids, deleted_uuids = (
+                                        (uuids_from_naumen - uuids_from_db),
+                                        (uuids_from_naumen & uuids_from_db),
+                                        (uuids_from_db - uuids_from_naumen),
+                                        )
+    new_issues = [issue for issue in issues_from_naumen
+                  if issue['uuid'] in new_uuids]
+
+    unioned_issues = [issue for issue in issues_from_naumen
+                      if issue['uuid'] in unioned_uuids]
+
+    deleted_issues = [issue for issue in issues_from_db
+                      if issue['uuid'] in deleted_uuids]
+
     return (new_issues, unioned_issues, deleted_issues)

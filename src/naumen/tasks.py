@@ -1,12 +1,13 @@
-from celery import shared_task
 from logging import getLogger
 
-from .services import crud_service_level, parse_issue_card
-from .services import crud_mttr, crud_flr, download_issues
-from .services import issues_list_synchronization
-from .services import delete_trouble_ticket_model
-from .services import create_or_update_trouble_ticket_model
+from celery import shared_task
+
 from .exceptions import NaumenServiceError
+from .services import create_or_update_trouble_ticket_model
+from .services import crud_flr, crud_mttr, download_issues
+from .services import crud_service_level, parse_issue_card
+from .services import delete_trouble_ticket_model
+from .services import issues_list_synchronization
 
 
 LOGGER = getLogger(__name__)
@@ -46,7 +47,7 @@ def crud_issue(*args, **kwargs):
             issue = parse_issue_card(issue)
             create_or_update_trouble_ticket_model(issue)
     except NaumenServiceError as err:
-            LOGGER.exception(err)
+        LOGGER.exception(err)
 
 
 @shared_task
@@ -56,9 +57,15 @@ def update_issues(*args, **kwargs):
 
     issues = download_issues(*args, **kwargs)
     kwargs["issues"] = issues
+
     new_issues, unioned_issues, deleted_issues = \
         issues_list_synchronization(*args, **kwargs)
     deep_parsed_issues = new_issues + unioned_issues
-    [crud_issue.delay(**{**kwargs, 'is_delete': True, 'issue': issue}) for issue in deleted_issues]
-    [crud_issue.delay(**{**kwargs, 'is_delete': False, 'issue': issue}) for issue in deep_parsed_issues]
+
+    [crud_issue.delay(**{**kwargs, 'is_delete': True, 'issue': issue})
+     for issue in deleted_issues]
+
+    [crud_issue.delay(**{**kwargs, 'is_delete': False, 'issue': issue})
+     for issue in deep_parsed_issues]
+
     return True
