@@ -11,7 +11,8 @@ class StepNotificationSetting(models.Model):
         max_length=100, verbose_name='Шаг',
         )
     step_time = models.IntegerField(
-        default=0, verbose_name='Время отработки на шаге (сек.)', db_index=True,
+        default=0, verbose_name='Время отработки на шаге (сек.)',
+        db_index=True,
         )
 
     def __str__(self):

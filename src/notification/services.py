@@ -1,12 +1,14 @@
-from typing import Mapping
-
 from json import dumps
-from .models import StepNotificationSetting
+from typing import Mapping
 
 
 def notify_issue(issue: Mapping, *args, **kwargs):
     """Уведомление о новом обращении.
     """
-    print(("issue_notifi", {"type": kwargs.get('type'), "is_changed": kwargs.get('is_changed'),"text": issue}))
-    resilt = ("issue_notifi", {"type": kwargs.get('type'), "is_changed": kwargs.get('is_changed'), "text": dumps(issue)})
+    print(("issue_notifi", {"type": kwargs.get('type'),
+                            "is_changed": kwargs.get('is_changed'),
+                            "text": issue}))
+    resilt = ("issue_notifi", {"type": kwargs.get('type'),
+                               "is_changed": kwargs.get('is_changed'),
+                               "text": dumps(issue)})
     return resilt

@@ -1,23 +1,26 @@
 from calendar import monthrange
-from pytz import timezone
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from json import loads
 from logging import getLogger
-from typing import Callable, Sequence, Tuple, Mapping
+from typing import Callable, Mapping, Sequence, Tuple
 
 from django.conf import settings
-from django.db import models
 from django.core import serializers
+from django.db import models
 from django.utils.timezone import make_aware
 
 from naumen_api.naumen_api.config.config import CONFIG
 from naumen_api.naumen_api.naumen_api import Client
 
+from notification.models import StepNotificationSetting
+from notification.services import notify_issue
+
+from pytz import timezone
+
 from .exceptions import NaumenBadRequestError, NaumenConnectionError
 from .exceptions import NaumenServiceError
 from .models import FlrReport, TroubleTicket
 from .models import MeanTimeToResponseReport, ServiceLevelReport
-from notification.services import notify_issue
 
 
 NAUMEN_CLIENT = None
@@ -539,7 +542,7 @@ def get_issues_from_db(obj: models.Model, *args, **kwargs):
         obj (models.Model): модели которые необходимо сериализовать.
 
     Kwargs:
-        **kwargs: сюда передаются именнованные аргументы для фильтрации моделей.
+        **kwargs: передаются именнованные аргументы для фильтрации моделей.
     """
 
     if kwargs:
@@ -550,7 +553,7 @@ def get_issues_from_db(obj: models.Model, *args, **kwargs):
 
 
 def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
-    """Функция для парсинга карточек обращений и добавления параметров. 
+    """Функция для парсинга карточек обращений и добавления параметров.
 
     Args:
         issue (Mapping): обращение для которого необходимо спарсить карточку
@@ -567,16 +570,19 @@ def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
 
     try:
         responce = get_naumen_api_report("issue_card",
-                                         **{**kwargs, 'naumen_uuid': issue['uuid']},
-                                        )
+                                         **{**kwargs,
+                                            'naumen_uuid': issue['uuid']},
+                                         )
         content = response_analysis(responce)[0]
-    except (NaumenConnectionError) as err:
+    except (NaumenConnectionError):
 
         if kwargs.get('is_repeated', False):
-            LOGGER.error(f'Issue: {issue["name"]} not parse. UUID: {issue["uuid"]}. Repeat error!')
+            LOGGER.error(f'Issue: {issue["name"]} not parse. UUID:'
+                         f' {issue["uuid"]}. Repeat error!')
             raise NaumenConnectionError
 
-        LOGGER.error(f'Issue: {issue["name"]} not parse. UUID: {issue["uuid"]}')
+        LOGGER.error(f'Issue: {issue["name"]}'
+                     f' not parse. UUID: {issue["uuid"]}')
         parse_issue_card(issue, is_repeated=True)
 
     [issue.update({key: value}) for key, value in content.items() if value]
@@ -584,21 +590,31 @@ def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
 
 
 def issues_list_synchronization(*args, **kwargs):
-    """Функция сравнивает переданные обращения и обращение в базе. 
-    """ 
+    """Функция сравнивает переданные обращения и обращение в базе.
+    """
 
     kwargs.update({'vip_contragent': kwargs.pop('is_vip', False)})
     issues_from_naumen = kwargs.pop("issues")
-    issues_from_db = [{'uuid': issue.get('pk'),**issue.get("fields")} for issue in loads(get_issues_from_db(TroubleTicket, **kwargs))]
+
+    issues_from_db = [{'uuid': issue.get('pk'),**issue.get("fields")}for issue
+                      in loads(get_issues_from_db(TroubleTicket, **kwargs))]
+
     uuids_from_naumen = set([issue['uuid'] for issue in issues_from_naumen])
     uuids_from_db = set([issue['uuid'] for issue in issues_from_db])
+
     deleted_uuids = (uuids_from_db - uuids_from_naumen)
-    crud_issues = [issue for issue in issues_from_naumen if issue['uuid'] not in deleted_uuids]
-    deleted_issues = [issue for issue in issues_from_db if issue['uuid'] in deleted_uuids]
+
+    crud_issues = [issue for issue in issues_from_naumen
+                   if issue['uuid'] not in deleted_uuids]
+
+    deleted_issues = [issue for issue in issues_from_db
+                      if issue['uuid'] in deleted_uuids]
+
     return (crud_issues, deleted_issues)
 
 
-def checking_issues_changes(old_issue: TroubleTicket, new_issue: Mapping) -> Mapping:
+def checking_issues_changes(old_issue: TroubleTicket,
+                            new_issue: Mapping) -> Mapping:
     """Функиция для проверки изменений в обращении.
 
     Args:
@@ -608,14 +624,15 @@ def checking_issues_changes(old_issue: TroubleTicket, new_issue: Mapping) -> Map
 
     step_is_changed = old_issue.step != new_issue["step"]
     responsible_is_changed = (old_issue.responsible
-                              != 
+                              !=
                               new_issue["responsible"])
 
     old_return_to_work_time = old_issue.return_to_work_time\
-                                .astimezone(timezone(settings.TIME_ZONE))\
-                                .strftime('%d.%m.%Y %H:%M:%S')
+        .astimezone(timezone(settings.TIME_ZONE))\
+        .strftime('%d.%m.%Y %H:%M:%S')
+
     return_to_work_time_is_changed = (old_return_to_work_time
-                                      != 
+                                      !=
                                       new_issue["return_to_work_time"])
 
     issue_is_changed = any([responsible_is_changed,
@@ -626,6 +643,7 @@ def checking_issues_changes(old_issue: TroubleTicket, new_issue: Mapping) -> Map
                         'step': step_is_changed,
                         'return_to_work_time': return_to_work_time_is_changed}
 
-        notify_issue(new_issue, **{"type": "update_issue","is_changed": changed_dict})
+        notify_issue(new_issue, **{"type": "update_issue",
+                                   "is_changed": changed_dict})
 
     return issue_is_changed
