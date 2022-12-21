@@ -255,7 +255,7 @@ def change_model_fields(model: models.Model, search_field: dict,
 
         obj = queryset[0]
 
-    for field, value in set_fields:
+    for field, value in set_fields.items():
         setattr(obj, field, value)
 
     obj.save()
