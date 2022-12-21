@@ -742,8 +742,6 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
     issue_step = issue['step']
     try:
         timer = RetrunToWorkNotificationSetting.objects.get(step=issue_step)
-        print(issue_step)
-        print(timer.step)
 
     except RetrunToWorkNotificationSetting.MultipleObjectsReturned:
         LOGGER.error('Найдено более 1 настроки уведомления возврате'
