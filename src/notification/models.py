@@ -6,7 +6,9 @@ class StepNotificationSetting(models.Model):
     """
     Модель свойств и настроек для уведомлений событий по группе.
     """
-
+    name = models.CharField(
+        max_length=100, verbose_name='Название',
+        )
     step = models.CharField(
         max_length=100, verbose_name='Шаг',
         )
@@ -15,7 +17,8 @@ class StepNotificationSetting(models.Model):
         db_index=True,
         )
     alarm_time = models.IntegerField(
-        default=0, verbose_name='Время за которое предупредить (сек.))',
+        default=0,
+        verbose_name='Время до лимита до которое предупредить (сек.)',
         db_index=True,
         )
 
@@ -34,17 +37,15 @@ class RetrunToWorkNotificationSetting(models.Model):
     Модель свойств и настроек для уведомлений для обращений
     возращаемых с отложенного шага.
     """
-
+    name = models.CharField(
+        max_length=100, verbose_name='Название',
+        )
     step = models.CharField(
         max_length=100, verbose_name='Шаг',
         )
-    step_time = models.IntegerField(
-        default=0,
-        verbose_name='Время за которое предупредить о возврате(сек.)',
-        db_index=True,
-        )
     alarm_time = models.IntegerField(
-        default=0, verbose_name='Время за которое предупредить (сек.))',
+        default=0,
+        verbose_name='Время до возврата за которое предупредить (сек.)',
         db_index=True,
         )
 
