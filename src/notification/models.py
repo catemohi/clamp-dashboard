@@ -14,6 +14,10 @@ class StepNotificationSetting(models.Model):
         default=0, verbose_name='Время отработки на шаге (сек.)',
         db_index=True,
         )
+    alarm_time = models.IntegerField(
+        default=0, verbose_name='Время за которое предупредить (сек.))',
+        db_index=True,
+        )
 
     def __str__(self):
         return f'{self.name}'
@@ -37,6 +41,10 @@ class RetrunToWorkNotificationSetting(models.Model):
     step_time = models.IntegerField(
         default=0,
         verbose_name='Время за которое предупредить о возврате(сек.)',
+        db_index=True,
+        )
+    alarm_time = models.IntegerField(
+        default=0, verbose_name='Время за которое предупредить (сек.))',
         db_index=True,
         )
 
