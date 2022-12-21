@@ -677,12 +677,12 @@ def check_issue_deadline_and_timers(issue: Mapping, *args, **kwargs) -> None:
     if len(step_deadlines) > 1:
         LOGGER.warning('Найдено более 1 лимита '
                        f'отработки для шага {issue_step}. Берем первый.')
-        step_deadlines = step_deadlines[0]
+    step_deadlines = step_deadlines[0]
 
     if len(step_timers) > 1:
         LOGGER.warning('Найдено более 1 таймера уведомлений возврата в работу '
                        f'для шага {issue_step}. Берем первый.')
-        step_timers = step_timers[0]
+    step_timers = step_timers[0]
 
     if step_deadlines:
         time_difference = step_deadlines.step_time - issue['step_time']
