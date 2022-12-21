@@ -8,6 +8,7 @@ def notify_issue(issue: Mapping, *args, **kwargs):
     print(("issue_notifi", {"type": kwargs.get('type'),
                             "is_changed": kwargs.get('is_changed'),
                             "text": issue}))
+
     resilt = ("issue_notifi", {"type": kwargs.get('type'),
                                "is_changed": kwargs.get('is_changed'),
                                "text": dumps(issue)})

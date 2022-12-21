@@ -13,6 +13,7 @@ from naumen_api.naumen_api.config.config import CONFIG
 from naumen_api.naumen_api.naumen_api import Client
 
 from notification.models import StepNotificationSetting
+from notification.models import RetrunToWorkNotificationSetting
 from notification.services import notify_issue
 
 from pytz import timezone
@@ -535,7 +536,7 @@ def _converter_timestring_to_timeobj_for_obj(obj: dict) -> dict:
     return obj
 
 
-def get_issues_from_db(obj: models.Model, *args, **kwargs):
+def get_json_for_model(obj: models.Model, *args, **kwargs):
     """Сериализация моделей в json.
 
     Args:
@@ -589,6 +590,14 @@ def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
     return issue
 
 
+def get_issues_from_db(*args, **kwargs):
+    """Функция для возврата обращений из базы данных
+    """
+    issues = [{'uuid': issue.get('pk'), **issue.get("fields")}
+              for issue in loads(get_json_for_model(TroubleTicket, **kwargs))]
+    return issues
+
+
 def issues_list_synchronization(*args, **kwargs):
     """Функция сравнивает переданные обращения и обращение в базе.
     """
@@ -596,8 +605,7 @@ def issues_list_synchronization(*args, **kwargs):
     kwargs.update({'vip_contragent': kwargs.pop('is_vip', False)})
     issues_from_naumen = kwargs.pop("issues")
 
-    issues_from_db = [{'uuid': issue.get('pk'),**issue.get("fields")}for issue
-                      in loads(get_issues_from_db(TroubleTicket, **kwargs))]
+    issues_from_db = get_issues_from_db(*args, **kwargs)
 
     uuids_from_naumen = set([issue['uuid'] for issue in issues_from_naumen])
     uuids_from_db = set([issue['uuid'] for issue in issues_from_db])
@@ -647,3 +655,41 @@ def checking_issues_changes(old_issue: TroubleTicket,
                                    "is_changed": changed_dict})
 
     return issue_is_changed
+
+
+def check_issue_deadline_and_timers(issue: Mapping, *args, **kwargs) -> None:
+    """Проверка времени отработки на шаге и таймера возврата в работу.
+
+    Args:
+        issue (TroubleTicket): обращение которое необходимо проверить
+    """
+
+    issue_step = issue['step']
+    step_deadlines = StepNotificationSetting.objects.filter(step=issue_step)
+    step_timers = RetrunToWorkNotificationSetting.objects.filter(
+        step=issue_step)
+
+    if step_deadlines and step_timers:
+        raise NaumenServiceError(f'Для шага {issue_step}, найдено и '
+                                 'время отработки и таймер уведомления '
+                                 'возврата к работе.')
+
+    if len(step_deadlines) > 1:
+        LOGGER.warning('Найдено более 1 лимита '
+                       f'отработки для шага {issue_step}. Берем первый.')
+        step_deadlines = step_deadlines[0]
+
+    if len(step_timers) > 1:
+        LOGGER.warning('Найдено более 1 таймера уведомлений возврата в работу '
+                       f'для шага {issue_step}. Берем первый.')
+        step_timers = step_timers[0]
+
+    if step_deadlines:
+        time_difference = step_deadlines.step_time - issue['step_time']
+        pushing = 0 < time_difference < step_deadlines.alarm_time
+
+        if pushing is True:
+            notify_issue(issue, type='step_deadlines_alarm')
+
+    elif step_timers:
+        print(issue['return_to_work_time'])

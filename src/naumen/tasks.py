@@ -6,6 +6,8 @@ from .services import crud_mttr, crud_flr, download_issues
 from .services import issues_list_synchronization
 from .services import delete_trouble_ticket_model
 from .services import create_or_update_trouble_ticket_model
+from .services import get_issues_from_db
+from .services import check_issue_deadline_and_timers
 from .exceptions import NaumenServiceError
 
 
@@ -63,3 +65,24 @@ def update_issues(*args, **kwargs):
     [crud_issue.delay(**{**kwargs, 'is_delete': False, 'issue': issue}) \
      for issue in crud_issues]
     return True
+
+
+@shared_task
+def check_issue_deadline_and_timer(issue: dict, *args, **kwargs):
+    """Задача проверки времени отработки и таймера возврата в работу обращения
+
+    Args:
+        issue (dict): обращение которое необходимо проверить
+    """
+    check_issue_deadline_and_timers(issue, *args, **kwargs)
+
+
+@shared_task
+def check_issues_deadline_and_timer(*args, **kwargs):
+    """Задача для проверки времени отработки и таймера возврата в работу
+    обращений
+    """
+    issues = get_issues_from_db(*args, **kwargs)
+
+    for issue in issues:
+        check_issue_deadline_and_timer.delay(issue, *args, **kwargs)
