@@ -743,16 +743,16 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
     try:
         timer = RetrunToWorkNotificationSetting.objects.get(step=issue_step)
         print(issue_step)
-        print(timer)
+        print(timer.step)
 
     except RetrunToWorkNotificationSetting.MultipleObjectsReturned:
         LOGGER.error('Найдено более 1 настроки уведомления возврате'
-                     f' для {issue_step}.Пропуск обращения.')
+                     f' для "{issue_step}".Пропуск обращения.')
         return
 
     except RetrunToWorkNotificationSetting.DoesNotExist:
-        LOGGER.error('Не найдено настроки уведомления возврате'
-                     f' для {issue_step}.Пропуск обращения.')
+        LOGGER.debug('Не найдено настроки уведомления возврате'
+                     f' для "{issue_step}".Пропуск обращения.')
         return
 
     issue_return_to_work_time = datetime.strptime(
@@ -781,12 +781,12 @@ def check_issue_deadline(issue: Mapping, *args, **kwargs) -> None:
 
     except StepNotificationSetting.MultipleObjectsReturned:
         LOGGER.error('Найдено более 1 настроки уведомления времени отработки '
-                     f'для {issue_step}.Пропуск обращения.')
+                     f'для "{issue_step}".Пропуск обращения.')
         return
 
     except StepNotificationSetting.DoesNotExist:
-        LOGGER.error('Не найдено настроки уведомления времени отработки '
-                     f'для {issue_step}.Пропуск обращения.')
+        LOGGER.debug('Не найдено настроки уведомления времени отработки '
+                     f'для "{issue_step}".Пропуск обращения.')
         return
 
     time_difference = deadline.step_time - issue['step_time']
