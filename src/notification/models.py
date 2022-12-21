@@ -23,7 +23,7 @@ class StepNotificationSetting(models.Model):
         return f'{self.name}'
 
     class Meta:
-        ordering = ('steps',)
+        ordering = ('step',)
         verbose_name = 'Настроки уведомлений шага'
         verbose_name_plural = 'Настроки уведомлений шагов'
 
@@ -52,6 +52,6 @@ class RetrunToWorkNotificationSetting(models.Model):
         return f'{self.name}'
 
     class Meta:
-        ordering = ('steps',)
+        ordering = ('step',)
         verbose_name = 'Настроки уведомлений возвращения'
         verbose_name_plural = 'Настроки уведомлений возвращения'
