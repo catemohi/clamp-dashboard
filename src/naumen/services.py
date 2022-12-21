@@ -692,4 +692,11 @@ def check_issue_deadline_and_timers(issue: Mapping, *args, **kwargs) -> None:
 
     elif step_timers:
         step_timers = step_timers[0]
-        print(issue['return_to_work_time'])
+        issue_return_to_work_time = \
+            datetime.strptime(issue['return_to_work_time'],
+                              '%Y-%m-%dT%H:%M:%SZ')
+        time_difference = (issue_return_to_work_time - datetime.now()).seconds
+        pushing = 0 < time_difference < step_timers.alarm_time
+
+        if pushing is True:
+            notify_issue(issue, type='retern_to_work_alarm')
