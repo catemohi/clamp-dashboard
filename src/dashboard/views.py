@@ -38,9 +38,10 @@ def dashboard(request):
     context = {}
     context.update(theme_check(request.COOKIES))
     context.update(
-        {'trouble_ticket_counter': {'trouble_ticket_counter': '99+',
-                                    'trouble_ticket_vip_counter': '99+',
-                                    },
+        {
+            {'trouble_ticket_counter': '99+',
+             'trouble_ticket_vip_counter': '99+',
+             },
          },
         )
     return render(request, 'dashboard/dashboard.html', context=context)
@@ -50,9 +51,10 @@ def table(request):
     context = {}
     context.update(theme_check(request.COOKIES))
     context.update(
-        {'trouble_ticket_counter': {'trouble_ticket_counter': '99+',
-                                    'trouble_ticket_vip_counter': '99+',
-                                    },
+        {
+            {'trouble_ticket_counter': '99+',
+             'trouble_ticket_vip_counter': '99+',
+             },
          },
         )
     return render(request, 'dashboard/table.html', context=context)
@@ -62,9 +64,10 @@ def reports(request):
     context = {}
     context.update(theme_check(request.COOKIES))
     context.update(
-        {'trouble_ticket_counter': {'trouble_ticket_counter': '99+',
-                                    'trouble_ticket_vip_counter': '99+',
-                                    },
+        {
+            {'trouble_ticket_counter': '99+',
+             'trouble_ticket_vip_counter': '99+',
+             },
          },
         )
     return render(request, 'dashboard/reports.html', context=context)
