@@ -1,5 +1,6 @@
 from datetime import date, datetime, time, timedelta
 
+from naumen.services import add_months
 
 first_line_group_name = 'Группа поддержки и управления сетью  (Напр ТП В2В)'
 vip_line_group_name = 'Группа поддержки VIP - клиентов (Напр ТП В2В)'
@@ -46,7 +47,7 @@ def get_params(desired_date: datetime):
                         timedelta(days=days_until_sunday)).date()
 
     first_day_this_month = date(desired_date.year, desired_date.month, 1)
-    first_day_next_month = date(desired_date.year, desired_date.month + 1, 1)
+    first_day_next_month = add_months(first_day_this_month)
 
     last_day_this_month = (datetime.combine(
         first_day_next_month, time(1, 1)) - timedelta(days=1)).date()
