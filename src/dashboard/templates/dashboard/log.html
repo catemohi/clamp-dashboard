@@ -11,7 +11,7 @@
       <h2 id="log"></h2>    
     </div>
     <script>
-      var url = 'ws://' + window.location.hostname + ':80/ws/ws/dashboard/';
+      var url = 'ws://' + window.location.hostname + ':80/ws/log/';
       var socket = new WebSocket(url);
 
       socket.onmessage = function(event){
