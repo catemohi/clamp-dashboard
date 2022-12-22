@@ -14,3 +14,28 @@ class DashboardConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self):
         await self.channel_layer.group_dis("issue_notifi", self.channel_name)
+
+    async def updated(self, event):
+        text_message = event['text']
+        # time_message = event['text']
+        await self.send(text_message)
+
+    async def new(self, event):
+        text_message = event['text']
+        # time_message = event['text']
+        await self.send(text_message)
+
+    async def closed(self, event):
+        text_message = event['text']
+        # time_message = event['text']
+        await self.send(text_message)
+
+    async def returned(self, event):
+        text_message = event['text']
+        # time_message = event['text']
+        await self.send(text_message)
+
+    async def burned(self, event):
+        text_message = event['text']
+        # time_message = event['text']
+        await self.send(text_message)

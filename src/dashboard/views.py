@@ -75,6 +75,11 @@ def table_counter_json_data(request):
     return JsonResponse({'data': content})
 
 
+def log(request):
+    context = {}
+    context.update(theme_check(request.COOKIES))
+    return render(request, 'dashboard/log.html', context=context)
+
 # def report_json_data(request):
 #     data = request.POST
 #     print(data)

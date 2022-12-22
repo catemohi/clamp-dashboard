@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST LOG PAGE</title>
+  </head>
+  <body>
+    <div class="log-class" style="margin: 0 auto;">
+      <h2 id="log"></h2>    
+    </div>
+    <script>
+      var url = 'ws://' + window.location.hostname + ':8001/ws/dashboard/';
+      var socket = new WebSocket(url);
+
+      socket.onmessage = function(event){
+        var notifi = event.data;
+
+        document.querySelector('#log').innerText = notifi;
+      }
+    </script>
+  </body>
+</html>
