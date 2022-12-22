@@ -103,5 +103,5 @@ def notify_issue(issue: Mapping, *args, **kwargs):
             {"type": "burned", "issue": issue, "text": message,
              "time": time})
 
-    async_to_sync(channel_layer.group_send)(result)
+    async_to_sync(channel_layer.group_send)(*result)
     return result
