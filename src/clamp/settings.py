@@ -51,7 +51,7 @@ INSTALLED_APPS = [
 
     'dashboard',
     'naumen',
-    'notification'
+    'notification',
 ]
 
 MIDDLEWARE = [
