@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clamp</title>
+    <!-- MATERIAL CDN -->
+    {% load static %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <!-- STYLESHEET -->
+    <link rel="shortcut icon" href="{% static 'dashboard/img/logo.png' %}" type="image/png">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="{% static 'dashboard/css/style.css' %}">
+  </head>
+  <body class="{{ body_class }}">
+    <script type="text/javascript">     window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+      <div class="container" id="body-container">
+        {% include 'dashboard/includes/navigation.html' %}
+        {% block content %}
+        {% endblock %}
+        {% include 'dashboard/includes/right.html'%}
+      </div>
+  </body>
+</html>

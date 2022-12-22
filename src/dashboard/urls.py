@@ -1,7 +1,14 @@
-
-from django.urls import path
-from .views import test
+from django.contrib import admin
+from django.urls import path, include
+from .views import index, dashboard_json_data, dashboard,table,reports, table_json_data,table_counter_json_data,report_json_data
 
 urlpatterns = [
-    path('test/', test),
+    path('', index, name='index'),
+    path('dashboard/', dashboard, name='dashboard'),
+    path('table/', table, name='table'),
+    path('reports/', reports, name='reports'),
+    path('json/dashboard', dashboard_json_data, name = 'json/dashboard'),
+    path('json/table', table_json_data, name = 'json/table'),
+    path('json/counter', table_counter_json_data, name = 'json/counter'),
+    path('json/reports', report_json_data, name = 'json/reports'),
 ]

@@ -1,0 +1,28 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+<main>
+  <h1>Таблица обращений</h1>
+  <div class="monitoring">
+      <table id="trouble-table">
+        <thead>
+          <tr>
+            <th><h3>Номер</h3></th>
+            <th><h3>VIP</h3></th>
+            <th><h3>Название</h3></th>
+            <th><h3>Тип обращения</h3></th>
+            <th><h3>Контргент</h3></th>
+            <th><h3>Услуга</h3></th>
+            <th id="timestamp"><h3>Время на шаге</h3></th>
+            <th><h3>Шаг</h3></th>
+            <th><h3>Ответственный</h3></th>
+            <th><h3>Последнее изменение</h3></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+  </div>
+  <script src="{% static 'dashboard/js/table.js' %}"></script>
+</main>
+{% endblock %}
