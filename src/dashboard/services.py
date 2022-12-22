@@ -47,7 +47,7 @@ def get_params(desired_date: datetime):
                         timedelta(days=days_until_sunday)).date()
 
     first_day_this_month = date(desired_date.year, desired_date.month, 1)
-    first_day_next_month = add_months(first_day_this_month)
+    first_day_next_month = add_months(first_day_this_month, 1)
 
     last_day_this_month = (datetime.combine(
         first_day_next_month, time(1, 1)) - timedelta(days=1)).date()
