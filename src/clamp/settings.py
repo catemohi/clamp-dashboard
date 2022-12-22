@@ -163,3 +163,12 @@ NAUMEN_LOGIN = environ.get('NAUMEN_LOGIN')
 NAUMEN_PASSWORD = environ.get('NAUMEN_PASSWORD')
 
 NAUMEN_DOMAIN = environ.get('NAUMEN_DOMAIN')
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('redis', 6379)],
+        }
+    }
+}
