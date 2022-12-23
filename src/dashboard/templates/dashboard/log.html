@@ -43,9 +43,9 @@
     
       var text = document.createElement('p');
       var name_hendler = document.createElement('b');
-      name_hendler.innerText = 'Мониторинг: '
+      name_hendler.innerHTML = 'Мониторинг: '
       text.appendChild(name_hendler)
-      text.innerText = notify.text;
+      text.innerHTML = '<b>Мониторинг:</b> ' + notify.text;
       var time = document.createElement('small');
       time.className = "text-muted";
       time.innerText = notify.time;
