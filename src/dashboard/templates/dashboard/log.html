@@ -1,24 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEST LOG PAGE</title>
-  </head>
-  <body>
-    <div class="log-class" style="margin: 0 auto;">
-      <h2 id="log"></h2>    
-    </div>
-    <script>
-      var url = 'ws://' + window.location.hostname + ':80/ws/log/';
-      var socket = new WebSocket(url);
+<head>
+	{% load static %}
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{% static 'dashboard/css/style.css' %}">
+	<title>Document</title>
+</head>
+<body>
+	<div class="right" style="margin: 0 auto; width: 32rem">
+		<div class="recent-updates">
+  	  <h2>Последние события</h2>
+  	  <div class="updates">
+  	    <div class="update">
+  	      <div class="profile-photo">
+  	        <img src="{% static 'dashboard/img/profile/man-profile.png' %}" alt="profile photo">
+  	      </div>
+  	      <div class="massage">
+  	        <p><b>Руслан</b> взял задачу №166658 в работу</p>
+  	        <small class="text-muted">10:05:56</small>
+  	      </div>
+  	    </div>
+  	    <div class="update">
+  	      <div class="profile-photo">
+  	        <img src="{% static 'dashboard/img/profile/man-profile.png' %}" alt="profile photo">
+  	      </div>
+  	      <div class="massage">
+  	        <p><b>Никита</b> закрыл задачу №166656</p>
+  	        <small class="text-muted">10:08:30</small>
+  	      </div>
+  	    </div>
+  	    <div class="update">
+  	      <div class="profile-photo">
+  	        <img src="{% static 'dashboard/img/profile/man-profile.png' %}" alt="profile photo">
+  	      </div>
+  	      <div class="massage">
+  	        <p><b>Алина</b> взяла задачу №166670 в работу</p>
+  	        <small class="text-muted">10:10:18</small>
+  	      </div>
+  	    </div>
+  	    <div class="update">
+  	      <div class="profile-photo">
+  	        <img src="{% static 'dashboard/img/profile/man-profile.png' %}" alt="profile photo">
+  	      </div>
+  	      <div class="massage">
+  	        <p><b>Алина</b> взяла задачу №166670 в работу</p>
+  	        <small class="text-muted">10:10:18</small>
+  	      </div>
+  	    </div>
+  	    <div class="update">
+  	      <div class="profile-photo">
+  	        <img src="{% static 'dashboard/img/profile/bot-profile.png' %}" alt="profile photo">
+  	      </div>
+  	      <div class="massage">
+  	        <p><b>Мониторинг</b> на группе появилась новая задача!</p>
+  	        <small class="text-muted">10:12:18</small>
+  	      </div>
+  	    </div>
+  	  </div>
+  	</div>
+	</div>
+  <script>  
+    var url = 'ws://' + window.location.hostname + ':80/ws/log/';
+    var socket = new WebSocket(url);
+    var notification_box = document.querySelector('.right .recent-updates .updates');
 
-      socket.onmessage = function(event){
-        var notifi = event.data;
+    socket.onmessage = function(event){
+      var notify = event.data;
+      createNotify(notify)
 
-        document.querySelector('#log').innerText = notifi;
-      }
-    </script>
-  </body>
+    }
+
+    function createNotify(eventText) {
+      var update_item = document.createElement('div');
+      update_item.className = "update";
+    
+      var img = document.createElement('div');
+      img.className = "profile-photo";
+      var message = document.createElement('div');
+      message.className = "message";
+    
+      var text = document.createElement('p');
+      text.innerText = eventText;
+      var time = document.createElement('small');
+      time.className = "text-muted";
+    
+      message.appendChild(text);
+      message.appendChild(time);
+      update_item.appendChild(img);
+      update_item.appendChild(message);
+      notification_box.appendChild(update_item);
+      notification_box.scrollTop = notification_box.scrollHeight; 
+
+    }
+	</script>		
+</body>
 </html>
