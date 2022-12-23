@@ -599,6 +599,44 @@ main .monitoring h3 {
 }
 
 /* MEDIA QUERIES */
+@media screen and (max-width: 1600px) {
+  .container {
+    width: 94%;
+    grid-template-columns: 7rem auto 30rem;
+  }
+
+  aside .logo h2{
+    display: none;
+  }
+
+  aside .sidebar h3 {
+    display: none;
+  }
+
+  aside .sidebar li, aside .sidebar li a {
+    width: 5.6rem;
+  }
+
+  aside .sidebar li:last-child {
+    position: relative;
+    margin-top: 1.8rem;
+  }
+
+  main .insights {
+    grid-template-columns: repeat(2, 2fr);
+    gap: 1.6rem;
+  }
+
+  aside .logo img {
+  width: 4rem;
+  height: 4rem;
+  }
+
+}
+
+
+
+/* MEDIA QUERIES */
 @media screen and (max-width: 1200px) {
   .container {
     width: 94%;
