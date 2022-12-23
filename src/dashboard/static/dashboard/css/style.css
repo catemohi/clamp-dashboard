@@ -599,7 +599,7 @@ main .monitoring h3 {
 }
 
 /* MEDIA QUERIES */
-@media screen and (max-width: 1600px) {
+@media screen and (max-width: 1700px) {
   .container {
     width: 94%;
     grid-template-columns: 7rem auto 30rem;
