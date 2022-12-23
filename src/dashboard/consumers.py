@@ -1,3 +1,4 @@
+from json import dumps
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 
@@ -17,25 +18,25 @@ class DashboardConsumer(AsyncWebsocketConsumer):
 
     async def updated(self, event):
         text_message = event['text']
-        # time_message = event['text']
-        await self.send(text_message)
+        time_message = event['text']
+        await self.send(dumps({'text': text_message, 'time': time_message}))
 
     async def new(self, event):
         text_message = event['text']
-        # time_message = event['text']
-        await self.send(text_message)
+        time_message = event['text']
+        await self.send(dumps({'text': text_message, 'time': time_message}))
 
     async def closed(self, event):
         text_message = event['text']
-        # time_message = event['text']
-        await self.send(text_message)
+        time_message = event['text']
+        await self.send(dumps({'text': text_message, 'time': time_message}))
 
     async def returned(self, event):
         text_message = event['text']
-        # time_message = event['text']
-        await self.send(text_message)
+        time_message = event['text']
+        await self.send(dumps({'text': text_message, 'time': time_message}))
 
     async def burned(self, event):
         text_message = event['text']
-        # time_message = event['text']
-        await self.send(text_message)
+        time_message = event['text']
+        await self.send(dumps({'text': text_message, 'time': time_message}))
