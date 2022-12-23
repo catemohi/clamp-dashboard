@@ -13,18 +13,9 @@
 		<div class="recent-updates">
   	  <h2>Последние события</h2>
   	  <div class="updates">
-  	    <div class="update">
-  	      <div class="profile-photo">
-  	        <img src="{% static 'dashboard/img/profile/bot-profile.png' %}" alt="profile photo">
-  	      </div>
-  	      <div class="massage">
-  	        <p><b>Мониторинг</b> на группе появилась новая задача!</p>
-  	        <small class="text-muted">10:12:18</small>
-  	      </div>
-  	    </div>
   	  </div>
   	</div>
-	</div>
+  </div>
   <script>  
     var url = 'ws://' + window.location.hostname + ':80/ws/log/';
     var socket = new WebSocket(url);
@@ -50,7 +41,7 @@
     
       var text = document.createElement('p');
       var name_hendler = document.createElement('b');
-      name_hendlertext.innerText = 'Мониторинг: '
+      name_hendler.innerText = 'Мониторинг: '
       text.innerText = eventText;
       var time = document.createElement('small');
       time.className = "text-muted";
