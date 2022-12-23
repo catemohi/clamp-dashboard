@@ -54,6 +54,38 @@
   list-style: none;
   box-sizing: border-box;
 }
+
+/* кастомный скрол */
+::-webkit-scrollbar-button {
+  width: 5px;
+  height: 0px
+}
+
+/* Цвет дорожки, по которой двигается бегунок прокрутки. */
+::-webkit-scrollbar-track {
+  background-color: var(--color-background);
+}
+
+/* Цвет бегунка полосы, а так же его закругление. */
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius:var(--border-radius-3);
+  border-radius: var(--card-border-radius);
+  background-color: var(--color-info-light);
+}
+
+/* Цвет бегунка при наведении на него курсора. */
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary)
+}
+
+/* Основная ширина полосы прокрутки. */
+::-webkit-resizer {
+  width: 8px;
+  height: 0px
+}
+::-webkit-scrollbar {
+  width: 8px;
+}
 /* --- */
 .container {
   display: grid;
@@ -535,6 +567,10 @@ main .monitoring h3 {
 
 .right .recent-updates h2 {
   margin-bottom: 0.8rem;
+}
+
+.right .recent-updates .updates::-webkit-scrollbar {
+  width: 0;
 }
 
 .right .recent-updates .updates {
