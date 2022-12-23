@@ -27,7 +27,7 @@
     }
 
     function createNotify(event) {
-      var notify = JSON.parse(event)
+      var notify = JSON.parse(event.data)
       console.log(notify)
       var update_item = document.createElement('div');
       update_item.className = "update";
