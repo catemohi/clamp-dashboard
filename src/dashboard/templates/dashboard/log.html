@@ -22,12 +22,13 @@
     var notification_box = document.querySelector('.right .recent-updates .updates');
 
     socket.onmessage = function(event){
-      var notify = event.data;
-      createNotify(notify)
+      createNotify(event)
 
     }
 
-    function createNotify(eventText) {
+    function createNotify(event) {
+      var notify = JSON.parse(event)
+      console.log(notify)
       var update_item = document.createElement('div');
       update_item.className = "update";
     
@@ -42,9 +43,11 @@
       var text = document.createElement('p');
       var name_hendler = document.createElement('b');
       name_hendler.innerText = 'Мониторинг: '
-      text.innerText = eventText;
+      text.appendChild(name_hendler)
+      text.innerText = notify.text;
       var time = document.createElement('small');
       time.className = "text-muted";
+      time.innerText = notify.time;
   
       message.appendChild(text);
       message.appendChild(time);
