@@ -51,9 +51,8 @@
       img_box.appendChild(img)
       update_item.appendChild(img_box);
       update_item.appendChild(message);
-      notification_box.appendChild(update_item);
+      notification_box.insertBefore(update_item, notification_box.firstElementChild);
       notification_box.scrollTop = notification_box.scrollHeight; 
-
     }
 	</script>		
 </body>
