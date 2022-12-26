@@ -1,7 +1,7 @@
 from json import dumps
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from notification.services import get_notify
+from .services import get_notify
 
 
 class DashboardConsumer(AsyncWebsocketConsumer):

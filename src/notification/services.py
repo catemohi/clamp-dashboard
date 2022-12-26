@@ -113,25 +113,3 @@ def notify_issue(issue: Mapping, *args, **kwargs):
                         issue=result[1][0]["issue"]).save()
     async_to_sync(channel_layer.group_send)(*result)
     return result
-
-
-def get_notify(*args, slice: int = 0, **kwargs) -> str:
-    """
-    Функция для получения сохраненных в БД уведомлений.
-    Можно использовать slice для извлечения определенного количества данных
-    По умолчанию выдаст все сохраненные строки.
-
-    Args:
-        slice (int): Срез. По умолчанию 0.
-
-    Returns:
-        str: JSON строка уведомлений.
-    """
-
-    if slice:
-        qs = NotificationMessage.objects.order_by('-datetime')[:slice]
-    else:
-        qs = NotificationMessage.objects.order_by('-datetime')
-
-    notifications = [obj.as_dict() for obj in qs]
-    return notifications
