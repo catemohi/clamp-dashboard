@@ -13,8 +13,10 @@ class DashboardConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add("issue_notifi", self.channel_name)
         await self.accept()
 
-    async def disconnect(self):
-        await self.channel_layer.group_dis("issue_notifi", self.channel_name)
+    async def disconnect(self, code):
+        await self.channel_layer.group_discard("issue_notifi",
+                                               self.channel_name)
+        return await super().disconnect(code)
 
     async def updated(self, event):
         text_message = event['text']

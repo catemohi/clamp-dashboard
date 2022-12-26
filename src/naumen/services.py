@@ -337,7 +337,7 @@ def create_or_update_group_flr_report_model(report: dict) -> None:
         int(report['total_primary_issues'])
     obj.save()
 
-
+# TODO переименовать trouble_ticket_model d issue_model
 def create_or_update_trouble_ticket_model(issue: dict) -> None:
 
     """Создание или обновление обьекта обращения.

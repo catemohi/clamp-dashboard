@@ -22,14 +22,18 @@
     var notification_box = document.querySelector('.right .recent-updates .updates');
 
     socket.onmessage = function(event){
-      createNotify(event)
+      var notify = JSON.parse(event.data)
+      items.forEach(function(item) {
+        createNotify(event)
+      });
+    };
 
-    }
+    socket.onclose = function(){
+      // Try to reconnect in 5 seconds
+      setTimeout(function() {start_chat_ws()}, 5000);
+    };
 
     function createNotify(event) {
-      console.log(event)
-      var notify = JSON.parse(event.data)
-      console.log(notify)
       var update_item = document.createElement('div');
       update_item.className = "update";
     
@@ -55,7 +59,7 @@
       update_item.appendChild(message);
       notification_box.insertBefore(update_item, notification_box.firstElementChild);
       notification_box.scrollTop = notification_box.scrollHeight; 
-    }
+    };
 	</script>		
 </body>
 </html>

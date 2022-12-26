@@ -56,3 +56,21 @@ class RetrunToWorkNotificationSetting(models.Model):
         ordering = ('step',)
         verbose_name = 'Настроки уведомлений возвращения'
         verbose_name_plural = 'Настроки уведомлений возвращения'
+
+
+class NotificationMessage(models.Model):
+
+    """
+    Модель сообщения
+    """
+    text = models.TextField(verbose_name='Текст сообщения')
+    datetime = models.CharField(max_length=100, verbose_name='Время')
+    issue = models.TextField(verbose_name='JSON обращения')
+
+    def __str__(self):
+        return f'{self.datetime}: {self.text}'
+
+    class Meta:
+        ordering = ('datetime',)
+        verbose_name = 'Настройки события'
+        verbose_name_plural = 'Настройки событий'

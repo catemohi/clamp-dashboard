@@ -18,6 +18,13 @@ class RetrunToWorkNotificationSettingAdmin(admin.ModelAdmin):
     search_fields = ('name', 'step', 'alarm_time')
 
 
+class NotificationMessageAdmin(admin.ModelAdmin):
+
+    list_display = ('datetime', 'text')
+    list_display_links = ('datetime', 'text')
+    search_fields = ('datetime', 'text')
+
+
 admin.site.register(StepNotificationSetting, StepNotificationSettingAdmin)
-admin.site.register(RetrunToWorkNotificationSetting,
+admin.site.register(RetrunToWorkNotificationSetting, NotificationMessageAdmin,
                     RetrunToWorkNotificationSettingAdmin)
