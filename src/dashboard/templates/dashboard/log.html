@@ -19,8 +19,8 @@
             <img src="{% static 'dashboard/img/profile/bot-profile.png' %}" alt="profile photo">
           </div>
           <div class="massage">
-            <p>notifi.text</p>
-            <small class="text-muted">notifi.time</small>
+            <p>{{ notifi.text }}</p>
+            <small class="text-muted">{{ notifi.time }}</small>
           </div>
         </div>
         {% endfor %}
