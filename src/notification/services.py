@@ -129,5 +129,5 @@ def get_notify(*args, slice: int = 0, **kwargs) -> list[dict]:
     """
     from naumen.services import get_json_for_model
     notifications = get_json_for_model(NotificationMessage,
-                                       ordering=('-datetime'), slice=50)
+                                       ordering=('-datetime',), slice=50)
     return notifications
