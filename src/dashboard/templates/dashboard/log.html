@@ -16,21 +16,24 @@
   	  </div>
   	</div>
   </div>
-  <script>  
-    var url = 'ws://' + window.location.hostname + ':80/ws/log/';
-    var socket = new WebSocket(url);
-    var notification_box = document.querySelector('.right .recent-updates .updates');
+  <script>
+    function start_chat_ws() {
+      var url = 'ws://' + window.location.hostname + ':80/ws/log/';
+      var socket = new WebSocket(url);
 
-    socket.onmessage = function(event){
-      var notify = JSON.parse(event.data)
-      items.forEach(function(item) {
-        createNotify(event)
-      });
-    };
+      var notification_box = document.querySelector('.right .recent-updates .updates');
 
-    socket.onclose = function(){
+      socket.onmessage = function(event){
+        var notify = JSON.parse(event.data)
+        items.forEach(function(item) {
+          createNotify(event)
+        });
+      };
+
+      socket.onclose = function(){
       // Try to reconnect in 5 seconds
       setTimeout(function() {start_chat_ws()}, 5000);
+      };
     };
 
     function createNotify(event) {
@@ -60,6 +63,7 @@
       notification_box.insertBefore(update_item, notification_box.firstElementChild);
       notification_box.scrollTop = notification_box.scrollHeight; 
     };
+    start_chat_ws();
 	</script>		
 </body>
 </html>
