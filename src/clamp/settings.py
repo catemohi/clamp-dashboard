@@ -150,17 +150,7 @@ STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-SESSION_ENGINE = 'redis_sessions.session'
-
-SESSION_REDIS = {
-    'host': 'redis',
-    'port': 6379,
-    'db': 3,
-    'password': environ.get('REDIS_SESSION_PASSWORD'),
-    'prefix': 'session',
-    'socket_timeout': 1,
-    'retry_on_timeout': False
-    }
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
