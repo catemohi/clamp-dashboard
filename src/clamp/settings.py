@@ -151,6 +151,16 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 SESSION_ENGINE = 'redis_sessions.session'
 
+SESSION_REDIS = {
+    'host': 'redis',
+    'port': 6379,
+    'db': 3,
+    'password': environ.get('REDIS_SESSION_PASSWORD'),
+    'prefix': 'session',
+    'socket_timeout': 1,
+    'retry_on_timeout': False
+    }
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CELERY_BROKER_URL = "redis://redis:6379/0"
