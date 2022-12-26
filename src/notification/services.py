@@ -62,8 +62,8 @@ def notify_issue(issue: Mapping, *args, **kwargs):
         message = create_update_message(issue, kwargs['changed'])
         result = (
             "issue_notifi",
-            [{"type": "updated", "issue": issue, "text": message,
-              "time": time}],
+            {"type": "updated", "issue": issue, "text": message,
+              "time": time},
             )
 
     elif kwargs.get('type') == IssueNotification.NEW:
@@ -73,7 +73,7 @@ def notify_issue(issue: Mapping, *args, **kwargs):
                    f'{issue.get("number")}')
         result = (
             "issue_notifi",
-            [{"type": "new", "issue": issue, "text": message, "time": time}],
+            {"type": "new", "issue": issue, "text": message, "time": time},
             )
 
     elif kwargs.get('type') == IssueNotification.CLOSED:
@@ -83,8 +83,8 @@ def notify_issue(issue: Mapping, *args, **kwargs):
                    f'{issue.get("number")}')
         result = (
             "issue_notifi",
-            [{"type": "closed", "issue": issue, "text": message,
-              "time": time}],
+            {"type": "closed", "issue": issue, "text": message,
+              "time": time},
             )
 
     elif kwargs.get('type') == IssueNotification.RETURNED:
@@ -95,8 +95,8 @@ def notify_issue(issue: Mapping, *args, **kwargs):
                    f'вернется обращение номер {issue.get("number")}')
         result = (
             "issue_notifi",
-            [{"type": "returned", "issue": issue, "text": message,
-             "time": time}])
+            {"type": "returned", "issue": issue, "text": message,
+             "time": time})
 
     elif kwargs.get('type') == IssueNotification.BURNED:
         group = (lambda issue: 'vip линии' if issue['vip_contragent']
@@ -105,13 +105,13 @@ def notify_issue(issue: Mapping, *args, **kwargs):
                    f'скоро привысит лимит времени отработки!')
         result = (
             "issue_notifi",
-            [{"type": "burned", "issue": issue, "text": message,
-             "time": time}])
+            {"type": "burned", "issue": issue, "text": message,
+             "time": time})
 
-    NotificationMessage(text=result[1][0]["text"],
-                        datetime=result[1][0]["time"],
-                        issue=result[1][0]["issue"]).save()
-    async_to_sync(channel_layer.group_send)(*result[0])
+    NotificationMessage(text=result[1]["text"],
+                        datetime=result[1]["time"],
+                        issue=result[1]["issue"]).save()
+    async_to_sync(channel_layer.group_send)(*result)
     return result
 
 
