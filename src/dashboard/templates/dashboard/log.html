@@ -13,7 +13,11 @@
 		<div class="recent-updates">
   	  <h2>Последние события</h2>
   	  <div class="updates"  style="height: 21rem;overflow-y: auto;">
-          {{ context }}
+        <ul>
+        {% for notifi in notifications %}
+          <li>{{ notifi }}</li>
+        {% endfor %}
+        </ul>
   	  </div>
   	</div>
   </div>
