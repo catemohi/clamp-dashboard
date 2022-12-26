@@ -111,7 +111,7 @@ def notify_issue(issue: Mapping, *args, **kwargs):
     NotificationMessage(text=result[1][0]["text"],
                         datetime=result[1][0]["time"],
                         issue=result[1][0]["issue"]).save()
-    async_to_sync(channel_layer.group_send)(*result)
+    async_to_sync(channel_layer.group_send)(*result[0])
     return result
 
 
@@ -128,6 +128,5 @@ def get_notify(*args, slice: int = 0, **kwargs) -> list[dict]:
         str: JSON строка уведомлений.
     """
     from naumen.services import get_json_for_model
-    notifications = get_json_for_model(NotificationMessage,
-                                       ordering=('-datetime',), slice=50)
+    notifications = get_json_for_model(NotificationMessage, slice=50)
     return notifications
