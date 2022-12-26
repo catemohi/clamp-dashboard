@@ -560,7 +560,8 @@ def _converter_timestring_to_timeobj_for_obj(obj: dict) -> dict:
     return obj
 
 
-def get_json_for_model(obj: models.Model, *args, **kwargs):
+def get_json_for_model(obj: models.Model, *args, ordering=(),
+                       slice=0, **kwargs):
     """Сериализация моделей в json.
 
     Args:
@@ -572,8 +573,13 @@ def get_json_for_model(obj: models.Model, *args, **kwargs):
 
     if kwargs:
         qs = obj.objects.filter(**kwargs)
+    elif ordering:
+        qs = obj.objects.order_by(*ordering)
     else:
         qs = obj.objects.all()
+    if slice:
+        qs = qs[:slice]
+
     return serializers.serialize('json', qs)
 
 

@@ -127,11 +127,7 @@ def get_notify(*args, slice: int = 0, **kwargs) -> list[dict]:
     Returns:
         str: JSON строка уведомлений.
     """
-
-    if slice:
-        qs = NotificationMessage.objects.order_by('-datetime')[:slice]
-    else:
-        qs = NotificationMessage.objects.order_by('-datetime')
-
-    notifications = [obj.as_dict() for obj in qs]
+    from naumen.services import get_json_for_model
+    notifications = get_json_for_model(NotificationMessage,
+                                       ordering=('-datetime'), slice=50)
     return notifications
