@@ -49,9 +49,10 @@ INSTALLED_APPS = [
     'django_celery_results',
     'channels',
 
+    'notification',
     'dashboard',
     'naumen',
-    'notification',
+
 ]
 
 MIDDLEWARE = [
