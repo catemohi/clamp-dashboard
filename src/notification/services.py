@@ -127,5 +127,5 @@ def get_notify(*args, slice: int = 0, **kwargs) -> list[dict]:
     Returns:
         str: JSON строка уведомлений.
     """
-    notify = NotificationMessage.objects.order_by('datetime')[-50:].reverse()
+    notify = NotificationMessage.objects.order_by('datetime').reverse()[:50]
     return notify
