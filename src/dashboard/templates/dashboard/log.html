@@ -31,12 +31,11 @@
     function start_chat_ws() {
       var url = 'ws://' + window.location.hostname + ':80/ws/log/';
       var socket = new WebSocket(url);
-
       var notification_box = document.querySelector('.right .recent-updates .updates');
 
       socket.onmessage = function(event){
         var notify = JSON.parse(event.data)
-        createNotify(notify);
+        createNotify(notify, notification_box);
       };
 
       socket.onclose = function(){
@@ -45,7 +44,7 @@
       };
     };
 
-    function createNotify(notify) {
+    function createNotify(notify, notifyParent) {
       var update_item = document.createElement('div');
       update_item.className = "update";
     
@@ -69,7 +68,7 @@
       img_box.appendChild(img)
       update_item.appendChild(img_box);
       update_item.appendChild(message);
-      notification_box.insertBefore(update_item, notification_box.firstElementChild);
+      notifyParent.insertBefore(update_item, notifyParent.firstElementChild);
     };
     start_chat_ws();
 	</script>		
