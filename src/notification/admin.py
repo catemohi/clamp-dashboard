@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import StepNotificationSetting
+from .models import StepNotificationSetting, NotificationMessage
 from .models import RetrunToWorkNotificationSetting
 
 
@@ -26,5 +26,7 @@ class NotificationMessageAdmin(admin.ModelAdmin):
 
 
 admin.site.register(StepNotificationSetting, StepNotificationSettingAdmin)
-admin.site.register(RetrunToWorkNotificationSetting, NotificationMessageAdmin,
+admin.site.register(RetrunToWorkNotificationSetting,
                     RetrunToWorkNotificationSettingAdmin)
+admin.site.register(NotificationMessage,
+                    NotificationMessageAdmin)
