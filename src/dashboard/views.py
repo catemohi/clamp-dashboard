@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
 from naumen.services import get_issues_from_db
+from notification.services import get_notify
 
 from .services import convert_datestr_to_datetime_obj, get_params
 
@@ -77,8 +78,11 @@ def table_counter_json_data(request):
 
 def log(request):
     context = {}
+    notifications = get_notify(slice=50)
     context.update(theme_check(request.COOKIES))
+    context.update({"notifications": notifications})
     return render(request, 'dashboard/log.html', context=context)
+
 
 # def report_json_data(request):
 #     data = request.POST

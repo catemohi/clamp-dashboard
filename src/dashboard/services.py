@@ -1,7 +1,7 @@
 from datetime import date, datetime, time, timedelta
 
 from naumen.services import add_months
-from notification.models import NotificationMessage
+
 
 first_line_group_name = 'Группа поддержки и управления сетью  (Напр ТП В2В)'
 vip_line_group_name = 'Группа поддержки VIP - клиентов (Напр ТП В2В)'
@@ -133,25 +133,3 @@ def convert_datestr_to_datetime_obj(date_str: str) -> datetime:
 # TODO новая функция которая считает количество тикетов
 def get_trouble_ticket_count_from_db():
     return {'trouble_ticket_counter': 99, 'trouble_ticket_vip_counter': 99}
-
-
-def get_notify(*args, slice: int = 0, **kwargs) -> str:
-    """
-    Функция для получения сохраненных в БД уведомлений.
-    Можно использовать slice для извлечения определенного количества данных
-    По умолчанию выдаст все сохраненные строки.
-
-    Args:
-        slice (int): Срез. По умолчанию 0.
-
-    Returns:
-        str: JSON строка уведомлений.
-    """
-
-    if slice:
-        qs = NotificationMessage.objects.order_by('-datetime')[:slice]
-    else:
-        qs = NotificationMessage.objects.order_by('-datetime')
-
-    notifications = [obj.as_dict() for obj in qs]
-    return notifications

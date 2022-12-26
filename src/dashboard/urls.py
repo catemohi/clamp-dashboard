@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from .views import index, dashboard_json_data
-from .views import dashboard, table, reports, log
+from .views import dashboard, table, reports, log, json_notifications
 from .views import table_json_data, table_counter_json_data
 
 urlpatterns = [
