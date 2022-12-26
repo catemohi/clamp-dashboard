@@ -79,9 +79,9 @@ def table_counter_json_data(request):
 def log(request):
     context = {}
     notifications = get_notify(slice=50)
+    print(notifications)
     context.update(theme_check(request.COOKIES))
-    context.update({"notifications": notifications})
-    return render(request, 'dashboard/log.html', context=context)
+    return render(request, 'dashboard/log.html', context)
 
 
 # def report_json_data(request):
