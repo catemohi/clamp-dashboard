@@ -13,11 +13,17 @@
 		<div class="recent-updates">
   	  <h2>Последние события</h2>
   	  <div class="updates"  style="height: 21rem;overflow-y: auto;">
-        <ul>
         {% for notifi in notifications %}
-          <li>{{ notifi }}</li>
+        <div class="update">
+          <div class="profile-photo">
+            <img src="{% static 'dashboard/img/profile/bot-profile.png' %}" alt="profile photo">
+          </div>
+          <div class="massage">
+            <p>notifi.text</p>
+            <small class="text-muted">notifi.time</small>
+          </div>
+        </div>
         {% endfor %}
-        </ul>
   	  </div>
   	</div>
   </div>
@@ -66,7 +72,6 @@
       update_item.appendChild(img_box);
       update_item.appendChild(message);
       notification_box.insertBefore(update_item, notification_box.firstElementChild);
-      notification_box.scrollTop = notification_box.scrollHeight; 
     };
     start_chat_ws();
 	</script>		
