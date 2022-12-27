@@ -38,6 +38,8 @@ def index(request):
 def dashboard(request):
     context = {}
     context.update(theme_check(request.COOKIES))
+    notifications = get_notify(slice=50)
+    context.update({'notifications': notifications})
     context.update(
         {'trouble_ticket_counter': '99+', 'trouble_ticket_vip_counter': '99+'})
     return render(request, 'dashboard/dashboard.html', context=context)

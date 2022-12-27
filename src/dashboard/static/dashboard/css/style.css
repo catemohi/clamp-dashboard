@@ -574,6 +574,8 @@ main .monitoring h3 {
 }
 
 .right .recent-updates .updates {
+  height: 21rem;
+  overflow-y: auto;
   background: var(--color-white);
   padding: var(--card-padding);
   border-radius: var(--card-border-radius);
