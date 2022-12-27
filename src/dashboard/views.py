@@ -48,6 +48,8 @@ def dashboard(request):
 def table(request):
     context = {}
     context.update(theme_check(request.COOKIES))
+    notifications = get_notify(slice=50)
+    context.update({'notifications': notifications})
     context.update(
         {'trouble_ticket_counter': '99+', 'trouble_ticket_vip_counter': '99+'})
     return render(request, 'dashboard/table.html', context=context)
@@ -56,6 +58,8 @@ def table(request):
 def reports(request):
     context = {}
     context.update(theme_check(request.COOKIES))
+    notifications = get_notify(slice=50)
+    context.update({'notifications': notifications})
     context.update(
         {'trouble_ticket_counter': '99+', 'trouble_ticket_vip_counter': '99+'})
     return render(request, 'dashboard/reports.html', context=context)
