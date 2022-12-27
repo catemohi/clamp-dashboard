@@ -70,7 +70,8 @@ function createNotify(notify, notifyParent) {
 	let img_box = document.createElement('div');
 	img_box.className = "profile-photo";
 	img = document.createElement('img');
-	img.src = "{% static 'dashboard/img/profile/bot-profile.png' %}"
+	// let img_link determined from django template
+	img.src = img_link
 
 	let message = document.createElement('div');
 	message.className = "message";
