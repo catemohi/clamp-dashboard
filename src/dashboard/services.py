@@ -1,10 +1,11 @@
 from datetime import date, datetime, time, timedelta
+from typing import Literal, Collection
 
-from naumen.services import add_months
+
+from naumen.services import add_months, get_report_to_period
 
 
-first_line_group_name = 'Группа поддержки и управления сетью  (Напр ТП В2В)'
-vip_line_group_name = 'Группа поддержки VIP - клиентов (Напр ТП В2В)'
+
 
 
 def get_name_month(number_month: int):
@@ -133,3 +134,100 @@ def convert_datestr_to_datetime_obj(date_str: str) -> datetime:
 # TODO новая функция которая считает количество тикетов
 def get_trouble_ticket_count_from_db():
     return {'trouble_ticket_counter': 99, 'trouble_ticket_vip_counter': 99}
+
+
+def get_group_name(required_group: Literal['first_line_group_name',
+                                           'vip_line_group_name']) -> str:
+    """
+    Функция получения названия группы ТП
+
+    Args:
+        required_group (Literal[first_line_group_name, vip_line_group_name]): 
+        какую группу необходимо получить.
+
+    Returns:
+        str: название группы или пустую строку
+    """
+    # TODO обращение к таблице с хранением имен групп
+    FIRST_LINE_GROUP = 'Группа поддержки и управления сетью  (Напр ТП В2В)'
+    VIP_LINE_GROUP = 'Группа поддержки VIP - клиентов (Напр ТП В2В)'
+
+    if required_group == 'first_line_group_name':
+        return FIRST_LINE_GROUP
+
+    if required_group == 'vip_line_group_name':
+        return VIP_LINE_GROUP
+
+    return ''
+
+
+def get_date_collections(datestring: str) -> Collection[date]:
+    """Функция для возврата коллекции дат.
+
+    На выходе мы получаем коллекцию дат:
+        - первое число месяца передоваемой даты
+        - первое число следующего месяца
+        - число начала недели
+        - число конца недели
+        - требуемая дата
+
+    Args:
+        datestring (str): строка даты от которой требуется выдать коллекцию
+
+    Returns:
+        Collection[date]: коллекция дат.
+    """
+    chosen_datetime = convert_datestr_to_datetime_obj(datestring)
+    chosen_date = chosen_datetime.date()
+
+    first_day_month = date(chosen_date.year, chosen_date.month, 1)
+    first_day_next_month = add_months(first_day_month, 1)
+
+    _monday_days_passed = datetime.isoweekday(chosen_date) - 1
+    monday_this_week = (chosen_datetime -
+                        timedelta(days=_monday_days_passed)).date()
+
+    _until_sunday = 7 - datetime.isoweekday(chosen_date)
+    sunday_this_week = (chosen_datetime + timedelta(days=_until_sunday)).date()
+
+    return (first_day_month, first_day_next_month, monday_this_week,
+            sunday_this_week, chosen_date)
+
+
+def get_service_level(datestring: str) -> Collection:
+    """Функция для получения данных по отчёту SL для групп.
+
+    На выходе мы получаем данные:
+        - SL за требуемый день по первой линии
+        - Количество поступивших обращений на первую линию
+        - Количество первичных обращений на первой линии
+        - Количество обращений принятых до крайнего срока на первой линии
+        - Количество обращений принятых после крайнего срока на первой линии
+        - SL за требуемый день по вип линии
+        - Количество поступивших обращений на вип линию
+        - Количество первичных обращений на вип линии
+        - Количество обращений принятых до крайнего срока на вип линии
+        - Количество обращений принятых после крайнего срока на вип линии
+        - Итоговый SL за требуемый день
+        - Количество поступивших обращений итоговое
+        - Количество первичных обращений итоговое
+        - Количество обращений принятых до крайнего срока итоговое
+        - Количество обращений принятых после крайнего срока итоговое
+        - SL за неделю по первой линии
+        - SL за неделю по вип линии
+        - Итоговый SL за неделю
+        - SL за месяц по первой линии
+        - SL за месяц по вип линии
+        - Итоговый SL за месяц
+
+    Args:
+        datestring (str): строка даты за которую требуется отчет.
+
+    Returns:
+        Collection: _description_
+    """
+    # Операции над входящей строкой даты
+    dates = get_date_collections(datestring)
+    # Получение данных для первой линии.
+    chosen_group = get_group_name('first_line_group_name')
+    # TODO 
