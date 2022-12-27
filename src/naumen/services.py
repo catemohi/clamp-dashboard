@@ -12,6 +12,12 @@ from django.utils.timezone import make_aware
 from naumen_api.naumen_api.config.config import CONFIG
 from naumen_api.naumen_api.naumen_api import Client
 
+from notification.models import StepNotificationSetting
+from notification.models import RetrunToWorkNotificationSetting
+from notification.services import notify_issue, IssueNotification
+
+from pytz import timezone
+
 from .exceptions import NaumenBadRequestError, NaumenConnectionError
 from .exceptions import NaumenServiceError
 from .models import FlrReport, TroubleTicket
@@ -222,6 +228,39 @@ def get_naumen_api_report(report_name: str, *args, **kwargs) -> Sequence:
     return responce
 
 
+def change_model_fields(model: models.Model, search_field: dict,
+                        set_fields: dict, *args, **kwargs) -> None:
+    """
+    Изменение полей модели.
+
+    Args:
+        model (models.Model): модель
+        search_field (dict): поля по которому будет найдена модель
+        set_fields (dict): поля которые требуется изменить.
+    """
+    if not kwargs.get('is_created', True):
+        obj = model()
+
+    else:
+        queryset = model.objects.filter(**search_field)
+
+        if len(queryset) > 1:
+            raise NaumenServiceError(f'По полю {search_field},'
+                                     f' найдено {len(queryset)}.'
+                                     ' Уточните данные.')
+        if not queryset:
+            raise NaumenServiceError(f'По полю {search_field},'
+                                     f'не найдено обьектов.'
+                                     ' Уточните данные.')
+
+        obj = queryset[0]
+
+    for field, value in set_fields.items():
+        setattr(obj, field, value)
+
+    obj.save()
+
+
 def create_or_update_service_level_report_model(date: date, group: str,
                                                 attributes: dict) -> None:
 
@@ -298,7 +337,7 @@ def create_or_update_group_flr_report_model(report: dict) -> None:
         int(report['total_primary_issues'])
     obj.save()
 
-
+# TODO переименовать trouble_ticket_model d issue_model
 def create_or_update_trouble_ticket_model(issue: dict) -> None:
 
     """Создание или обновление обьекта обращения.
@@ -306,34 +345,29 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
     Args:
         issue (dict): словарь параметров обращения.
     """
+
     try:
         obj = TroubleTicket.objects.get(uuid=issue['uuid'])
+        status = checking_issues_changes(obj, issue)
+        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+                            {"alarm_deadline": not status,
+                             "alarm_return_to_work": not status,
+                             **_converter_timestring_to_timeobj_for_obj(issue),
+                             },
+                            )
+
     except TroubleTicket.DoesNotExist:
-        obj = TroubleTicket()
+        notify_issue(issue, **{"type": IssueNotification.NEW})
+        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+                            {"alarm_deadline": False,
+                             "alarm_return_to_work": False,
+                             **_converter_timestring_to_timeobj_for_obj(issue),
+                             }, is_created=False)
     except:
         raise NaumenServiceError
 
-    obj.uuid = issue['uuid']
-    obj.number = issue['number']
-    obj.name = issue['name']
-    obj.issue_type = issue['issue_type']
-    obj.step = issue['step']
-    obj.step_time = issue['step_time']
-    obj.responsible = issue['responsible']
-    obj.last_edit_time = issue['last_edit_time']
-    obj.vip_contragent = issue['vip_contragent']
-    obj.creation_date = issue['creation_date']
-    obj.uuid_service = issue['uuid_service']
-    obj.name_service = issue['name_service']
-    obj.uuid_contragent = issue['uuid_contragent']
-    obj.name_contragent = issue['name_contragent']
-    obj.return_to_work_time = issue['return_to_work_time']
-    obj.description = issue['description']
 
-    obj.save()
-
-
-def delete_trouble_ticket_model(uuid: str) -> bool:
+def delete_trouble_ticket_model(issue: dict) -> bool:
 
     """Удаление обьекта обращения.
 
@@ -343,14 +377,14 @@ def delete_trouble_ticket_model(uuid: str) -> bool:
     Returns:
         bool: результат попытки удаления обьекта.
     """
-
     try:
-        obj = TroubleTicket.objects.get(uuid=uuid)
+        obj = TroubleTicket.objects.get(uuid=issue.get('uuid'))
     except TroubleTicket.DoesNotExist:
         raise NaumenServiceError('Не удалось удалить обьект обращение с UUID: '
-                                 '%s' % uuid)
+                                 '%s' % issue.get('uuid'))
 
     obj.delete()
+    notify_issue(issue, **{"type": IssueNotification.CLOSED})
     return True
 
 
@@ -526,7 +560,8 @@ def _converter_timestring_to_timeobj_for_obj(obj: dict) -> dict:
     return obj
 
 
-def get_json(obj: models.Model, *args, **kwargs):
+def get_json_for_model(obj: models.Model, *args, ordering=(),
+                       slice=0, **kwargs):
     """Сериализация моделей в json.
 
     Args:
@@ -538,8 +573,13 @@ def get_json(obj: models.Model, *args, **kwargs):
 
     if kwargs:
         qs = obj.objects.filter(**kwargs)
+    elif ordering:
+        qs = obj.objects.order_by(*ordering)
     else:
         qs = obj.objects.all()
+    if slice:
+        qs = qs[:slice]
+
     return serializers.serialize('json', qs)
 
 
@@ -565,23 +605,27 @@ def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
                                             'naumen_uuid': issue['uuid']},
                                          )
         content = response_analysis(responce)[0]
-
     except (NaumenConnectionError):
 
         if kwargs.get('is_repeated', False):
-            LOGGER.error('Issue: {issue["name"]} not parse.'
-                         f'UUID: {issue["uuid"]}. Repeat error!')
-
+            LOGGER.error(f'Issue: {issue["name"]} not parse. UUID:'
+                         f' {issue["uuid"]}. Repeat error!')
             raise NaumenConnectionError
 
-        LOGGER.error(f'Issue: {issue["name"]} not parse. '
-                     f'UUID: {issue["uuid"]}')
-
+        LOGGER.error(f'Issue: {issue["name"]}'
+                     f' not parse. UUID: {issue["uuid"]}')
         parse_issue_card(issue, is_repeated=True)
 
     [issue.update({key: value}) for key, value in content.items() if value]
-    issue = _converter_timestring_to_timeobj_for_obj(issue)
     return issue
+
+
+def get_issues_from_db(*args, **kwargs):
+    """Функция для возврата обращений из базы данных
+    """
+    issues = [{'uuid': issue.get('pk'), **issue.get("fields")}
+              for issue in loads(get_json_for_model(TroubleTicket, **kwargs))]
+    return issues
 
 
 def issues_list_synchronization(*args, **kwargs):
@@ -591,24 +635,168 @@ def issues_list_synchronization(*args, **kwargs):
     kwargs.update({'vip_contragent': kwargs.pop('is_vip', False)})
     issues_from_naumen = kwargs.pop("issues")
 
-    issues_from_db = [{'uuid': issue.get('pk'), **issue.get("fields")}
-                      for issue in loads(get_json(TroubleTicket, **kwargs))]
+    issues_from_db = get_issues_from_db(*args, **kwargs)
 
     uuids_from_naumen = set([issue['uuid'] for issue in issues_from_naumen])
     uuids_from_db = set([issue['uuid'] for issue in issues_from_db])
 
-    new_uuids, unioned_uuids, deleted_uuids = (
-                                        (uuids_from_naumen - uuids_from_db),
-                                        (uuids_from_naumen & uuids_from_db),
-                                        (uuids_from_db - uuids_from_naumen),
-                                        )
-    new_issues = [issue for issue in issues_from_naumen
-                  if issue['uuid'] in new_uuids]
+    deleted_uuids = (uuids_from_db - uuids_from_naumen)
 
-    unioned_issues = [issue for issue in issues_from_naumen
-                      if issue['uuid'] in unioned_uuids]
+    crud_issues = [issue for issue in issues_from_naumen
+                   if issue['uuid'] not in deleted_uuids]
 
     deleted_issues = [issue for issue in issues_from_db
                       if issue['uuid'] in deleted_uuids]
 
-    return (new_issues, unioned_issues, deleted_issues)
+    return (crud_issues, deleted_issues)
+
+
+def checking_issues_changes(old_issue: TroubleTicket,
+                            new_issue: Mapping) -> Mapping:
+    """Функиция для проверки изменений в обращении.
+
+    Args:
+        old_issues (Mapping): старое обращения.
+        old_issues (Mapping): новое обращение.
+    """
+
+    step_is_changed = old_issue.step != new_issue["step"]
+    responsible_is_changed = (old_issue.responsible
+                              !=
+                              new_issue["responsible"])
+
+    old_return_to_work_time = old_issue.return_to_work_time\
+        .astimezone(timezone(settings.TIME_ZONE))\
+        .strftime('%d.%m.%Y %H:%M:%S')
+
+    return_to_work_time_is_changed = (old_return_to_work_time
+                                      !=
+                                      new_issue["return_to_work_time"])
+
+    issue_is_changed = any([responsible_is_changed,
+                            step_is_changed,
+                            return_to_work_time_is_changed])
+    if issue_is_changed:
+        changed_dict = {'responsible': responsible_is_changed,
+                        'step': step_is_changed,
+                        'return_to_work_time': return_to_work_time_is_changed}
+
+        notify_issue(new_issue, **{"type": IssueNotification.CHANGED,
+                                   "changed": changed_dict})
+
+    return issue_is_changed
+
+
+# def check_issue_deadline_and_timers(issue: Mapping, *args, **kwargs) -> None:
+#     """Проверка времени отработки на шаге и таймера возврата в работу.
+
+#     Args:
+#         issue (TroubleTicket): обращение которое необходимо проверить
+#     """
+
+#     issue_step = issue['step']
+#     step_deadlines = StepNotificationSetting.objects.filter(step=issue_step)
+#     step_timers = RetrunToWorkNotificationSetting.objects.filter(
+#         step=issue_step)
+
+#     if step_deadlines and step_timers:
+#         raise NaumenServiceError(f'Для шага {issue_step}, найдено и '
+#                                  'время отработки и таймер уведомления '
+#                                  'возврата к работе.')
+
+#     if len(step_deadlines) > 1:
+#         LOGGER.warning('Найдено более 1 лимита '
+#                        f'отработки для шага {issue_step}. Берем первый.')
+
+#     if len(step_timers) > 1:
+#         LOGGER.warning('Найдено более 1 таймера уведомлений возврата в работу '
+#                        f'для шага {issue_step}. Берем первый.')
+
+#     if step_deadlines:
+#         step_deadlines = step_deadlines[0]
+#         time_difference = step_deadlines.step_time - issue['step_time']
+#         pushing = 0 < time_difference < step_deadlines.alarm_time
+
+#         if pushing is True and not issue['alarm_deadline']:
+#             notify_issue(issue, type='step_deadlines_alarm')
+#             change_model_fields(TroubleTicket,
+#                                 {'uuid': issue.get('uuid')},
+#                                 {"alarm_deadline": True})
+
+#     elif step_timers:
+#         step_timers = step_timers[0]
+#         issue_return_to_work_time = \
+#             datetime.strptime(issue['return_to_work_time'],
+#                               '%Y-%m-%dT%H:%M:%SZ')
+#         time_difference = (issue_return_to_work_time - datetime.now()).seconds
+#         pushing = 0 < time_difference < step_timers.alarm_time
+
+#         if pushing is True and not issue['alarm_return_to_work']:
+#             notify_issue(issue, type='alarm_return_to_work')
+#             change_model_fields(TroubleTicket,
+#                                 {'uuid': issue.get('uuid')},
+#                                 {"alarm_return_to_work": True})
+
+
+def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
+    """Проверка таймера возврата в работу.
+
+    Args:
+        issue (TroubleTicket): обращение которое необходимо проверить
+    """
+
+    issue_step = issue['step']
+    try:
+        timer = RetrunToWorkNotificationSetting.objects.get(step=issue_step)
+
+    except RetrunToWorkNotificationSetting.MultipleObjectsReturned:
+        LOGGER.error('Найдено более 1 настроки уведомления возврате'
+                     f' для "{issue_step}".Пропуск обращения.')
+        return
+
+    except RetrunToWorkNotificationSetting.DoesNotExist:
+        LOGGER.debug('Не найдено настроки уведомления возврате'
+                     f' для "{issue_step}".Пропуск обращения.')
+        return
+
+    issue_return_to_work_time = datetime.strptime(
+                                            issue['return_to_work_time'],
+                                            '%Y-%m-%dT%H:%M:%SZ')
+
+    time_difference = (issue_return_to_work_time - datetime.now()).seconds
+    pushing = 0 < time_difference < timer.alarm_time
+
+    if pushing is True and not issue['alarm_return_to_work']:
+        notify_issue(issue, type=IssueNotification.RETURNED)
+        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+                            {"alarm_return_to_work": True})
+
+
+def check_issue_deadline(issue: Mapping, *args, **kwargs) -> None:
+    """Проверка времени отработки на шаге и таймера возврата в работу.
+
+    Args:
+        issue (TroubleTicket): обращение которое необходимо проверить
+    """
+
+    issue_step = issue['step']
+    try:
+        deadline = StepNotificationSetting.objects.get(step=issue_step)
+
+    except StepNotificationSetting.MultipleObjectsReturned:
+        LOGGER.error('Найдено более 1 настроки уведомления времени отработки '
+                     f'для "{issue_step}".Пропуск обращения.')
+        return
+
+    except StepNotificationSetting.DoesNotExist:
+        LOGGER.debug('Не найдено настроки уведомления времени отработки '
+                     f'для "{issue_step}".Пропуск обращения.')
+        return
+
+    time_difference = deadline.step_time - issue['step_time']
+    pushing = 0 < time_difference < deadline.alarm_time
+
+    if pushing is True and not issue['alarm_deadline']:
+        notify_issue(issue, type=IssueNotification.BURNED)
+        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+                            {"alarm_deadline": True})

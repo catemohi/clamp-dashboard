@@ -29,4 +29,6 @@ gunicorn
 uvicorn
 psycopg2-binary
 channels
+channels-redis
+django-redis-sessions
 daphne

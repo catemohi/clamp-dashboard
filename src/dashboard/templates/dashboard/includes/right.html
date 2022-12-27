@@ -1,0 +1,174 @@
+{% load static %}
+<div class="right">
+  <div class="top">
+    <button class="menu-btn">
+      <span class="material-icons-sharp">menu</span>
+    </button>
+    <div class="theme-toggler">
+      <span class="material-icons-sharp {{ theme_toggler_white }}">light_mode</span>
+      <span class="material-icons-sharp {{ theme_toggler_dark }}">dark_mode</span>
+    </div>
+    <div class="profile">
+      <div class="info">
+        <p>Привет, <b>Никита</b></p>
+        <small class="text-muted">Admin</small>
+      </div>
+      <div class="profile-photo">
+        <img src="{% static 'dashboard/img/profile/man-profile.png' %}" alt="profile photo">
+      </div>
+    </div>
+  </div>
+  <!-- END TOP -->
+  <div class="recent-updates">
+    <h2>Последние события</h2>
+    <div class="updates">
+      {% for notifi in notifications %}
+      <div class="update">
+        <div class="profile-photo">
+          <img src="{% static 'dashboard/img/profile/bot-profile.png' %}" alt="profile photo">
+        </div>
+        <div class="massage">
+          <p>{{ notifi.text }}</p>
+          <small class="text-muted">{{ notifi.datetime }}</small>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <!-- END OF RECENT UPDATES -->
+  <div class="analitics">
+    <h2>Аналитика смены</h2>
+    <div class="item sl">
+      <!-- <div class="icon">
+        <span class="material-icons-sharp">donut_small</span>
+      </div> -->
+      <div class="right">
+        <div class="info">
+          <ul>
+            <li><h3>SL первая линия</h3></li>
+            <li><h5>Количество ТТ за день:</h5></li>
+            <li><h5>Количество ТТ принятых за 15 минут:</h5></li>
+            <li><h5>Нагрузка относительно нормы:</h5></li>
+            <li><h5>Нагрузка относительно прошлого дня:</h5></li>
+          </ul>
+          <small>Последние 24 часа</small>
+        </div>
+        <div class="count-info">
+          <ul>
+            <li><h5 class="success">95%</h5></li>
+            <li><h5>166</h5></li>
+            <li><h5>160</h5></li>
+            <li><h5 class="success">> на 3%</h5></li>
+            <li><h5 class="warning">< на 6%</h5></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="item sl-vip">
+      <!-- <div class="icon">
+        <span class="material-icons-sharp">donut_small</span>
+      </div> -->
+      <div class="right">
+        <div class="info">
+          <ul>
+            <li><h3>SL vip линия</h3></li>
+            <li><h5>Количество ТТ за день:</h5></li>
+            <li><h5>Количество ТТ принятых за 15 минут:</h5></li>
+            <li><h5>Нагрузка относительно нормы:</h5></li>
+            <li><h5>Нагрузка относительно прошлого дня:</h5></li>
+          </ul>
+          <small>Последние 24 часа</small>
+        </div>
+        <div class="count-info">
+          <ul>
+            <li><h5 class="success">95%</h5></li>
+            <li><h5>166</h5></li>
+            <li><h5>160</h5></li>
+            <li><h5 class="success">> на 3%</h5></li>
+            <li><h5 class="warning">< на 6%</h5></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="item sl-com">
+      <!-- <div class="icon">
+        <span class="material-icons-sharp">donut_small</span>
+      </div> -->
+      <div class="right">
+        <div class="info">
+          <ul>
+            <li><h3>SL общий</h3></li>
+            <li><h5>Количествово ТТ за день:</h5></li>
+            <li><h5>Количество ТТ принятых за 15 минут:</h5></li>
+            <li><h5>Нагрузка относительно нормы:</h5></li>
+            <li><h5>Нагрузка относительно прошлого дня:</h5></li>
+          </ul>
+          <small>Последние 24 часа</small>
+        </div>
+        <div class="count-info">
+          <ul>
+            <li><h5 class="success">95%</h5></li>
+            <li><h5>166</h5></li>
+            <li><h5>160</h5></li>
+            <li><h5 class="success">> на 3%</h5></li>
+            <li><h5 class="warning">< на 6%</h5></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="item mttr-com">
+      <!-- <div class="icon">
+        <span class="material-icons-sharp">donut_small</span>
+      </div> -->
+      <div class="right">
+        <div class="info">
+          <ul>
+            <li><h3>MTTR:</h3></li>
+            <li><h5>Количество закрытых ТТ:</h5></li>
+            <li><h5>Нагрузка относительно нормы:</h5></li>
+            <li><h5>Нагрузка относительно прошлого дня:</h5></li>
+          </ul>
+          <small>Последние 24 часа</small>
+        </div>
+        <div class="count-info">
+          <ul>
+            <li><h5 class="success">51 минут</h5></li>
+            <li><h5>64</h5></li>
+            <li><h5 class="success">> на 3%</h5></li>
+            <li><h5 class="warning">< на 6%</h5></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="item flr-com">
+      <!-- <div class="icon">
+        <span class="material-icons-sharp">donut_small</span>
+      </div> -->
+      <div class="right">
+        <div class="info">
+          <ul>
+            <li><h3>FLR:</h3></li>
+            <li><h5>Количество первичных ТТ:</h5></li>
+            <li><h5>Количество закрытых без привлечения других отделов:</h5></li>
+            <li><h5>Нагрузка относительно нормы:</h5></li>
+            <li><h5>Нагрузка относительно прошлого дня:</h5></li>
+          </ul>
+          <small>Последние 24 часа</small>
+        </div>
+        <div class="count-info">
+          <ul>
+            <li><h5 class="success">33%</h5></li>
+            <li><h5>74</h5></li>
+            <li><h5>25</h5></li>
+            <li><h5 class="success">> на 3%</h5></li>
+            <li><h5 class="warning">< на 6%</h5></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="{% static 'dashboard/js/right.js' %}"></script>
+</div>
+<script>
+  let img_link = "{% static 'dashboard/img/profile/bot-profile.png' %}"
+</script>

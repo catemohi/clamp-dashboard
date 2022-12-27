@@ -1,0 +1,57 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+<main>
+  <h1>Отчёт</h1>
+  <div class="input-date-reports">
+    <div class="desired">
+      <form id="desired-date">
+        <span>Дата отчета: </span>
+        <input type="date" id="date-desired" data-date="" data-date-format="DD MMMM YYYY" value="2022-08-09">
+        <input type="submit" name="send" value="Выбрать">
+      </form>
+    </div>
+    <div class="comparison">
+      <form id="comparison-date">
+        <span>Сравнивать с: </span>
+        <input type="date" id="date-comparison" data-date="" data-date-format="DD MMMM YYYY" value="2022-08-09">
+        <input type="submit" name="send" value="Выбрать">
+      </form>
+    </div>
+  </div>
+  <div class="monitoring">
+    <table id="trouble-table">
+      <thead>
+        <tr>
+          <th>
+            <h3>Пункт</h3>
+          </th>          
+          <th>
+            <h3>Наименование</h3>
+          </th>
+          <th>
+            <h3>Интересующий день</h3>
+          </th>
+          <th>
+            <h3>Сравнивнение</h3>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+<script src="{% static 'dashboard/js/reports.js' %}"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+{% endblock %}

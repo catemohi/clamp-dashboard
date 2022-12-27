@@ -47,10 +47,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_celery_beat',
     'django_celery_results',
-
     'channels',
+
+    'notification',
     'dashboard',
-    'naumen'
+    'naumen',
+
 ]
 
 MIDDLEWARE = [
@@ -148,6 +150,7 @@ STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -162,3 +165,12 @@ NAUMEN_LOGIN = environ.get('NAUMEN_LOGIN')
 NAUMEN_PASSWORD = environ.get('NAUMEN_PASSWORD')
 
 NAUMEN_DOMAIN = environ.get('NAUMEN_DOMAIN')
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': ['redis://redis:6379/2'],
+        }
+    }
+}

@@ -18,7 +18,9 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.timezone = 'Europe/Moscow'
 app.conf.task_routes = {
     'naumen.tasks.*': {'queue': 'naumen_crud'},
-    'naumen.tasks.crud_issue': {'queue': 'celery'}
+    'naumen.tasks.crud_issue': {'queue': 'celery'},
+    'naumen.tasks.check_issue_deadline_and_timer': {'queue': 'celery'},
+    'naumen.tasks.check_issues_deadline_and_timer': {'queue': 'celery'},
     }
 # загрузка tasks.py в приложение django
 app.autodiscover_tasks()

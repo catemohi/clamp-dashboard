@@ -1,0 +1,176 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+  <main>
+    <h1>Мониторинг показателей смены</h1>
+    <form id="form-date" action="#" method="post">
+      <div class="input-date">
+        {% csrf_token %}
+        <input type="date" id="date" data-date="" data-date-format="DD MMMM YYYY" value="2022-08-09">
+        <button type="submit">Выбрать</button>
+      </div>
+    </form>
+    <div class="insights">
+      <div class="daily-sl">
+        <span class="material-icons-sharp">signal_cellular_alt</span>
+        <div class="middle">
+          <div class="lef">
+            <h3>Первая линия</h3>
+            <h3>Ежедневный SL</h3>
+            <h1>{{ data.Today }}</h1>
+          </div>
+          <div class="progress">
+            <svg>
+              <circle class="circle" id="circle" cx="38" cy="38" r="36"></circle>
+            </svg>
+            <div class="number">
+              <h2>{{ data.DayServiceLevelFirstLine }}</h2>
+            </div>
+          </div>
+        </div>
+        <small class="text-muted">Отчет за последний час</small>
+      </div>
+      <!-- END OF daily-sl -->
+      <div class="weekly-sl">
+        <span class="material-icons-sharp">signal_cellular_alt</span>
+        <div class="middle">
+          <div class="lef">
+            <h3>Первая линия</h3>
+            <h3>Недельный SL</h3>
+            <h1>{{ data.Week }}</h1>
+          </div>
+          <div class="progress">
+            <svg>
+              <circle class="circle" cx="38" cy="38" r="36"></circle>
+            </svg>
+            <div class="number">
+              <h2>{{ data.WeeklyServiceLevelFirstLine }}</h2>
+            </div>
+          </div>
+        </div>
+        <small class="text-muted">Отчет за последнюю неделю</small>
+      </div>
+      <!-- END OF weekly-sl -->
+      <div class="monthly-sl">
+        <span class="material-icons-sharp">signal_cellular_alt</span>
+        <div class="middle">
+          <div class="lef">
+            <h3>Первая линия</h3>
+            <h3>Месячный SL</h3>
+            <h1>{{ data.NameMonth }}</h1>
+          </div>
+          <div class="progress">
+            <svg>
+              <circle class="circle" cx="38" cy="38" r="36"></circle>
+            </svg>
+            <div class="number">
+              <h2>{{ data.MonthlyServiceLevelFirstLine }}</h2>
+            </div>
+          </div>
+        </div>
+        <small class="text-muted">Отчет за последний месяц</small>
+      </div>
+      <!-- END OF monthly-sl -->
+      <div class="daily-sl-vip">
+        <span class="material-icons-sharp">favorite_border</span>
+        <div class="middle">
+          <div class="lef">
+            <h3>VIP — линия</h3>
+            <h3>Ежедневный SL</h3>
+            <h1>{{ data.Today }}</h1>
+          </div>
+          <div class="progress">
+            <svg>
+              <circle class="circle" cx="38" cy="38" r="36"></circle>
+            </svg>
+            <div class="number">
+              <h2>{{ data.DayServiceLevelVipLine }}</h2>
+            </div>
+          </div>
+        </div>
+        <small class="text-muted">Отчет за последний час</small>
+      </div>
+      <!-- END OF daily-sl-vip -->
+      <div class="weekly-sl-vip">
+        <span class="material-icons-sharp">favorite_border</span>
+        <div class="middle">
+          <div class="lef">
+            <h3>VIP — линия</h3>
+            <h3>Недельный SL</h3>
+            <h1>{{ data.Week }}</h1>
+          </div>
+          <div class="progress">
+            <svg>
+              <circle class="circle" cx="38" cy="38" r="36"></circle>
+            </svg>
+            <div class="number">
+              <h2>{{ data.WeeklyServiceLevelVipLine }}</h2>
+            </div>
+          </div>
+        </div>
+        <small class="text-muted">Отчет за последнюю неделю</small>
+      </div>
+      <!-- END OF weekly-sl-vip -->
+      <div class="monthly-sl-vip">
+        <span class="material-icons-sharp">favorite_border</span>
+        <div class="middle">
+          <div class="lef">
+            <h3>VIP — линия</h3>
+            <h3>Месячный SL</h3>
+            <h1>{{ data.NameMonth }}</h1>
+          </div>
+          <div class="progress">
+            <svg>
+              <circle class="circle" cx="38" cy="38" r="36"></circle>
+            </svg>
+            <div class="number">
+              <h2>{{ data.MonthlyServiceLevelVipLine }}</h2>
+            </div>
+          </div>
+        </div>
+        <small class="text-muted">Отчет за последнюю неделю</small>
+      </div>
+      <!-- END OF monthly-sl-vip -->
+      <div class="daily-flr">
+        <span class="material-icons-sharp">signal_cellular_alt</span>
+        <div class="middle">
+          <div class="lef">
+            <h3>Ежедневный FLR</h3>
+            <h1>{{ data.Today }}</h1>
+          </div>
+          <div class="progress">
+            <svg>
+              <circle class="circle" cx="38" cy="38" r="36"></circle>
+            </svg>
+            <div class="number">
+              <h2></h2>
+            </div>
+          </div>
+        </div>
+        <small class="text-muted">Отчет за последний час</small>
+      </div>
+      <!-- END OF daily-flr -->
+      <div class="daily-mttr">
+        <span class="material-icons-sharp">signal_cellular_alt</span>
+        <div class="middle">
+          <div class="lef">
+            <h3>Ежедневный MTTR</h3>
+            <h1>{{ data.Today }}</h1>
+          </div>
+          <div class="progress">
+            <svg>
+              <circle class="circle" cx="38" cy="38" r="36"></circle>
+            </svg>
+            <div class="number">
+              <h2></h2>
+            </div>
+          </div>
+        </div>
+        <small class="text-muted">Отчет за последний час</small>
+      </div>
+      <!-- END OF daily-flr -->
+    </div>
+  </main>
+  <!-- END OF MAIN -->
+  <script src="{% static 'dashboard/js/index.js' %}"></script>
+{% endblock %}

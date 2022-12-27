@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% load static %}
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{% static 'dashboard/css/style.css' %}">
+	<title>Document</title>
+</head>
+<body>
+	<div class="right" style="margin: 0 auto; width: 32rem;">
+		<div class="recent-updates">
+  	  <h2>Последние события</h2>
+  	  <div class="updates"  style="height: 21rem;overflow-y: auto;">
+        {% for notifi in notifications %}
+        <div class="update">
+          <div class="profile-photo">
+            <img src="{% static 'dashboard/img/profile/bot-profile.png' %}" alt="profile photo">
+          </div>
+          <div class="massage">
+            <p>{{ notifi.text }}</p>
+            <small class="text-muted">{{ notifi.datetime }}</small>
+          </div>
+        </div>
+        {% endfor %}
+  	  </div>
+  	</div>
+  </div>
+  <script>
+    function fadeIn(el, speed) {
+      // Fade in block
+      var step = 1 / speed;
+      var interval = setInterval(function() {
+        if (+el.style.opacity >= 1)
+          clearInterval(interval);
+          
+        el.style.opacity = + el.style.opacity + step;
+      }, speed / 1000);
+    }
+
+    function start_chat_ws() {
+      let url = 'ws://' + window.location.hostname + ':80/ws/log/';
+      let socket = new WebSocket(url);
+      let notification_box = document.querySelector('.right .recent-updates .updates');
+
+      socket.onmessage = function(event){
+      // Processing new messages in the group
+        let notify = JSON.parse(event.data)
+        createNotify(notify, notification_box);
+      };
+
+      socket.onclose = function(){
+      // Try to reconnect in 5 seconds
+      setTimeout(function() {start_chat_ws()}, 5000);
+      };
+    };
+
+    function createNotify(notify, notifyParent) {
+      // Creating a new block
+      let update_item = document.createElement('div');
+      update_item.className = "update";
+      update_item.style.opacity = "0";
+    
+      let img_box = document.createElement('div');
+      img_box.className = "profile-photo";
+      img = document.createElement('img');
+      img.src = "{% static 'dashboard/img/profile/bot-profile.png' %}"
+
+      let message = document.createElement('div');
+      message.className = "message";
+    
+      let text = document.createElement('p');
+      let name_hendler = document.createElement('b');
+      text.innerText = notify.text;
+      let time = document.createElement('small');
+      time.className = "text-muted";
+      time.innerText = notify.time;
+  
+      message.appendChild(text);
+      message.appendChild(time);
+      img_box.appendChild(img)
+      update_item.appendChild(img_box);
+      update_item.appendChild(message);
+      notifyParent.insertBefore(update_item, notifyParent.firstElementChild);
+      fadeIn(update_item, 200);
+    };
+    start_chat_ws();
+	</script>		
+</body>
+</html>
