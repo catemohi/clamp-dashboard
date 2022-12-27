@@ -2,7 +2,7 @@ from calendar import monthrange
 from datetime import date, datetime
 from json import loads
 from logging import getLogger
-from typing import Callable, Mapping, Sequence, Tuple, Union, List
+from typing import Callable, Mapping, Sequence, Tuple, Union, List, Literal
 
 from django.conf import settings
 from django.core import serializers
@@ -753,15 +753,13 @@ def check_issue_deadline(issue: Mapping, *args, **kwargs) -> None:
 
 
 def get_report_to_period(
-    model: Union[ServiceLevelReport, FlrReport, MeanTimeToResponseReport],
-    start_date: date, end_date: date,
+    model: Literal['sl', 'flr', 'mttr'], start_date: date, end_date: date,
         **filter_fields: Mapping) -> Union[QuerySet, List[models.Model]]:
     """
     Фунция для получения данных по отчетам за период из базы данных.
 
     Args:
-        model (Union[ServiceLevelReport, FlrReport, MeanTimeToResponseReport]):
-        модель отчета
+        model (Literal['sl', 'flr', 'mttr']): литерал на модель отчета
         start_date (date): дата первого дня интересующего периода
         end_date (date): дата последнего дня интересующего периода
         **filter_fields (Mapping): дополнительные поля фильтрации
@@ -769,6 +767,12 @@ def get_report_to_period(
     Returns:
         Union[QuerySet, List[models.Model]]: коллекция дней
     """
-    qs = model.objects.filter(date__gte=start_date, date__lte=end_date,
-                              **filter_fields)
+    models_dict: Mapping[str, models.Model] = {
+        'sl': ServiceLevelReport,
+        'flr': FlrReport,
+        'mttr': MeanTimeToResponseReport
+    }
+    chosen_model = models_dict[model]
+    qs = chosen_model.objects.filter(date__gte=start_date, date__lte=end_date,
+                                     **filter_fields)
     return qs
