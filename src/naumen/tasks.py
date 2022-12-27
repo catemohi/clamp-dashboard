@@ -1,3 +1,4 @@
+from celery import shared_task
 from logging import getLogger
 
 from .services import crud_service_level, parse_issue_card
@@ -8,11 +9,6 @@ from .services import create_or_update_trouble_ticket_model
 from .services import get_issues_from_db
 from .services import check_issue_return_timers, check_issue_deadline
 from .exceptions import NaumenServiceError
-from .services import create_or_update_trouble_ticket_model
-from .services import crud_flr, crud_mttr, download_issues
-from .services import crud_service_level, parse_issue_card
-from .services import delete_trouble_ticket_model
-from .services import issues_list_synchronization
 
 
 LOGGER = getLogger(__name__)
