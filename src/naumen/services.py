@@ -2,12 +2,13 @@ from calendar import monthrange
 from datetime import date, datetime
 from json import loads
 from logging import getLogger
-from typing import Callable, Mapping, Sequence, Tuple
+from typing import Callable, Mapping, Sequence, Tuple, Union, List
 
 from django.conf import settings
 from django.core import serializers
 from django.db import models
 from django.utils.timezone import make_aware
+from django.db.models import QuerySet, Model
 
 from naumen_api.naumen_api.config.config import CONFIG
 from naumen_api.naumen_api.naumen_api import Client
@@ -687,57 +688,6 @@ def checking_issues_changes(old_issue: TroubleTicket,
     return issue_is_changed
 
 
-# def check_issue_deadline_and_timers(issue: Mapping, *args, **kwargs) -> None:
-#     """Проверка времени отработки на шаге и таймера возврата в работу.
-
-#     Args:
-#         issue (TroubleTicket): обращение которое необходимо проверить
-#     """
-
-#     issue_step = issue['step']
-#     step_deadlines = StepNotificationSetting.objects.filter(step=issue_step)
-#     step_timers = RetrunToWorkNotificationSetting.objects.filter(
-#         step=issue_step)
-
-#     if step_deadlines and step_timers:
-#         raise NaumenServiceError(f'Для шага {issue_step}, найдено и '
-#                                  'время отработки и таймер уведомления '
-#                                  'возврата к работе.')
-
-#     if len(step_deadlines) > 1:
-#         LOGGER.warning('Найдено более 1 лимита '
-#                        f'отработки для шага {issue_step}. Берем первый.')
-
-#     if len(step_timers) > 1:
-#         LOGGER.warning('Найдено более 1 таймера уведомлений возврата в работу '
-#                        f'для шага {issue_step}. Берем первый.')
-
-#     if step_deadlines:
-#         step_deadlines = step_deadlines[0]
-#         time_difference = step_deadlines.step_time - issue['step_time']
-#         pushing = 0 < time_difference < step_deadlines.alarm_time
-
-#         if pushing is True and not issue['alarm_deadline']:
-#             notify_issue(issue, type='step_deadlines_alarm')
-#             change_model_fields(TroubleTicket,
-#                                 {'uuid': issue.get('uuid')},
-#                                 {"alarm_deadline": True})
-
-#     elif step_timers:
-#         step_timers = step_timers[0]
-#         issue_return_to_work_time = \
-#             datetime.strptime(issue['return_to_work_time'],
-#                               '%Y-%m-%dT%H:%M:%SZ')
-#         time_difference = (issue_return_to_work_time - datetime.now()).seconds
-#         pushing = 0 < time_difference < step_timers.alarm_time
-
-#         if pushing is True and not issue['alarm_return_to_work']:
-#             notify_issue(issue, type='alarm_return_to_work')
-#             change_model_fields(TroubleTicket,
-#                                 {'uuid': issue.get('uuid')},
-#                                 {"alarm_return_to_work": True})
-
-
 def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
     """Проверка таймера возврата в работу.
 
@@ -800,3 +750,25 @@ def check_issue_deadline(issue: Mapping, *args, **kwargs) -> None:
         notify_issue(issue, type=IssueNotification.BURNED)
         change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
                             {"alarm_deadline": True})
+
+
+def get_report_to_period(
+    model: Union[ServiceLevelReport, FlrReport, MeanTimeToResponseReport],
+    start_date: date, end_date: date,
+        **filter_fields: Mapping) -> Union[QuerySet, List[models.Model]]:
+    """
+    Фунция для получения данных по отчетам за период из базы данных.
+
+    Args:
+        model (Union[ServiceLevelReport, FlrReport, MeanTimeToResponseReport]):
+        модель отчета
+        start_date (date): дата первого дня интересующего периода
+        end_date (date): дата последнего дня интересующего периода
+        **filter_fields (Mapping): дополнительные поля фильтрации
+
+    Returns:
+        Union[QuerySet, List[models.Model]]: коллекция дней
+    """
+    qs = model.objects.filter(date__gte=start_date, date__lte=end_date,
+                              **filter_fields)
+    return qs
