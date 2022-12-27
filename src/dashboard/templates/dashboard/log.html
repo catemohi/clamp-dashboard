@@ -34,7 +34,7 @@
         if (+el.style.opacity >= 1)
           clearInterval(interval);
           
-        el.style.opacity = +div.style.opacity + step;
+        el.style.opacity = + el.style.opacity + step;
       }, speed / 1000);
     }
 
