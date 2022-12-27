@@ -588,6 +588,20 @@ main .monitoring h3 {
   margin-bottom: 1rem;
 }
 
+.b-show {
+  display: block;
+  animation: showBlock 1s linear forwards;
+}
+
+@keyframes showBlock {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .right .recent-updates .updates:hover {
   box-shadow: none;
 }
