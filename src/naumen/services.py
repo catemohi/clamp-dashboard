@@ -773,6 +773,6 @@ def get_report_to_period(
         'mttr': MeanTimeToResponseReport
     }
     chosen_model = models_dict[model]
-    qs = chosen_model.objects.filter(date__gte=start_date, date__lte=end_date,
+    qs = chosen_model.objects.filter(date__gte=start_date, date__lt=end_date,
                                      **filter_fields)
     return qs
