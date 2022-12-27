@@ -28,6 +28,16 @@
   	</div>
   </div>
   <script>
+    function fadeIn(el, speed) {
+      var step = 1 / speed;
+      var interval = setInterval(function() {
+        if (+el.style.opacity >= 1)
+          clearInterval(interval);
+          
+        el.style.opacity = +div.style.opacity + step;
+      }, speed / 1000);
+    }
+
     function start_chat_ws() {
       var url = 'ws://' + window.location.hostname + ':80/ws/log/';
       var socket = new WebSocket(url);
@@ -68,7 +78,9 @@
       img_box.appendChild(img)
       update_item.appendChild(img_box);
       update_item.appendChild(message);
+      update_item.style.opacity = "0";
       notifyParent.insertBefore(update_item, notifyParent.firstElementChild);
+      fadeIn(dupdate_itemiv, 200);
     };
     start_chat_ws();
 	</script>		
