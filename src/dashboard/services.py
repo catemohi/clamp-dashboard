@@ -177,7 +177,7 @@ def convert_datestr_to_datetime_obj(datestring: str) -> datetime:
     return datetime_obj
 
 
-def get_group_name(required_group: Literal['first_line_group_name',
+def _get_group_name(required_group: Literal['first_line_group_name',
                                            'vip_line_group_name',
                                            'general_group_name']) -> str:
     """
@@ -208,7 +208,7 @@ def get_group_name(required_group: Literal['first_line_group_name',
     return ''
 
 
-def get_date_collections(datestring: str) -> Dates:
+def _get_date_collections(datestring: str) -> Dates:
     """Функция для возврата коллекции дат.
 
     На выходе мы получаем коллекцию дат:
@@ -241,9 +241,9 @@ def get_date_collections(datestring: str) -> Dates:
                  monday_this_week, sunday_this_week, chosen_date)
 
 
-def parse_service_level(dates: Dates, chosen_group: str,
-                        qs: Union[models.QuerySet,
-                                  List[models.Model]]) -> ReportServiceLevel:
+def _parse_service_level(dates: Dates, chosen_group: str,
+                         qs: Union[models.QuerySet,
+                                   List[models.Model]]) -> ReportServiceLevel:
     """
     Функция для получения данных по отчёту SL для группы.
 
@@ -293,7 +293,7 @@ def parse_service_level(dates: Dates, chosen_group: str,
                               num_worked_after_deadline)
 
 
-def get_service_level(datestring: str) -> Mapping[
+def _get_service_level(datestring: str) -> Mapping[
         Literal['first_line', 'vip_line', 'general'], ReportServiceLevel]:
     """Функция для получения данных по отчёту SL для групп.
 
@@ -329,21 +329,64 @@ def get_service_level(datestring: str) -> Mapping[
     """
     today_date = datetime.now().date()
     # Операции над входящей строкой даты
-    dates = get_date_collections(datestring)
+    dates = _get_date_collections(datestring)
     # Получение отчетов за месяц
     qs = get_report_to_period('sl', dates.calends_this_month,
                               dates.calends_next_month)
     # Исключаем нулевые отчеты
     qs = qs.filter(date__lge=today_date)
     # Получение данных для первой линии.
-    chosen_group = get_group_name('first_line_group_name')
-    first_line_sl = parse_service_level(dates, chosen_group, qs)
+    chosen_group = _get_group_name('first_line_group_name')
+    first_line_sl = _parse_service_level(dates, chosen_group, qs)
     # Получение данных для вип линии.
-    chosen_group = get_group_name('vip_line_group_name')
-    vip_line_sl = parse_service_level(dates, chosen_group, qs)
+    chosen_group = _get_group_name('vip_line_group_name')
+    vip_line_sl = _parse_service_level(dates, chosen_group, qs)
     # Получение данных всех линий.
-    chosen_group = get_group_name('general_group_name')
-    general_sl = parse_service_level(dates, chosen_group, qs)
+    chosen_group = _get_group_name('general_group_name')
+    general_sl = _parse_service_level(dates, chosen_group, qs)
 
     return {'first_line': first_line_sl, 'vip_line': vip_line_sl,
             'general': general_sl}
+
+
+def get_dashboard_date(datestring: str) -> Mapping:
+    """Главная функция получения данных для view дашборда.
+
+    Вызывает все дополнительные функции и отдает ассоциативный словарь данных
+    контекста необходимых для view.
+
+    На вход поступает строка даты, за который необходим отчёт.
+
+    На выходе поступают данные:
+        - SL за требуемый день по первой линии
+        - Количество поступивших обращений на первую линию
+        - Количество первичных обращений на первой линии
+        - Количество обращений принятых до крайнего срока на первой линии
+        - Количество обращений принятых после крайнего срока на первой линии
+        - SL за требуемый день по вип линии
+        - Количество поступивших обращений на вип линию
+        - Количество первичных обращений на вип линии
+        - Количество обращений принятых до крайнего срока на вип линии
+        - Количество обращений принятых после крайнего срока на вип линии
+        - Итоговый SL за требуемый день
+        - Количество поступивших обращений итоговое
+        - Количество первичных обращений итоговое
+        - Количество обращений принятых до крайнего срока итоговое
+        - Количество обращений принятых после крайнего срока итоговое
+        - SL за неделю по первой линии
+        - SL за неделю по вип линии
+        - Итоговый SL за неделю
+        - SL за месяц по первой линии
+        - SL за месяц по вип линии
+        - Итоговый SL за месяц
+        - MTTR за требуемый день
+        - FLR требуемый день
+        - Аналитика нагрузки относительно номинальных значений
+
+    Args:
+        datestring (str): строка даты, за который необходим отчёт.
+
+    Returns:
+        Mapping: словарь входных данных.
+    """
+    service_level_dict = _get_service_level(datestring)
