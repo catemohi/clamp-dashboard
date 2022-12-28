@@ -323,8 +323,8 @@ def _parse_service_level(dates: Dates, chosen_group: str,
                               num_worked_after_deadline)
 
 
-def _get_service_level(datestring: str) -> Mapping[
-        Literal['first_line', 'vip_line', 'general'], ReportServiceLevel]:
+def _get_service_level(datestring: str) -> Mapping[Literal['sl'], Mapping[
+        Literal['first_line', 'vip_line', 'general'], ReportServiceLevel]]:
     """Функция для получения данных по отчёту SL для групп.
 
     На выходе мы получаем данные:
@@ -354,8 +354,8 @@ def _get_service_level(datestring: str) -> Mapping[
         datestring (str): строка даты за которую требуется отчет.
 
     Returns:
-        Mapping[Literal['first_line', 'vip_line', 'general'],
-        ReportServiceLevel]: словарь данных, с ключами по линиям ТП
+        Mapping[Literal['sl'], Mapping[Literal['first_line', 'vip_line', 'general'],
+        ReportServiceLevel]]: словарь данных, с ключами по линиям ТП
     """
     today_date = datetime.now().date()
     # Операции над входящей строкой даты
@@ -375,8 +375,8 @@ def _get_service_level(datestring: str) -> Mapping[
     chosen_group = _get_group_name('general_group_name')
     general_sl = _parse_service_level(dates, chosen_group, qs)
 
-    return {'first_line': first_line_sl, 'vip_line': vip_line_sl,
-            'general': general_sl}
+    return {'sl': {'first_line': first_line_sl, 'vip_line': vip_line_sl,
+            'general': general_sl}}
 
 
 def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ReportMttr]:
@@ -437,6 +437,33 @@ def _get_flr(datestring: str) -> Mapping[Literal['flr'], ReportFlr]:
     return {'mttr': flr_report}
 
 
+def _analytics(chosen_day: Mapping[Literal['sl', 'mttr', 'flr'], Mapping],
+               comparison_day: Mapping[Literal['sl', 'mttr', 'flr'], Mapping] = {}
+               ) -> Mapping[Literal['sl', 'mttr', 'flr', 'analytics'], Mapping]:
+    """
+    Функция сравнения данных, с номинальными и с переданным днем.
+
+    На вход, функция получает дневной отчёт, который необходимо сравнить.
+    При необходимости можно передать дополнительный день сравнения.
+
+    На выходе функция отдает модифицированный словарь с долнительным
+    ключем выполненного сравнения.
+
+    Args:
+        chosen_day (Mapping[Literal['sl', 'mttr', 'flr'], Mapping]):
+            дневной отчёт, который необходимо сравнить
+        comparison_day (Mapping[Literal['sl', 'mttr', 'flr'], Mapping]):
+            дополнительный день сравнения. По умол. {}
+
+    Returns:
+        Mapping[Literal['sl', 'mttr', 'flr', 'analytics'], Mapping]: 
+        модифицированный словарь 
+        с долнительным ключем выполненного сравнения.
+
+    """
+    ...
+
+
 def get_dashboard_date(datestring: str) -> Mapping:
     """Главная функция получения данных для view дашборда.
 
@@ -480,4 +507,5 @@ def get_dashboard_date(datestring: str) -> Mapping:
     service_level_dict = _get_service_level(datestring)
     mttr_dict = _get_mttr(datestring)
     flr_dict = _get_flr(datestring)
-    
+    day_report = {**service_level_dict, **mttr_dict, **flr_dict}
+    # Аналитика нагрузки относительно номинальных значений
