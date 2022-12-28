@@ -139,6 +139,7 @@ class Dates(NamedTuple):
     monday_this_week: date
     sunday_this_week: date
     chosen_date: date
+    next_day: date
 
 
 class ReportServiceLevel(NamedTuple):
@@ -170,8 +171,23 @@ class ReportMttr(NamedTuple):
         - Средний МТТР
         - Средний МТТР ТП'
     """
-    ...
-    
+    num_issues: int
+    average_mttr: int
+    average_mttr_tech_support: int
+
+
+class ReportFlr(NamedTuple):
+    """Класс для хранения отчета по MTTR
+
+    Хранит данные:
+        - FLR за день (в %)
+        - Количество обращений закрытых без других отделов
+        - Количество первичных обращений
+    """
+    level: int
+    num_issues_closed_independently: int
+    num_primary_issues: int
+
 
 def convert_datestr_to_datetime_obj(datestring: str) -> datetime:
     """Функция конвертации строки даты в datetime обьект
@@ -228,6 +244,7 @@ def _get_date_collections(datestring: str) -> Dates:
         - число начала недели
         - число конца недели
         - требуемая дата
+        - слудующий день от требуемой даты
 
     Args:
         datestring (str): строка даты от которой требуется выдать коллекцию
@@ -248,8 +265,10 @@ def _get_date_collections(datestring: str) -> Dates:
     _until_sunday = 7 - datetime.isoweekday(chosen_date)
     sunday_this_week = (chosen_datetime + timedelta(days=_until_sunday)).date()
 
+    next_day = date(chosen_date.year, chosen_date.month, chosen_date.day + 1)
+
     return Dates(first_day_month, first_day_next_month,
-                 monday_this_week, sunday_this_week, chosen_date)
+                 monday_this_week, sunday_this_week, chosen_date, next_day)
 
 
 def _parse_service_level(dates: Dates, chosen_group: str,
@@ -360,7 +379,64 @@ def _get_service_level(datestring: str) -> Mapping[
             'general': general_sl}
 
 
-def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ]
+def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ReportMttr]:
+    """Функция получение данных по отчёту MTTR:
+
+    На вход поступает строка даты, за который необходим отчёт.
+
+    На выходе поступают данные:
+        - Общее количество обращений
+        - Средний МТТР
+        - Средний МТТР ТП'
+
+    Args:
+        datestring (str): строка даты, за который необходим отчёт.
+
+    Returns:
+        Mapping: словарь входных данных.
+    """
+    # Операции над входящей строкой даты
+    dates = _get_date_collections(datestring)
+    qs = get_report_to_period('mttr', dates.chosen_date, dates.next_day)
+    # Формируем данные
+    num_issues = qs[0].total_number_trouble_ticket
+    average_mttr = qs[0].average_mttr.seconds()
+    average_mttr_tech_support = qs[0].average_mttr_tech_support.seconds()
+    mttr_report = ReportMttr(num_issues, average_mttr,
+                             average_mttr_tech_support)
+    return {'mttr': mttr_report}
+
+
+def _get_flr(datestring: str) -> Mapping[Literal['flr'], ReportFlr]:
+    """Функция получение данных по отчёту MTTR:
+
+    На вход поступает строка даты, за который необходим отчёт.
+
+    На выходе поступают данные:
+        - FLR за день (в %)
+        - Количество обращений закрытых без других отделов
+        - Количество первичных обращений
+
+    Args:
+        datestring (str): строка даты, за который необходим отчёт.
+
+    Returns:
+        Mapping: словарь входных данных.
+    """
+    # flr_level
+    # Операции над входящей строкой даты
+    dates = _get_date_collections(datestring)
+    qs = get_report_to_period('flr', dates.chosen_date, dates.next_day)
+    # Формируем данные
+    level = int(round(qs[0].total_number_trouble_ticket, 0))
+    num_issues_closed_independently = qs[0].number_trouble_ticket_closed_independently
+    num_primary_issues = qs[0].number_primary_trouble_tickets
+
+    flr_report = ReportFlr(level, num_issues_closed_independently,
+                            num_primary_issues)
+    return {'mttr': flr_report}
+
+
 def get_dashboard_date(datestring: str) -> Mapping:
     """Главная функция получения данных для view дашборда.
 
@@ -402,3 +478,6 @@ def get_dashboard_date(datestring: str) -> Mapping:
         Mapping: словарь входных данных.
     """
     service_level_dict = _get_service_level(datestring)
+    mttr_dict = _get_mttr(datestring)
+    flr_dict = _get_flr(datestring)
+    
