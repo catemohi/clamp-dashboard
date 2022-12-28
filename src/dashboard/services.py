@@ -1,5 +1,5 @@
 from datetime import date, datetime, time, timedelta
-from typing import Literal, Collection, NamedTuple, Mapping
+from typing import Literal, NamedTuple, Mapping
 from typing import Union, List
 
 from django.db import models
@@ -187,6 +187,17 @@ class ReportFlr(NamedTuple):
     level: int
     num_issues_closed_independently: int
     num_primary_issues: int
+
+
+class RatingAnalytics(NamedTuple):
+    """Класс для хранения аналитики
+
+    Хранит данные:
+        - Нагрузка относительно нормы
+        - Нагрузка относительно дня сравнения
+    """
+    rating_to_nominal: float
+    rating_to_comparison: float
 
 
 def convert_datestr_to_datetime_obj(datestring: str) -> datetime:
@@ -447,6 +458,37 @@ def _get_load_ratings() -> Union[models.QuerySet, List[models.Model]]:
             номинальные значения нагрузки
     """
     ...
+
+
+def _compare_num(first: int, second: int) -> Union[float, None]:
+    """
+    Функция первого числа со вторым.
+
+    На вход функция получает два числа.
+
+    На выход передает процент до тождественности для первого числа со вторым
+    или None в случае невозможности вычисления
+
+    Args:
+        first (int): первое число
+        second (int): второе число
+
+    Returns:
+        Union[float, None]: процент до тождественности или None
+    """
+    num_type_check = all([isinstance(first, int), isinstance(second, int)])
+
+    if not num_type_check:
+        return None
+
+    if second == 0:
+        # Если втрое число 0, то первое больше него на 100%
+        return 100.0
+
+    if first == second:
+        return 0.0
+
+    return round((first / second * 100) - 100, 1)
 
 
 def _sl_analytics(chosen_day: Mapping[Literal['sl'], Mapping],
