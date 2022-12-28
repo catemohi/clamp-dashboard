@@ -205,8 +205,8 @@ def convert_datestr_to_datetime_obj(datestring: str) -> datetime:
 
 
 def _get_group_name(required_group: Literal['first_line_group_name',
-                                           'vip_line_group_name',
-                                           'general_group_name']) -> str:
+                                            'vip_line_group_name',
+                                            'general_group_name']) -> str:
     """
     Функция получения названия группы ТП
 
@@ -354,7 +354,8 @@ def _get_service_level(datestring: str) -> Mapping[Literal['sl'], Mapping[
         datestring (str): строка даты за которую требуется отчет.
 
     Returns:
-        Mapping[Literal['sl'], Mapping[Literal['first_line', 'vip_line', 'general'],
+        Mapping[Literal['sl'], Mapping[Literal['first_line', 'vip_line',
+                                               'general'],
         ReportServiceLevel]]: словарь данных, с ключами по линиям ТП
     """
     today_date = datetime.now().date()
@@ -423,17 +424,17 @@ def _get_flr(datestring: str) -> Mapping[Literal['flr'], ReportFlr]:
     Returns:
         Mapping: словарь входных данных.
     """
-    # flr_level
     # Операции над входящей строкой даты
     dates = _get_date_collections(datestring)
     qs = get_report_to_period('flr', dates.chosen_date, dates.next_day)
     # Формируем данные
     level = int(round(qs[0].total_number_trouble_ticket, 0))
-    num_issues_closed_independently = qs[0].number_trouble_ticket_closed_independently
+    num_issues_closed_independently = qs[0].\
+        number_trouble_ticket_closed_independently
     num_primary_issues = qs[0].number_primary_trouble_tickets
 
     flr_report = ReportFlr(level, num_issues_closed_independently,
-                            num_primary_issues)
+                           num_primary_issues)
     return {'mttr': flr_report}
 
 
@@ -449,9 +450,9 @@ def _get_load_ratings() -> Union[models.QuerySet, List[models.Model]]:
 
 
 def _sl_analytics(chosen_day: Mapping[Literal['sl'], Mapping],
-    nominal_values: Union[models.QuerySet, List[models.Model]],
-    comparison_day: Mapping[Literal['sl'], Mapping] = {}
-    ) -> Mapping[Literal['analytics'], Mapping]:
+                  nominal_values: Union[models.QuerySet, List[models.Model]],
+                  comparison_day: Mapping[Literal['sl'], Mapping] = {}
+                  ) -> Mapping[Literal['analytics'], Mapping]:
     """
     Функция сравнения данных sl, с номинальными и с переданным днем.
 
@@ -476,9 +477,9 @@ def _sl_analytics(chosen_day: Mapping[Literal['sl'], Mapping],
 
 
 def _mttr_analytics(chosen_day: Mapping[Literal['mttr'], Mapping],
-    nominal_values: Union[models.QuerySet, List[models.Model]],
-    comparison_day: Mapping[Literal['mttr'], Mapping] = {}
-    ) -> Mapping[Literal['analytics'], Mapping]:
+                    nominal_values: Union[models.QuerySet, List[models.Model]],
+                    comparison_day: Mapping[Literal['mttr'], Mapping] = {}
+                    ) -> Mapping[Literal['analytics'], Mapping]:
     """
     Функция сравнения данных mttr, с номинальными и с переданным днем.
 
@@ -503,9 +504,9 @@ def _mttr_analytics(chosen_day: Mapping[Literal['mttr'], Mapping],
 
 
 def _flr_analytics(chosen_day: Mapping[Literal['flr'], Mapping],
-    nominal_values: Union[models.QuerySet, List[models.Model]],
-    comparison_day: Mapping[Literal['flr'], Mapping] = {}
-    ) -> Mapping[Literal['analytics'], Mapping]:
+                   nominal_values: Union[models.QuerySet, List[models.Model]],
+                   comparison_day: Mapping[Literal['flr'], Mapping] = {}
+                   ) -> Mapping[Literal['analytics'], Mapping]:
     """
     Функция сравнения данных flr, с номинальными и с переданным днем.
 
@@ -548,8 +549,8 @@ def _analytics(chosen_day: dict[Literal['sl', 'mttr', 'flr'], Mapping],
             дополнительный день сравнения. По умол. {}
 
     Returns:
-        dict[Literal['sl', 'mttr', 'flr', 'analytics'], Mapping]: 
-        модифицированный словарь 
+        dict[Literal['sl', 'mttr', 'flr', 'analytics'], Mapping]:
+        модифицированный словарь
         с долнительным ключем выполненного сравнения.
 
     """
