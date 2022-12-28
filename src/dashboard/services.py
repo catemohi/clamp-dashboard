@@ -162,6 +162,17 @@ class ReportServiceLevel(NamedTuple):
     num_worked_after_deadline: int
 
 
+class ReportMttr(NamedTuple):
+    """Класс для хранения отчета по MTTR
+
+    Хранит данные:
+        - Общее количество обращений
+        - Средний МТТР
+        - Средний МТТР ТП'
+    """
+    ...
+    
+
 def convert_datestr_to_datetime_obj(datestring: str) -> datetime:
     """Функция конвертации строки даты в datetime обьект
 
@@ -349,6 +360,7 @@ def _get_service_level(datestring: str) -> Mapping[
             'general': general_sl}
 
 
+def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ]
 def get_dashboard_date(datestring: str) -> Mapping:
     """Главная функция получения данных для view дашборда.
 
