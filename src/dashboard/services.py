@@ -1,13 +1,13 @@
 from datetime import date, datetime, time, timedelta
-from typing import Literal, Collection
+from typing import Literal, Collection, NamedTuple, Mapping
+from typing import Union, List
 
+from django.db import models
 
 from naumen.services import add_months, get_report_to_period
 
 
-
-
-
+# TODO https://docs.djangoproject.com/en/dev/ref/templates/builtins/#std:templatefilter-date
 def get_name_month(number_month: int):
     """Функция которая возвращает название месяца.
 
@@ -116,33 +116,76 @@ def get_params(desired_date: datetime):
     return today_data
 
 
-def convert_datestr_to_datetime_obj(date_str: str) -> datetime:
+# TODO новая функция которая считает количество тикетов
+def get_trouble_ticket_count_from_db():
+    return {'trouble_ticket_counter': 99, 'trouble_ticket_vip_counter': 99}
+
+###############################################################################
+
+
+class Dates(NamedTuple):
+    """Класс для хранения коллекции дат.
+
+    Хранит даты:
+        - первое число месяца передоваемой даты
+        - первое число следующего месяца
+        - число начала недели
+        - число конца недели
+        - требуемая дата
+
+    """
+    calends_this_month: date
+    calends_next_month: date
+    monday_this_week: date
+    sunday_this_week: date
+    chosen_date: date
+
+
+class ReportServiceLevel(NamedTuple):
+    """Класс для хранения отчета по SL для группы
+
+    Хранит данные:
+        - SL за требуемый день для группы
+        - Количество поступивших обращений для группы
+        - Количество первичных обращений для группы
+        - Количество обращений принятых до крайнего срока для группы
+        - Количество обращений принятых после крайнего срока для группы
+        - SL за неделю для группы
+        - SL за месяц для группы
+    """
+    mountly_sl: int
+    weekly_sl: int
+    dayly_sl: int
+    num_issues: int
+    num_primary_issues: int
+    num_worked_before_deadline: int
+    num_worked_after_deadline: int
+
+
+def convert_datestr_to_datetime_obj(datestring: str) -> datetime:
     """Функция конвертации строки даты в datetime обьект
 
     Args:
-        date_str (str): строка даты
+        datestring (str): строка даты
 
     Returns:
         datetime: обьект даты и времени
     """
 
-    date = datetime.strptime(date_str, "%Y-%m-%d").date()
+    date = datetime.strptime(datestring, "%Y-%m-%d").date()
     datetime_obj = datetime.combine(date, time(13, 0))
     return datetime_obj
 
 
-# TODO новая функция которая считает количество тикетов
-def get_trouble_ticket_count_from_db():
-    return {'trouble_ticket_counter': 99, 'trouble_ticket_vip_counter': 99}
-
-
 def get_group_name(required_group: Literal['first_line_group_name',
-                                           'vip_line_group_name']) -> str:
+                                           'vip_line_group_name',
+                                           'general_group_name']) -> str:
     """
     Функция получения названия группы ТП
 
     Args:
-        required_group (Literal[first_line_group_name, vip_line_group_name]): 
+        required_group (Literal[first_line_group_name,
+                                vip_line_group_name, general_group_name]):
         какую группу необходимо получить.
 
     Returns:
@@ -151,6 +194,7 @@ def get_group_name(required_group: Literal['first_line_group_name',
     # TODO обращение к таблице с хранением имен групп
     FIRST_LINE_GROUP = 'Группа поддержки и управления сетью  (Напр ТП В2В)'
     VIP_LINE_GROUP = 'Группа поддержки VIP - клиентов (Напр ТП В2В)'
+    GENERAL_GROUP = 'Итог'
 
     if required_group == 'first_line_group_name':
         return FIRST_LINE_GROUP
@@ -158,10 +202,13 @@ def get_group_name(required_group: Literal['first_line_group_name',
     if required_group == 'vip_line_group_name':
         return VIP_LINE_GROUP
 
+    if required_group == 'general_group_name':
+        return GENERAL_GROUP
+
     return ''
 
 
-def get_date_collections(datestring: str) -> Collection[date]:
+def get_date_collections(datestring: str) -> Dates:
     """Функция для возврата коллекции дат.
 
     На выходе мы получаем коллекцию дат:
@@ -175,7 +222,7 @@ def get_date_collections(datestring: str) -> Collection[date]:
         datestring (str): строка даты от которой требуется выдать коллекцию
 
     Returns:
-        Collection[date]: коллекция дат.
+        Dates: коллекция дат.
     """
     chosen_datetime = convert_datestr_to_datetime_obj(datestring)
     chosen_date = chosen_datetime.date()
@@ -190,11 +237,64 @@ def get_date_collections(datestring: str) -> Collection[date]:
     _until_sunday = 7 - datetime.isoweekday(chosen_date)
     sunday_this_week = (chosen_datetime + timedelta(days=_until_sunday)).date()
 
-    return (first_day_month, first_day_next_month, monday_this_week,
-            sunday_this_week, chosen_date)
+    return Dates(first_day_month, first_day_next_month,
+                 monday_this_week, sunday_this_week, chosen_date)
 
 
-def get_service_level(datestring: str) -> Collection:
+def parse_service_level(dates: Dates, chosen_group: str,
+                        qs: Union[models.QuerySet,
+                                  List[models.Model]]) -> ReportServiceLevel:
+    """
+    Функция для получения данных по отчёту SL для группы.
+
+    На выходе мы получаем данные:
+        - SL за требуемый день для группы
+        - Количество поступивших обращений для группы
+        - Количество первичных обращений для группы
+        - Количество обращений принятых до крайнего срока для группы
+        - Количество обращений принятых после крайнего срока для группы
+        - SL за неделю для группы
+        - SL за месяц для группы
+
+    Args:
+        dates (Dates): коллекция дат
+        group (str): группа для которой необходима информация
+        qs (Union[models.QuerySet, List[models.Model]]): данные из БД
+
+    Returns:
+        ReportServiceLevel: коллекция необходимых данных
+    """
+    # Фильтруем данные для группы
+    qs_for_month = qs.filter(name_group=chosen_group)
+    qs_for_week = qs_for_month.filter(
+        date__gte=dates.monday_this_week, date__lge=dates.sunday_this_week)
+    qs_for_chosen_day = qs_for_month.filter(
+        date=dates.chosen_date)
+
+    # Высчитывание проценты SL
+    mountly_sl = sum([report.service_level
+                      for report in qs_for_month]) / len(qs_for_month)
+
+    weekly_sl = sum([report.service_level
+                     for report in qs_for_week]) / len(qs_for_week)
+
+    dayly_sl = qs_for_chosen_day[0].service_level
+
+    # Расскладываем доп. данные
+    num_issues = qs_for_chosen_day[0].total_number_trouble_ticket
+    num_primary_issues = qs_for_chosen_day[0].number_primary_trouble_tickets
+    num_worked_before_deadline = qs_for_chosen_day[0]\
+        .number_of_trouble_ticket_taken_before_deadline
+    num_worked_after_deadline = qs_for_chosen_day[0]\
+        .number_of_trouble_ticket_taken_after_deadline
+
+    return ReportServiceLevel(mountly_sl, weekly_sl, dayly_sl, num_issues,
+                              num_primary_issues, num_worked_before_deadline,
+                              num_worked_after_deadline)
+
+
+def get_service_level(datestring: str) -> Mapping[
+        Literal['first_line', 'vip_line', 'general'], ReportServiceLevel]:
     """Функция для получения данных по отчёту SL для групп.
 
     На выходе мы получаем данные:
@@ -224,10 +324,26 @@ def get_service_level(datestring: str) -> Collection:
         datestring (str): строка даты за которую требуется отчет.
 
     Returns:
-        Collection: _description_
+        Mapping[Literal['first_line', 'vip_line', 'general'],
+        ReportServiceLevel]: словарь данных, с ключами по линиям ТП
     """
+    today_date = datetime.now().date()
     # Операции над входящей строкой даты
     dates = get_date_collections(datestring)
+    # Получение отчетов за месяц
+    qs = get_report_to_period('sl', dates.calends_this_month,
+                              dates.calends_next_month)
+    # Исключаем нулевые отчеты
+    qs = qs.filter(date__lge=today_date)
     # Получение данных для первой линии.
     chosen_group = get_group_name('first_line_group_name')
-    # TODO 
+    first_line_sl = parse_service_level(dates, chosen_group, qs)
+    # Получение данных для вип линии.
+    chosen_group = get_group_name('vip_line_group_name')
+    vip_line_sl = parse_service_level(dates, chosen_group, qs)
+    # Получение данных всех линий.
+    chosen_group = get_group_name('general_group_name')
+    general_sl = parse_service_level(dates, chosen_group, qs)
+
+    return {'first_line': first_line_sl, 'vip_line': vip_line_sl,
+            'general': general_sl}
