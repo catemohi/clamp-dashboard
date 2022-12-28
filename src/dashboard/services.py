@@ -437,9 +437,101 @@ def _get_flr(datestring: str) -> Mapping[Literal['flr'], ReportFlr]:
     return {'mttr': flr_report}
 
 
-def _analytics(chosen_day: Mapping[Literal['sl', 'mttr', 'flr'], Mapping],
+def _get_load_ratings() -> Union[models.QuerySet, List[models.Model]]:
+    """
+    Функция получения номинальных значений нагрузки на группу.
+
+    Returns:
+        Union[models.QuerySet, List[models.Model]]:
+            номинальные значения нагрузки
+    """
+    ...
+
+
+def _sl_analytics(chosen_day: Mapping[Literal['sl'], Mapping],
+    nominal_values: Union[models.QuerySet, List[models.Model]],
+    comparison_day: Mapping[Literal['sl'], Mapping] = {}
+    ) -> Mapping[Literal['analytics'], Mapping]:
+    """
+    Функция сравнения данных sl, с номинальными и с переданным днем.
+
+    На вход, функция получает отчёт sl, который необходимо сравнить.
+    При необходимости можно передать дополнительный день сравнения.
+
+    На выходе функция отдает модифицированный словарь аналитики sl
+
+    Args:
+        chosen_day (Mapping[Literal['sl'], Mapping]):
+            дневной отчёт sl, который необходимо сравнить
+        nominal_values: Union[models.QuerySet, List[models.Model]]:
+            номинальные значения нагрузки
+        comparison_day (Mapping[Literal['sl'], Mapping]):
+            дополнительный день сравнения. По умол. {}
+
+    Returns:
+        Mapping[Literal['analytics'], Mapping]: словарь аналитики sl
+
+    """
+    ...
+
+
+def _mttr_analytics(chosen_day: Mapping[Literal['mttr'], Mapping],
+    nominal_values: Union[models.QuerySet, List[models.Model]],
+    comparison_day: Mapping[Literal['mttr'], Mapping] = {}
+    ) -> Mapping[Literal['analytics'], Mapping]:
+    """
+    Функция сравнения данных mttr, с номинальными и с переданным днем.
+
+    На вход, функция получает отчёт mttr, который необходимо сравнить.
+    При необходимости можно передать дополнительный день сравнения.
+
+    На выходе функция отдает модифицированный словарь аналитики mttr
+
+    Args:
+        chosen_day (Mapping[Literal['mttr'], Mapping]):
+            дневной отчёт mttr, который необходимо сравнить
+        nominal_values: Union[models.QuerySet, List[models.Model]]:
+            номинальные значения нагрузки
+        comparison_day (Mapping[Literal['mttr'], Mapping]):
+            дополнительный день сравнения. По умол. {}
+
+    Returns:
+        Mapping[Literal['analytics'], Mapping]: словарь аналитики sl
+
+    """
+    ...
+
+
+def _flr_analytics(chosen_day: Mapping[Literal['flr'], Mapping],
+    nominal_values: Union[models.QuerySet, List[models.Model]],
+    comparison_day: Mapping[Literal['flr'], Mapping] = {}
+    ) -> Mapping[Literal['analytics'], Mapping]:
+    """
+    Функция сравнения данных flr, с номинальными и с переданным днем.
+
+    На вход, функция получает отчёт flr, который необходимо сравнить.
+    При необходимости можно передать дополнительный день сравнения.
+
+    На выходе функция отдает модифицированный словарь аналитики flr
+
+    Args:
+        chosen_day (Mapping[Literal['flr'], Mapping]):
+            дневной отчёт flr, который необходимо сравнить
+        nominal_values: Union[models.QuerySet, List[models.Model]]:
+            номинальные значения нагрузки
+        comparison_day (Mapping[Literal['flr'], Mapping]):
+            дополнительный день сравнения. По умол. {}
+
+    Returns:
+        Mapping[Literal['analytics'], Mapping]: словарь аналитики sl
+
+    """
+    ...
+
+
+def _analytics(chosen_day: dict[Literal['sl', 'mttr', 'flr'], Mapping],
                comparison_day: Mapping[Literal['sl', 'mttr', 'flr'], Mapping] = {}
-               ) -> Mapping[Literal['sl', 'mttr', 'flr', 'analytics'], Mapping]:
+               ) -> dict[Literal['sl', 'mttr', 'flr', 'analytics'], Mapping]:
     """
     Функция сравнения данных, с номинальными и с переданным днем.
 
@@ -450,18 +542,33 @@ def _analytics(chosen_day: Mapping[Literal['sl', 'mttr', 'flr'], Mapping],
     ключем выполненного сравнения.
 
     Args:
-        chosen_day (Mapping[Literal['sl', 'mttr', 'flr'], Mapping]):
+        chosen_day (dict[Literal['sl', 'mttr', 'flr'], Mapping]):
             дневной отчёт, который необходимо сравнить
         comparison_day (Mapping[Literal['sl', 'mttr', 'flr'], Mapping]):
             дополнительный день сравнения. По умол. {}
 
     Returns:
-        Mapping[Literal['sl', 'mttr', 'flr', 'analytics'], Mapping]: 
+        dict[Literal['sl', 'mttr', 'flr', 'analytics'], Mapping]: 
         модифицированный словарь 
         с долнительным ключем выполненного сравнения.
 
     """
-    ...
+    nominal_values = _get_load_ratings()
+    modificated_day = chosen_day.copy()
+    sl_analytics_dict = _sl_analytics(chosen_day, nominal_values,
+                                      comparison_day)
+    mttr_analytics_dict = _mttr_analytics(chosen_day, nominal_values,
+                                          comparison_day)
+    flr_analytics_dict = _flr_analytics(chosen_day, nominal_values,
+                                        comparison_day)
+    modificated_day.update(
+        {'analytics': {
+            'sl': sl_analytics_dict,
+            'mttr': mttr_analytics_dict,
+            'flr': flr_analytics_dict
+            }}
+        )
+    return modificated_day
 
 
 def get_dashboard_date(datestring: str) -> Mapping:
@@ -509,3 +616,5 @@ def get_dashboard_date(datestring: str) -> Mapping:
     flr_dict = _get_flr(datestring)
     day_report = {**service_level_dict, **mttr_dict, **flr_dict}
     # Аналитика нагрузки относительно номинальных значений
+    day_report = _analytics(day_report)
+    return day_report
