@@ -215,7 +215,7 @@ class RatingAnalytics(NamedTuple):
 
 
 def json_encoding(obj: dict) -> str:
-    """Рукурсивная конвертация словарей и NamedTuple.
+    """Кодирование словаря в JSON.
 
     Args:
         obj (Mapping): обьект для конвретации.
@@ -223,11 +223,16 @@ def json_encoding(obj: dict) -> str:
     Returns:
         str: итоговый JSON
     """
-    for key, val in obj.items():
-        if isinstance(val, dict):
-            obj[key] = json_encoding(val)
-        elif isinstance(val, tuple) and hasattr(val, '_asdict'):
+
+    def _recursive_conversion(obj: dict) -> dict:
+        if isinstance(obj, dict):
+            for key, val in obj.items():
+                obj[key] = json_encoding(val)
+        elif isinstance(obj, tuple) and hasattr(val, '_asdict'):
             obj[key] = val._asdict()
+        return obj
+
+    obj = _recursive_conversion(obj)
     encoder = CustomEncoder()
     return encoder.encode(obj)
 
