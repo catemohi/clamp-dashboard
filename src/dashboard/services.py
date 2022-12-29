@@ -317,11 +317,14 @@ def _parse_service_level(dates: Dates, chosen_group: str,
     # Высчитывание проценты SL
     mountly_sl = sum([report.service_level
                       for report in qs_for_month]) / len(qs_for_month)
+    mountly_sl = int(round(mountly_sl, 0))
 
     weekly_sl = sum([report.service_level
                      for report in qs_for_week]) / len(qs_for_week)
+    weekly_sl = int(round(weekly_sl, 0))
 
     dayly_sl = qs_for_chosen_day.first().service_level
+    dayly_sl = int(round(dayly_sl, 0))
 
     # Расскладываем доп. данные
     num_issues = qs_for_chosen_day.first().total_number_trouble_ticket
