@@ -81,8 +81,13 @@ def dashboard_json_data(request):
     dashboard_data = get_dashboard_data(data['date'])
     dashboard_data = analytics(dashboard_data)
     encoder = CustomEncoder()
-
-    responce = {"dashboard_data": encoder.encode(dashboard_data),
+    dashboard_data = {
+        'sl': encoder.encode(dashboard_data['sl']),
+        'mttr': encoder.encode(dashboard_data['mttr']),
+        'flr': encoder.encode(dashboard_data['flr']),
+        'analytics': encoder.encode(dashboard_data['analytics']),
+    }
+    responce = {"dashboard_data": dashboard_data,
                 "dates": encoder.encode(dates)}
 
     return JsonResponse(responce)
