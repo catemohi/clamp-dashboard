@@ -133,9 +133,9 @@ class CustomEncoder(JSONEncoder):
     def default(self, obj):
         if isinstance(obj, tuple) and hasattr(obj, '_asdict'):
             return obj._asdict()
-        elif isinstance(obj, (datetime.datetime, datetime.date, datetime.time)):
+        elif isinstance(obj, (datetime, date, time)):
             return obj.strftime('%d.%m.%Y')
-        elif isinstance(obj, datetime.timedelta):
+        elif isinstance(obj, timedelta):
             return obj.seconds()
 
         return super(CustomEncoder, self).default(obj)
