@@ -86,6 +86,13 @@ function updateCardProgress() {
         let cardDailyMttr = document.querySelector(".daily-mttr");
         console.log(data)
         setCardProgress(cardDailySl, '%')
+        setCardProgress(cardWeeklySl, '%')
+        setCardProgress(cardMonthlySl, '%')
+        setCardProgress(cardDailySlVip, '%')
+        setCardProgress(cardWeeklySlVip, '%')
+        setCardProgress(cardMonthlySlVip, '%')
+        setCardProgress(cardDailyFlr, '%')
+        setCardProgress(cardDailyMttr, 'м.')            
         // setCardProgress(data.DayServiceLevelFirstLine, cardDailySl, data.Today, false, '%');
         // setCardProgress(data.WeeklyServiceLevelFirstLine, cardWeeklySl, data.Week,  false, '%');
         // setCardProgress(data.MonthlyServiceLevelFirstLine, cardMonthlySl, data.NameMonth,  false, '%');
