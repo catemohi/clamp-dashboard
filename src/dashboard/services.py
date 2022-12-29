@@ -124,20 +124,21 @@ def get_trouble_ticket_count_from_db():
 ###############################################################################
 
 
-class NamedTupleEncoder(JSONEncoder):
+class CustomEncoder(JSONEncoder):
     """
-    Кастомный кодер JSON для NamedTuple
+    Кастомный енкодер JSON для NamedTuple и DateTime
 
-    Args:
-        JSONEncoder (_type_): _description_
     """
-    def _iterencode(self, obj, markers=None):
+
+    def default(self, obj):
         if isinstance(obj, tuple) and hasattr(obj, '_asdict'):
-            gen = self._iterencode_dict(obj._asdict(), markers)
-        else:
-            gen = JSONEncoder._iterencode(self, obj, markers)
-        for chunk in gen:
-            yield chunk
+            return obj._asdict()
+        elif isinstance(obj, (datetime.datetime, datetime.date, datetime.time)):
+            return obj.strftime('%d.%m.%Y')
+        elif isinstance(obj, datetime.timedelta):
+            return obj.seconds()
+
+        return super(CustomEncoder, self).default(obj)
 
 
 class Dates(NamedTuple):

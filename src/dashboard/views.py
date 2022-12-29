@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from naumen.services import get_issues_from_db
 from notification.services import get_notify
 
-from .services import convert_datestr_to_datetime_obj, get_params, get_dashboard_data, analytics, get_date_collections, NamedTupleEncoder
+from .services import convert_datestr_to_datetime_obj, get_params, get_dashboard_data, analytics, get_date_collections, CustomEncoder
 
 
 def theme_check(cookies):
@@ -80,7 +80,7 @@ def dashboard_json_data(request):
     dates = get_date_collections(data['date'])
     dashboard_data = get_dashboard_data(data['date'])
     dashboard_data = analytics(dashboard_data)
-    encoder = NamedTupleEncoder()
+    encoder = CustomEncoder()
 
     responce = {"dashboard_data": encoder.encode(dashboard_data),
                 "dates": encoder.encode(dates)}
