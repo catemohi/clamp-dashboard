@@ -310,7 +310,7 @@ def _parse_service_level(dates: Dates, chosen_group: str,
     # Фильтруем данные для группы
     qs_for_month = qs.filter(name_group=chosen_group)
     qs_for_week = qs_for_month.filter(
-        date__gte=dates.monday_this_week, date__lge=dates.sunday_this_week)
+        date__gte=dates.monday_this_week, date__lte=dates.sunday_this_week)
     qs_for_chosen_day = qs_for_month.filter(
         date=dates.chosen_date)
 
@@ -379,7 +379,7 @@ def _get_service_level(datestring: str) -> Mapping[Literal['sl'], Mapping[
     qs = get_report_to_period('sl', dates.calends_this_month,
                               dates.calends_next_month)
     # Исключаем нулевые отчеты
-    qs = qs.filter(date__lge=today_date)
+    qs = qs.filter(date__lte=today_date)
     # Получение данных для первой линии.
     chosen_group = _get_group_name('first_line_group_name')
     first_line_sl = _parse_service_level(dates, chosen_group, qs)
