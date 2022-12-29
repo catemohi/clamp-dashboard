@@ -82,8 +82,8 @@ def dashboard_json_data(request):
     dashboard_data = analytics(dashboard_data)
     encoder = NamedTupleEncoder()
 
-    responce = {"dashboard_data": encoder(dashboard_data),
-                "dates": encoder(dates)}
+    responce = {"dashboard_data": encoder.encode(dashboard_data),
+                "dates": encoder.encode(dates)}
 
     return JsonResponse(responce)
 
