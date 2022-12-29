@@ -6,24 +6,23 @@ let current_date = getTodayDate();
 
 
 function getTodayDate() {
-    var d = new Date();
-    var day = d.getDate()
-    var month = d.getMonth() + 1 
-    var year = d.getFullYear()
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1; 
+    let year = date.getFullYear();
     if (day < 10) {
         day = '' + 0 + day;
     }
     if (month < 10) {
         month = '' + 0 + month;
     }
-    var today_date = year + "-" + month + "-" + day;
+    let today_date = year + "-" + month + "-" + day;
     return today_date
     }
 
-
 // set today in calend
 document.addEventListener('DOMContentLoaded', function () {
-    var name_input = document.getElementById('date')
+    let name_input = document.getElementById('date')
     name_input.value = current_date;
 });
 

@@ -246,7 +246,7 @@ def _get_group_name(required_group: Literal['first_line_group_name',
     return ''
 
 
-def _get_date_collections(datestring: str) -> Dates:
+def get_date_collections(datestring: str) -> Dates:
     """Функция для возврата коллекции дат.
 
     На выходе мы получаем коллекцию дат:
@@ -377,7 +377,7 @@ def _get_service_level(datestring: str) -> Mapping[Literal['sl'], Mapping[
     """
     today_date = datetime.now().date()
     # Операции над входящей строкой даты
-    dates = _get_date_collections(datestring)
+    dates = get_date_collections(datestring)
     # Получение отчетов за месяц
     qs = get_report_to_period('sl', dates.calends_this_month,
                               dates.calends_next_month)
@@ -414,7 +414,7 @@ def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ReportMttr]:
         Mapping: словарь входных данных.
     """
     # Операции над входящей строкой даты
-    dates = _get_date_collections(datestring)
+    dates = get_date_collections(datestring)
     qs = get_report_to_period('mttr', dates.chosen_date, dates.next_day)
     if not qs.exists():
         return {'mttr': ReportMttr(0, 0, 0)}
@@ -444,7 +444,7 @@ def _get_flr(datestring: str) -> Mapping[Literal['flr'], ReportFlr]:
         Mapping: словарь входных данных.
     """
     # Операции над входящей строкой даты
-    dates = _get_date_collections(datestring)
+    dates = get_date_collections(datestring)
     qs = get_report_to_period('flr', dates.chosen_date, dates.next_day)
     if not qs.exists():
         {'flr': ReportFlr(0, 0, 0)}
@@ -721,7 +721,7 @@ def analytics(chosen_day: dict[Literal['sl', 'mttr', 'flr'], Mapping],
     return modificated_day
 
 
-def get_dashboard_date(datestring: str) -> Mapping:
+def get_dashboard_data(datestring: str) -> Mapping:
     """Главная функция получения данных для view дашборда.
 
     Вызывает все дополнительные функции и отдает ассоциативный словарь данных

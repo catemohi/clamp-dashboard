@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -5,7 +7,7 @@ from django.urls import reverse_lazy
 from naumen.services import get_issues_from_db
 from notification.services import get_notify
 
-from .services import convert_datestr_to_datetime_obj, get_params, get_dashboard_date, analytics
+from .services import convert_datestr_to_datetime_obj, get_params, get_dashboard_data, analytics, get_date_collections
 
 
 def theme_check(cookies):
@@ -37,8 +39,15 @@ def index(request):
 
 def dashboard(request):
     context = {}
-    context.update(theme_check(request.COOKIES))
+    # Запрос данных для контекста
+    today = datetime.now()
+    dates = get_date_collections(today.strftime('%Y-%m-%d'))
+    dashboard_data = get_dashboard_data(today.strftime('%Y-%m-%d'))
+    dashboard_data = analytics(dashboard_data)
     notifications = get_notify(slice=50)
+
+    context.update({'dates': dates, 'dashboard_data': dashboard_data})
+    context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications})
     context.update(
         {'trouble_ticket_counter': '99+', 'trouble_ticket_vip_counter': '99+'})
