@@ -417,11 +417,10 @@ def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ReportMttr]:
         return {'mttr': ReportMttr(0, 0, 0)}
     # Формируем данные
     num_issues = qs.first().total_number_trouble_ticket
-    average_mttr = qs.first().average_mttr
-    average_mttr_tech_support = qs.first().average_mttr_tech_support
+    average_mttr = qs.first().average_mttr.seconds
+    average_mttr_tech_support = qs.first().average_mttr_tech_support.seconds
     mttr_report = ReportMttr(num_issues, average_mttr,
                              average_mttr_tech_support)
-    print(mttr_report)
     return {'mttr': mttr_report}
 
 
