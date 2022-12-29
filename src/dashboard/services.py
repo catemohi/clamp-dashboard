@@ -129,14 +129,7 @@ class CustomEncoder(JSONEncoder):
     Кастомный енкодер JSON для NamedTuple и DateTime
 
     """
-    def encode(self, o):
-        if isinstance(o, tuple) and hasattr(o, '_asdict'):
-            return super().encode(o._asdict())
-        return super().encode(o)
-
     def default(self, o: Any) -> Any:
-        if isinstance(o, tuple) and hasattr(o, '_asdict'):
-            return super().default(o._asdict())
         if isinstance(o, (datetime, date, time)):
             return o.strftime('%d.%m.%Y')
         elif isinstance(o, timedelta):
@@ -219,6 +212,23 @@ class RatingAnalytics(NamedTuple):
     """
     rating_to_nominal: float
     rating_to_comparison: float
+
+
+def recursive_conversion(obj: dict) -> Mapping:
+    """Рукурсивная конвертация словарей и NamedTuple.
+
+    Args:
+        obj (Mapping): обьект для конвретации.
+
+    Returns:
+        Mapping: итоговый словарь
+    """
+    for key, val in obj.items():
+        if isinstance(val, dict):
+            obj[key] = recursive_conversion(val)
+        elif isinstance(obj, tuple) and hasattr(obj, '_asdict'):
+            obj[key] = val._asdict()
+    return obj
 
 
 def convert_datestr_to_datetime_obj(datestring: str) -> datetime:
