@@ -1,4 +1,5 @@
 from datetime import datetime
+from json import dumps
 
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -7,7 +8,7 @@ from django.urls import reverse_lazy
 from naumen.services import get_issues_from_db
 from notification.services import get_notify
 
-from .services import convert_datestr_to_datetime_obj, get_params, get_dashboard_data, analytics, get_date_collections
+from .services import convert_datestr_to_datetime_obj, get_params, get_dashboard_data, analytics, get_date_collections, NamedTupleEncoder
 
 
 def theme_check(cookies):
@@ -76,14 +77,15 @@ def reports(request):
 
 def dashboard_json_data(request):
     data = request.POST
-    today = datetime.now()
     dates = get_date_collections(data['date'])
     dashboard_data = get_dashboard_data(data['date'])
     dashboard_data = analytics(dashboard_data)
+    encoder = NamedTupleEncoder()
 
-    datetime_obj = convert_datestr_to_datetime_obj(data['date'])
-    params_dict = get_params(datetime_obj)
-    return JsonResponse(dashboard_data)
+    responce = {"dashboard_data": encoder(dashboard_data),
+                "dates": encoder(dates)}
+
+    return JsonResponse(responce)
 
 
 def table_json_data(request):

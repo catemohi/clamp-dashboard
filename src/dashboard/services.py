@@ -1,4 +1,5 @@
 from datetime import date, datetime, time, timedelta
+from json import JSONEncoder
 from typing import Literal, NamedTuple, Mapping
 from typing import Union, List
 
@@ -121,6 +122,22 @@ def get_trouble_ticket_count_from_db():
     return {'trouble_ticket_counter': 99, 'trouble_ticket_vip_counter': 99}
 
 ###############################################################################
+
+
+class NamedTupleEncoder(JSONEncoder):
+    """
+    Кастомный кодер JSON для NamedTuple
+
+    Args:
+        JSONEncoder (_type_): _description_
+    """
+    def _iterencode(self, obj, markers=None):
+        if isinstance(obj, tuple) and hasattr(obj, '_asdict'):
+            gen = self._iterencode_dict(obj._asdict(), markers)
+        else:
+            gen = JSONEncoder._iterencode(self, obj, markers)
+        for chunk in gen:
+            yield chunk
 
 
 class Dates(NamedTuple):
@@ -766,3 +783,6 @@ def get_dashboard_data(datestring: str) -> Mapping:
     flr_dict = _get_flr(datestring)
     day_report = {**service_level_dict, **mttr_dict, **flr_dict}
     return day_report
+
+
+serialy
