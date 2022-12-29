@@ -557,7 +557,7 @@ def _sl_analytics(chosen_day: Mapping[Literal['sl'], Mapping],
 
     rating_to_nominal_general = _compare_num(
         chosen_day['sl']['general'].num_issues,
-        nominal_values.num_issues_vip_line)
+        nominal_values.num_issues_general)
 
     # Аналитика относительно дня сравнения
     if comparison_day:
@@ -576,10 +576,10 @@ def _sl_analytics(chosen_day: Mapping[Literal['sl'], Mapping],
     analytics_dict['sl']['first_line'] = RatingAnalytics(
         rating_to_nominal_first, rating_to_comparison_first
     )
-    analytics_dict['sl']['first_line'] = RatingAnalytics(
+    analytics_dict['sl']['vip_line'] = RatingAnalytics(
         rating_to_nominal_vip, rating_to_comparison_vip
     )
-    analytics_dict['sl']['first_line'] = RatingAnalytics(
+    analytics_dict['sl']['general'] = RatingAnalytics(
         rating_to_nominal_general, rating_to_comparison_general
     )
 
