@@ -224,12 +224,9 @@ def recursive_conversion(obj: dict) -> Mapping:
         Mapping: итоговый словарь
     """
     for key, val in obj.items():
-        print(key)
-        print(val)
         if isinstance(val, dict):
             obj[key] = recursive_conversion(val)
-        elif hasattr(obj, '_asdict'):
-            print(val._asdict())
+        elif isinstance(val, tuple) and hasattr(val, '_asdict'):
             obj[key] = val._asdict()
     return obj
 
