@@ -227,9 +227,9 @@ def json_encoding(obj: dict) -> str:
     def _recursive_conversion(obj: dict) -> dict:
         if isinstance(obj, dict):
             for key, val in obj.items():
-                obj[key] = json_encoding(val)
-        elif isinstance(obj, tuple) and hasattr(val, '_asdict'):
-            obj[key] = val._asdict()
+                obj[key] = _recursive_conversion(val)
+        elif isinstance(obj, tuple) and hasattr(obj, '_asdict'):
+            obj = obj._asdict()
         return obj
 
     obj = _recursive_conversion(obj)
