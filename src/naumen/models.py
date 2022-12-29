@@ -188,19 +188,19 @@ class WorkdayRate(models.Model):
     flr_level = models.FloatField(
         verbose_name='FLR по дн (в %)', default=0.0, db_index=True,
         )
-    total_number_trouble_ticket_first_line = models.IntegerField(
+    num_issues_first_line = models.IntegerField(
         verbose_name='Дневная норма обращений первой линии', db_index=True,
         )
-    total_number_trouble_ticket_vip_line = models.IntegerField(
+    num_issues_vip_line = models.IntegerField(
         verbose_name='Дневная норма обращений vip линии', db_index=True,
         )
-    total_number_trouble_ticket_all = models.IntegerField(
+    num_issues_general = models.IntegerField(
         verbose_name='Дневная норма обращений на все линии', db_index=True,
         )
-    total_number_trouble_ticket = models.IntegerField(
+    num_issues_closed = models.IntegerField(
         verbose_name='Количество закрытых обращений', db_index=True,
         )
-    number_primary_trouble_tickets = models.IntegerField(
+    num_primary_issues = models.IntegerField(
         verbose_name='Количество первичных обращений',
         )
 

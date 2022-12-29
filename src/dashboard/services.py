@@ -305,6 +305,8 @@ def _parse_service_level(dates: Dates, chosen_group: str,
     Returns:
         ReportServiceLevel: коллекция необходимых данных
     """
+    if not qs.exists():
+        ReportServiceLevel(0, 0, 0, 0, 0, 0, 0)
     # Фильтруем данные для группы
     qs_for_month = qs.filter(name_group=chosen_group)
     qs_for_week = qs_for_month.filter(
@@ -319,14 +321,15 @@ def _parse_service_level(dates: Dates, chosen_group: str,
     weekly_sl = sum([report.service_level
                      for report in qs_for_week]) / len(qs_for_week)
 
-    dayly_sl = qs_for_chosen_day[0].service_level
+    dayly_sl = qs_for_chosen_day.first().service_level
 
     # Расскладываем доп. данные
-    num_issues = qs_for_chosen_day[0].total_number_trouble_ticket
-    num_primary_issues = qs_for_chosen_day[0].number_primary_trouble_tickets
-    num_worked_before_deadline = qs_for_chosen_day[0]\
+    num_issues = qs_for_chosen_day.first().total_number_trouble_ticket
+    num_primary_issues = qs_for_chosen_day.first()\
+        .number_primary_trouble_tickets
+    num_worked_before_deadline = qs_for_chosen_day.first()\
         .number_of_trouble_ticket_taken_before_deadline
-    num_worked_after_deadline = qs_for_chosen_day[0]\
+    num_worked_after_deadline = qs_for_chosen_day.first()\
         .number_of_trouble_ticket_taken_after_deadline
 
     return ReportServiceLevel(mountly_sl, weekly_sl, dayly_sl, num_issues,
@@ -410,10 +413,12 @@ def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ReportMttr]:
     # Операции над входящей строкой даты
     dates = _get_date_collections(datestring)
     qs = get_report_to_period('mttr', dates.chosen_date, dates.next_day)
+    if not qs.exists():
+        return {'mttr': ReportMttr(0, 0, 0)}
     # Формируем данные
-    num_issues = qs[0].total_number_trouble_ticket
-    average_mttr = qs[0].average_mttr.seconds()
-    average_mttr_tech_support = qs[0].average_mttr_tech_support.seconds()
+    num_issues = qs.first().total_number_trouble_ticket
+    average_mttr = qs.first().average_mttr.seconds()
+    average_mttr_tech_support = qs.first().average_mttr_tech_support.seconds()
     mttr_report = ReportMttr(num_issues, average_mttr,
                              average_mttr_tech_support)
     return {'mttr': mttr_report}
@@ -438,15 +443,17 @@ def _get_flr(datestring: str) -> Mapping[Literal['flr'], ReportFlr]:
     # Операции над входящей строкой даты
     dates = _get_date_collections(datestring)
     qs = get_report_to_period('flr', dates.chosen_date, dates.next_day)
+    if not qs.exists():
+        {'flr': ReportFlr(0, 0, 0)}
     # Формируем данные
-    level = int(round(qs[0].total_number_trouble_ticket, 0))
-    num_issues_closed_independently = qs[0].\
+    level = int(round(qs.first().total_number_trouble_ticket, 0))
+    num_issues_closed_independently = qs.first().\
         number_trouble_ticket_closed_independently
-    num_primary_issues = qs[0].number_primary_trouble_tickets
+    num_primary_issues = qs.first().number_primary_trouble_tickets
 
     flr_report = ReportFlr(level, num_issues_closed_independently,
                            num_primary_issues)
-    return {'mttr': flr_report}
+    return {'flr': flr_report}
 
 
 def _get_load_ratings() -> Union[models.QuerySet, List[models.Model]]:
@@ -457,7 +464,18 @@ def _get_load_ratings() -> Union[models.QuerySet, List[models.Model]]:
         Union[models.QuerySet, List[models.Model]]:
             номинальные значения нагрузки
     """
-    ...
+    # TODO запрос к таблице показателей
+    # Пока сделаем подменную структуру данных
+    class LoadRatings(NamedTuple):
+        service_level: int
+        average_mttr_tech_support: int
+        flr_level: int
+        num_issues_first_line: int
+        num_issues_vip_line: int
+        num_issues_general: int
+        num_issues_closed: int
+        num_primary_issues: int
+    return LoadRatings(80, 50, 50, 80, 40, 120, 70, 40)
 
 
 def _compare_num(first: int, second: int) -> Union[float, None]:
@@ -494,7 +512,7 @@ def _compare_num(first: int, second: int) -> Union[float, None]:
 def _sl_analytics(chosen_day: Mapping[Literal['sl'], Mapping],
                   nominal_values: Union[models.QuerySet, List[models.Model]],
                   comparison_day: Mapping[Literal['sl'], Mapping] = {}
-                  ) -> Mapping[Literal['analytics'], Mapping]:
+                  ) -> Mapping[Literal['sl'], Mapping]:
     """
     Функция сравнения данных sl, с номинальными и с переданным днем.
 
@@ -515,13 +533,63 @@ def _sl_analytics(chosen_day: Mapping[Literal['sl'], Mapping],
         Mapping[Literal['analytics'], Mapping]: словарь аналитики sl
 
     """
-    ...
+    # Структура выходного словаря
+    analytics_dict = {
+        'sl': {
+            'first_line': None,
+            'vip_line': None,
+            'general': None
+        }
+    }
+    # Аналитика относительно дня сравнения если день не передан
+    rating_to_comparison_first = 0.0
+    rating_to_comparison_vip = 0.0
+    rating_to_comparison_general = 0.0
+
+    # Аналитики относительно номинальных значений.
+    rating_to_nominal_first = _compare_num(
+        chosen_day['sl']['first_line'].num_issues,
+        nominal_values.num_issues_first_line)
+
+    rating_to_nominal_vip = _compare_num(
+        chosen_day['sl']['vip_line'].num_issues,
+        nominal_values.num_issues_vip_line)
+
+    rating_to_nominal_general = _compare_num(
+        chosen_day['sl']['general'].num_issues,
+        nominal_values.num_issues_vip_line)
+
+    # Аналитика относительно дня сравнения
+    if comparison_day:
+        rating_to_comparison_first = _compare_num(
+            chosen_day['sl']['first_line'].num_issues,
+            comparison_day['sl']['first_line'].num_issues)
+
+        rating_to_comparison_vip = _compare_num(
+            chosen_day['sl']['vip_line'].num_issues,
+            comparison_day['sl']['vip_line'].num_issues)
+
+        rating_to_comparison_general = _compare_num(
+            chosen_day['sl']['general'].num_issues,
+            comparison_day['sl']['general'].num_issues)
+
+    analytics_dict['sl']['first_line'] = RatingAnalytics(
+        rating_to_nominal_first, rating_to_comparison_first
+    )
+    analytics_dict['sl']['first_line'] = RatingAnalytics(
+        rating_to_nominal_vip, rating_to_comparison_vip
+    )
+    analytics_dict['sl']['first_line'] = RatingAnalytics(
+        rating_to_nominal_general, rating_to_comparison_general
+    )
+
+    return analytics_dict
 
 
-def _mttr_analytics(chosen_day: Mapping[Literal['mttr'], Mapping],
+def _mttr_analytics(chosen_day: Mapping[Literal['mttr'], ReportMttr],
                     nominal_values: Union[models.QuerySet, List[models.Model]],
-                    comparison_day: Mapping[Literal['mttr'], Mapping] = {}
-                    ) -> Mapping[Literal['analytics'], Mapping]:
+                    comparison_day: Mapping[Literal['mttr'], ReportMttr] = {}
+                    ) -> Mapping[Literal['mttr'], RatingAnalytics]:
     """
     Функция сравнения данных mttr, с номинальными и с переданным днем.
 
@@ -531,24 +599,43 @@ def _mttr_analytics(chosen_day: Mapping[Literal['mttr'], Mapping],
     На выходе функция отдает модифицированный словарь аналитики mttr
 
     Args:
-        chosen_day (Mapping[Literal['mttr'], Mapping]):
+        chosen_day (Mapping[Literal['mttr'], ReportMttr]):
             дневной отчёт mttr, который необходимо сравнить
         nominal_values: Union[models.QuerySet, List[models.Model]]:
             номинальные значения нагрузки
-        comparison_day (Mapping[Literal['mttr'], Mapping]):
+        comparison_day (Mapping[Literal['mttr'], ReportMttr]):
             дополнительный день сравнения. По умол. {}
 
     Returns:
-        Mapping[Literal['analytics'], Mapping]: словарь аналитики sl
+        Mapping[Literal['mttr'], RatingAnalytics]: словарь аналитики mttr
 
     """
-    ...
+    # Структура выходного словаря
+    analytics_dict = {
+        'mttr': None
+    }
+    # Аналитика относительно дня сравнения если день не передан
+    rating_to_comparison = 0.0
+
+    # Аналитики относительно номинальных значений.
+    rating_to_nominal = _compare_num(chosen_day['mttr'].num_issues,
+                                     nominal_values.num_issues_closed)
+
+    # Аналитика относительно дня сравнения
+    if comparison_day:
+        rating_to_comparison = _compare_num(chosen_day['mttr'].num_issues,
+                                            comparison_day['mttr'].num_issues)
+
+    analytics_dict['mttr'] = RatingAnalytics(rating_to_nominal,
+                                             rating_to_comparison)
+
+    return analytics_dict
 
 
-def _flr_analytics(chosen_day: Mapping[Literal['flr'], Mapping],
+def _flr_analytics(chosen_day: Mapping[Literal['flr'], ReportFlr],
                    nominal_values: Union[models.QuerySet, List[models.Model]],
-                   comparison_day: Mapping[Literal['flr'], Mapping] = {}
-                   ) -> Mapping[Literal['analytics'], Mapping]:
+                   comparison_day: Mapping[Literal['flr'], ReportFlr] = {}
+                   ) -> Mapping[Literal['flr'], RatingAnalytics]:
     """
     Функция сравнения данных flr, с номинальными и с переданным днем.
 
@@ -558,18 +645,38 @@ def _flr_analytics(chosen_day: Mapping[Literal['flr'], Mapping],
     На выходе функция отдает модифицированный словарь аналитики flr
 
     Args:
-        chosen_day (Mapping[Literal['flr'], Mapping]):
+        chosen_day (Mapping[Literal['flr'], ReportFlr]):
             дневной отчёт flr, который необходимо сравнить
         nominal_values: Union[models.QuerySet, List[models.Model]]:
             номинальные значения нагрузки
-        comparison_day (Mapping[Literal['flr'], Mapping]):
+        comparison_day (Mapping[Literal['flr'], ReportFlr]):
             дополнительный день сравнения. По умол. {}
 
     Returns:
-        Mapping[Literal['analytics'], Mapping]: словарь аналитики sl
+        Mapping[Literal['flr'], RatingAnalytics]: словарь аналитики flr
 
     """
-    ...
+    # Структура выходного словаря
+    analytics_dict = {
+        'flr': None
+    }
+    # Аналитика относительно дня сравнения если день не передан
+    rating_to_comparison = 0.0
+
+    # Аналитики относительно номинальных значений.
+    rating_to_nominal = _compare_num(chosen_day['flr'].num_primary_issues,
+                                     nominal_values.num_primary_issues)
+
+    # Аналитика относительно дня сравнения
+    if comparison_day:
+        rating_to_comparison = _compare_num(
+            chosen_day['flr'].num_primary_issues,
+            comparison_day['flr'].num_primary_issues)
+
+    analytics_dict['flr'] = RatingAnalytics(rating_to_nominal,
+                                            rating_to_comparison)
+
+    return analytics_dict
 
 
 def _analytics(chosen_day: dict[Literal['sl', 'mttr', 'flr'], Mapping],
@@ -605,11 +712,8 @@ def _analytics(chosen_day: dict[Literal['sl', 'mttr', 'flr'], Mapping],
     flr_analytics_dict = _flr_analytics(chosen_day, nominal_values,
                                         comparison_day)
     modificated_day.update(
-        {'analytics': {
-            'sl': sl_analytics_dict,
-            'mttr': mttr_analytics_dict,
-            'flr': flr_analytics_dict
-            }}
+        {'analytics': {**sl_analytics_dict, **mttr_analytics_dict,
+                       **flr_analytics_dict}}
         )
     return modificated_day
 
@@ -658,6 +762,4 @@ def get_dashboard_date(datestring: str) -> Mapping:
     mttr_dict = _get_mttr(datestring)
     flr_dict = _get_flr(datestring)
     day_report = {**service_level_dict, **mttr_dict, **flr_dict}
-    # Аналитика нагрузки относительно номинальных значений
-    day_report = _analytics(day_report)
     return day_report
