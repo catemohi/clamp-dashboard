@@ -1,7 +1,7 @@
 from datetime import date, datetime, time, timedelta
 from json import JSONEncoder
 from typing import Literal, NamedTuple, Mapping
-from typing import Union, List
+from typing import Union, List, Any
 
 from django.db import models
 
