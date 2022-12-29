@@ -1,62 +1,33 @@
-
-
-
-let current_date = getTodayDate();
-
-
-
-function getTodayDate() {
-    let date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth() + 1; 
-    let year = date.getFullYear();
-    if (day < 10) {
-        day = '' + 0 + day;
-    }
-    if (month < 10) {
-        month = '' + 0 + month;
-    }
-    let today_date = year + "-" + month + "-" + day;
-    return today_date
-    }
-
-// set today in calend
-document.addEventListener('DOMContentLoaded', function () {
-    let name_input = document.getElementById('date')
-    name_input.value = current_date;
-});
-
 function setProgress(percent, progressCircle) {
-    const progress_circle = cart.querySelector("#circle")
-    const offset = circumference - percent / 100 * circumference;
+    let progress_circle = cart.querySelector("#circle")
+    let offset = circumference - percent / 100 * circumference;
     progressCircle.style.strokeDashoffset = offset;
-    var a = 1;
-    var run = setInterval(frames, 10);
+    let a = 1;
+    let run = setInterval(frames, 10);
     function frames() {
         a = a + 1;
         if (a - 1 == percent) {
             clearInterval(run);
         } else {
-            var counter = document.querySelector(".number h3");
+            let counter = document.querySelector(".number h3");
             counter.textContent = a + "%";
         }
     }
 
 }
 
-
 function setCardProgress(num, card, cardtext, warningstatus, unit) {
     if (num < 0) {
-        var num = 0
+        let num = 0
     } else if (num > 100) {
-        var num = 100
+        let num = 100
     }
 
-    var progressCircle = card.querySelector(".circle");
-    var radius = progressCircle.r.baseVal.value;
-    var circumference = 2 * Math.PI * radius;
+    let progressCircle = card.querySelector(".circle");
+    let radius = progressCircle.r.baseVal.value;
+    let circumference = 2 * Math.PI * radius;
 
-    var offset = circumference - num / 100 * circumference;
+    let offset = circumference - num / 100 * circumference;
     progressCircle.style.strokeDashoffset = offset;
 
     if (warningstatus == true) {
@@ -65,15 +36,15 @@ function setCardProgress(num, card, cardtext, warningstatus, unit) {
         card.classList.remove("warning-dash")
     }
 
-    var date = card.querySelector(".middle h1");
+    let date = card.querySelector(".middle h1");
     date.textContent = cardtext;
-    var a = -1;
-    var run = setInterval(frames, 10);
+    let a = -1;
+    let run = setInterval(frames, 10);
     function frames() {
         if (a == num) {
             clearInterval(run);
         }
-        var counter = card.querySelector(".number *");
+        let counter = card.querySelector(".number *");
         counter.textContent = a + unit;
         a = a + 1;
     }
@@ -82,22 +53,23 @@ function setCardProgress(num, card, cardtext, warningstatus, unit) {
 
 function updateCardProgress() {
     $.post('/json/dashboard', { date: current_date, csrfmiddlewaretoken: window.CSRF_TOKEN, }, function (data) {
-        var cardDailySl = document.querySelector(".daily-sl");
-        var cardWeeklySl = document.querySelector(".weekly-sl");
-        var cardMonthlySl = document.querySelector(".monthly-sl");
-        var cardDailySlVip = document.querySelector(".daily-sl-vip");
-        var cardWeeklySlVip = document.querySelector(".weekly-sl-vip");
-        var cardMonthlySlVip = document.querySelector(".monthly-sl-vip");
-        var cardDailyFlr = document.querySelector(".daily-flr");
-        var cardDailyMttr = document.querySelector(".daily-mttr");
-        setCardProgress(data.DayServiceLevelFirstLine, cardDailySl, data.Today, false, '%');
-        setCardProgress(data.WeeklyServiceLevelFirstLine, cardWeeklySl, data.Week,  false, '%');
-        setCardProgress(data.MonthlyServiceLevelFirstLine, cardMonthlySl, data.NameMonth,  false, '%');
-        setCardProgress(data.DayServiceLevelVipLine, cardDailySlVip, data.Today, false, '%');
-        setCardProgress(data.WeeklyServiceLevelVipLine, cardWeeklySlVip, data.Week, false, '%');
-        setCardProgress(data.MonthlyServiceLevelVipLine, cardMonthlySlVip, data.NameMonth, false, '%');
-        setCardProgress(data.DayFlr, cardDailyFlr, data.Today, false, '%');
-        setCardProgress(data.DayMttr, cardDailyMttr, data.Today, false, 'м.');
+        let cardDailySl = document.querySelector(".daily-sl");
+        let cardWeeklySl = document.querySelector(".weekly-sl");
+        let cardMonthlySl = document.querySelector(".monthly-sl");
+        let cardDailySlVip = document.querySelector(".daily-sl-vip");
+        let cardWeeklySlVip = document.querySelector(".weekly-sl-vip");
+        let cardMonthlySlVip = document.querySelector(".monthly-sl-vip");
+        let cardDailyFlr = document.querySelector(".daily-flr");
+        let cardDailyMttr = document.querySelector(".daily-mttr");
+        console.log(data)
+        // setCardProgress(data.DayServiceLevelFirstLine, cardDailySl, data.Today, false, '%');
+        // setCardProgress(data.WeeklyServiceLevelFirstLine, cardWeeklySl, data.Week,  false, '%');
+        // setCardProgress(data.MonthlyServiceLevelFirstLine, cardMonthlySl, data.NameMonth,  false, '%');
+        // setCardProgress(data.DayServiceLevelVipLine, cardDailySlVip, data.Today, false, '%');
+        // setCardProgress(data.WeeklyServiceLevelVipLine, cardWeeklySlVip, data.Week, false, '%');
+        // setCardProgress(data.MonthlyServiceLevelVipLine, cardMonthlySlVip, data.NameMonth, false, '%');
+        // setCardProgress(data.DayFlr, cardDailyFlr, data.Today, false, '%');
+        // setCardProgress(data.DayMttr, cardDailyMttr, data.Today, false, 'м.');
     });
 }
 
