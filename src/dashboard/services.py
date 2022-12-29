@@ -214,21 +214,22 @@ class RatingAnalytics(NamedTuple):
     rating_to_comparison: float
 
 
-def recursive_conversion(obj: dict) -> Mapping:
+def json_encoding(obj: dict) -> str:
     """Рукурсивная конвертация словарей и NamedTuple.
 
     Args:
         obj (Mapping): обьект для конвретации.
 
     Returns:
-        Mapping: итоговый словарь
+        str: итоговый JSON
     """
     for key, val in obj.items():
         if isinstance(val, dict):
-            obj[key] = recursive_conversion(val)
+            obj[key] = json_encoding(val)
         elif isinstance(val, tuple) and hasattr(val, '_asdict'):
             obj[key] = val._asdict()
-    return obj
+    encoder = CustomEncoder()
+    return encoder.encode(obj)
 
 
 def convert_datestr_to_datetime_obj(datestring: str) -> datetime:
