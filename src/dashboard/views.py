@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from naumen.services import get_issues_from_db
 from notification.services import get_notify
 
-from .services import convert_datestr_to_datetime_obj, get_params
+from .services import convert_datestr_to_datetime_obj, get_params, get_dashboard_date
 
 
 def theme_check(cookies):
@@ -68,6 +68,8 @@ def reports(request):
 def dashboard_json_data(request):
     data = request.POST
     datetime_obj = convert_datestr_to_datetime_obj(data['date'])
+    dashboard_date = get_dashboard_date(data['date'])
+    print(dashboard_date)
     params_dict = get_params(datetime_obj)
     return JsonResponse(params_dict)
 
