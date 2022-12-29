@@ -783,6 +783,3 @@ def get_dashboard_data(datestring: str) -> Mapping:
     flr_dict = _get_flr(datestring)
     day_report = {**service_level_dict, **mttr_dict, **flr_dict}
     return day_report
-
-
-serialy
