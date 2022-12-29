@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core import serializers
 from django.db import models
 from django.utils.timezone import make_aware
-from django.db.models import QuerySet, Model
+from django.db.models import QuerySet
 
 from naumen_api.naumen_api.config.config import CONFIG
 from naumen_api.naumen_api.naumen_api import Client
@@ -337,6 +337,7 @@ def create_or_update_group_flr_report_model(report: dict) -> None:
     obj.number_primary_trouble_tickets = \
         int(report['total_primary_issues'])
     obj.save()
+
 
 # TODO переименовать trouble_ticket_model d issue_model
 def create_or_update_trouble_ticket_model(issue: dict) -> None:

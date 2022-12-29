@@ -416,6 +416,8 @@ def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ReportMttr]:
     if not qs.exists():
         return {'mttr': ReportMttr(0, 0, 0)}
     # Формируем данные
+    print('mttr')
+    print(qs)
     num_issues = qs.first().total_number_trouble_ticket
     average_mttr = qs.first().average_mttr.seconds()
     average_mttr_tech_support = qs.first().average_mttr_tech_support.seconds()
