@@ -37,7 +37,7 @@
           <div class="lef">
             <h3>Первая линия</h3>
             <h3>Недельный SL</h3>
-            <h1>{{ dates.monday_this_week|date:"d.m.Y" }} - {{ dates.sunday_this_week|date:"d.m.Y" }}</h1>
+            <h1>{{ dates.monday_this_week|date:"d.m" }} - {{ dates.sunday_this_week|date:"d.m" }}</h1>
           </div>
           <div class="progress">
             <svg>
@@ -57,7 +57,7 @@
           <div class="lef">
             <h3>Первая линия</h3>
             <h3>Месячный SL</h3>
-            <h1>"{{ dates.chosen_date|date:"F" }}"</h1>
+            <h1>{{ dates.chosen_date|date:"F" }}</h1>
           </div>
           <div class="progress">
             <svg>
@@ -136,7 +136,7 @@
         <div class="middle">
           <div class="lef">
             <h3>Ежедневный FLR</h3>
-            <h1>{{ dates.chosen_date|date:"d.m.Y" }}</h1>
+            <h1>{{ dates.chosen_date|date:"F" }}</h1>
           </div>
           <div class="progress">
             <svg>
@@ -155,7 +155,7 @@
         <div class="middle">
           <div class="lef">
             <h3>Ежедневный MTTR</h3>
-            <h1>{{ dates.chosen_date|date:"d.m.Y" }}</h1>
+            <h1>{{ dates.chosen_date|date:"F" }}</h1>
           </div>
           <div class="progress">
             <svg>

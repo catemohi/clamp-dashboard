@@ -77,7 +77,7 @@ def reports(request):
 def dashboard_json_data(request):
     data = request.POST
     datetime_obj = convert_datestr_to_datetime_obj(data['date'])
-    dashboard_date = get_dashboard_date(data['date'])
+    dashboard_date = get_dashboard_data(data['date'])
     dashboard_date = analytics(dashboard_date)
     print(dashboard_date)
     params_dict = get_params(datetime_obj)
