@@ -679,9 +679,9 @@ def _flr_analytics(chosen_day: Mapping[Literal['flr'], ReportFlr],
     return analytics_dict
 
 
-def _analytics(chosen_day: dict[Literal['sl', 'mttr', 'flr'], Mapping],
-               comparison_day: Mapping[Literal['sl', 'mttr', 'flr'], Mapping] = {}
-               ) -> dict[Literal['sl', 'mttr', 'flr', 'analytics'], Mapping]:
+def analytics(chosen_day: dict[Literal['sl', 'mttr', 'flr'], Mapping],
+              comparison_day: Mapping[Literal['sl', 'mttr', 'flr'], Mapping] = {}
+              ) -> dict[Literal['sl', 'mttr', 'flr', 'analytics'], Mapping]:
     """
     Функция сравнения данных, с номинальными и с переданным днем.
 
