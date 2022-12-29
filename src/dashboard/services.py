@@ -228,9 +228,9 @@ def recursive_conversion(obj: dict) -> Mapping:
         print(val)
         if isinstance(val, dict):
             obj[key] = recursive_conversion(val)
-        elif isinstance(obj, tuple) and hasattr(obj, '_asdict'):
+        elif hasattr(obj, '_asdict'):
+            print(val._asdict())
             obj[key] = val._asdict()
-        print(obj)
     return obj
 
 
