@@ -76,12 +76,14 @@ def reports(request):
 
 def dashboard_json_data(request):
     data = request.POST
+    today = datetime.now()
+    dates = get_date_collections(data['date'])
+    dashboard_data = get_dashboard_data(data['date'])
+    dashboard_data = analytics(dashboard_data)
+
     datetime_obj = convert_datestr_to_datetime_obj(data['date'])
-    dashboard_date = get_dashboard_data(data['date'])
-    dashboard_date = analytics(dashboard_date)
-    print(dashboard_date)
     params_dict = get_params(datetime_obj)
-    return JsonResponse(params_dict)
+    return JsonResponse(dashboard_data)
 
 
 def table_json_data(request):

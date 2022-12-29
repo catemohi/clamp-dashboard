@@ -16,35 +16,57 @@ function setProgress(percent, progressCircle) {
 
 }
 
-function setCardProgress(num, card, cardtext, warningstatus, unit) {
-    if (num < 0) {
-        let num = 0
-    } else if (num > 100) {
-        let num = 100
-    }
+// function setCardProgress(num, card, cardtext, warningstatus, unit) {
+//     if (num < 0) {
+//         let num = 0
+//     } else if (num > 100) {
+//         let num = 100
+//     }
 
+//     let progressCircle = card.querySelector(".circle");
+//     let radius = progressCircle.r.baseVal.value;
+//     let circumference = 2 * Math.PI * radius;
+
+//     let offset = circumference - num / 100 * circumference;
+//     progressCircle.style.strokeDashoffset = offset;
+
+//     if (warningstatus == true) {
+//         card.classList.add("warning-dash")
+//     } else {
+//         card.classList.remove("warning-dash")
+//     }
+
+//     let date = card.querySelector(".middle h1");
+//     date.textContent = cardtext;
+//     let a = -1;
+//     let run = setInterval(frames, 10);
+//     function frames() {
+//         if (a == num) {
+//             clearInterval(run);
+//         }
+//         let counter = card.querySelector(".number *");
+//         counter.textContent = a + unit;
+//         a = a + 1;
+//     }
+// }
+
+function setCardProgress(card, unit) {
+    let counter = card.querySelector(".number *");
+    let value = +counter.textContent
     let progressCircle = card.querySelector(".circle");
+
     let radius = progressCircle.r.baseVal.value;
     let circumference = 2 * Math.PI * radius;
-
-    let offset = circumference - num / 100 * circumference;
+    let offset = circumference - value / 100 * circumference;
     progressCircle.style.strokeDashoffset = offset;
 
-    if (warningstatus == true) {
-        card.classList.add("warning-dash")
-    } else {
-        card.classList.remove("warning-dash")
-    }
-
-    let date = card.querySelector(".middle h1");
-    date.textContent = cardtext;
+    counter.textContent = 0
     let a = -1;
     let run = setInterval(frames, 10);
     function frames() {
-        if (a == num) {
+        if (a == value) {
             clearInterval(run);
         }
-        let counter = card.querySelector(".number *");
         counter.textContent = a + unit;
         a = a + 1;
     }
@@ -63,6 +85,7 @@ function updateCardProgress() {
         let cardDailyFlr = document.querySelector(".daily-flr");
         let cardDailyMttr = document.querySelector(".daily-mttr");
         console.log(data)
+        setCardProgress(cardDailySl, '%')
         // setCardProgress(data.DayServiceLevelFirstLine, cardDailySl, data.Today, false, '%');
         // setCardProgress(data.WeeklyServiceLevelFirstLine, cardWeeklySl, data.Week,  false, '%');
         // setCardProgress(data.MonthlyServiceLevelFirstLine, cardMonthlySl, data.NameMonth,  false, '%');
