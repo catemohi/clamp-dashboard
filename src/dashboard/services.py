@@ -129,16 +129,19 @@ class CustomEncoder(JSONEncoder):
     Кастомный енкодер JSON для NamedTuple и DateTime
 
     """
+    def encode(self, o):
+        if isinstance(o, tuple) and hasattr(o, '_asdict'):
+            return super().encode(o._asdict())
+        return super().encode(o)
 
-    def default(self, obj):
-        if isinstance(obj, tuple) and hasattr(obj, '_asdict'):
-            return obj._asdict()
-        elif isinstance(obj, (datetime, date, time)):
-            return obj.strftime('%d.%m.%Y')
-        elif isinstance(obj, timedelta):
-            return obj.seconds()
-
-        return super(CustomEncoder, self).default(obj)
+    def default(self, o: Any) -> Any:
+        if isinstance(o, tuple) and hasattr(o, '_asdict'):
+            return super().default(o._asdict())
+        if isinstance(o, (datetime, date, time)):
+            return o.strftime('%d.%m.%Y')
+        elif isinstance(o, timedelta):
+            return o.seconds()
+        return super().default(o)
 
 
 class Dates(NamedTuple):
