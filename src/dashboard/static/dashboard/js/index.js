@@ -52,6 +52,7 @@ function setCardProgress(num, card, cardtext, warningstatus, unit) {
 
 
 function updateCardProgress() {
+    let current_date = document.getElementById('date').value;
     $.post('/json/dashboard', { date: current_date, csrfmiddlewaretoken: window.CSRF_TOKEN, }, function (data) {
         let cardDailySl = document.querySelector(".daily-sl");
         let cardWeeklySl = document.querySelector(".weekly-sl");
@@ -79,9 +80,8 @@ $(document).ready(function(){
     setInterval('updateCardProgress()', 600000);
 });
 
-$("#form-date").submit(function(e) {
-    e.preventDefault();
-    current_date = document.getElementById('date').value;
+$("#form-date").submit(function(event) {
+    event.preventDefault();
     updateCardProgress();
 });
 
