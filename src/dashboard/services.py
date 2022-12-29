@@ -446,7 +446,7 @@ def _get_flr(datestring: str) -> Mapping[Literal['flr'], ReportFlr]:
     if not qs.exists():
         {'flr': ReportFlr(0, 0, 0)}
     # Формируем данные
-    level = int(round(qs.first().total_number_trouble_ticket, 0))
+    level = int(round(qs.first().flr_level, 0))
     num_issues_closed_independently = qs.first().\
         number_trouble_ticket_closed_independently
     num_primary_issues = qs.first().number_primary_trouble_tickets
