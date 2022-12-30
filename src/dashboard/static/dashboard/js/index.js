@@ -19,7 +19,7 @@ function setProgress(percent, progressCircle) {
 
 }
 
-// function setCardProgress(num, card, cardtext, warningstatus, unit) {
+// function setCardProgress(num, card, cardtext, dangerstatus, unit) {
 //     if (num < 0) {
 //         let num = 0
 //     } else if (num > 100) {
@@ -33,10 +33,10 @@ function setProgress(percent, progressCircle) {
 //     let offset = circumference - num / 100 * circumference;
 //     progressCircle.style.strokeDashoffset = offset;
 
-//     if (warningstatus == true) {
-//         card.classList.add("warning-dash")
+//     if (dangerstatus == true) {
+//         card.classList.add("danger-dash")
 //     } else {
-//         card.classList.remove("warning-dash")
+//         card.classList.remove("danger-dash")
 //     }
 
 //     let date = card.querySelector(".middle h1");
@@ -96,7 +96,7 @@ function changeAnalytics() {
             let valueRating = parsingInt(ratingObj.textContent);
             if (valueRating > 0) {
                 ratingObj.textContent = "> на " + Math.abs(valueRating) + "%";
-                ratingObj.classList.add("warning");
+                ratingObj.classList.add("danger");
             } else if (valueRating < 0){
                 ratingObj.textContent = "< на " + Math.abs(valueRating) + "%";
                 ratingObj.classList.add("success");
@@ -113,18 +113,15 @@ function changeAnalytics() {
                 daylySL.classList.add("success");
             }
             else {
-                daylySL.classList.add("warning");
+                daylySL.classList.add("danger");
             }
         }
 
         let numWorkedAfterDeadline = module.querySelector(".num_worked_after_deadline *")
-        console.log(numWorkedAfterDeadline)
         if (numWorkedAfterDeadline != null) {
             let valueWorkedAfterDeadline= +numWorkedAfterDeadline.textContent;
-            console.log(valueWorkedAfterDeadline)
             if (valueWorkedAfterDeadline > 0) {
-                console.log('> 0')
-                numWorkedAfterDeadline.classList.add("warning");
+                numWorkedAfterDeadline.classList.add("danger");
             }
         }
     });
