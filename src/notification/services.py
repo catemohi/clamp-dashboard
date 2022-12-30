@@ -83,7 +83,7 @@ def notify_issue(issue: Mapping, *args, **kwargs):
                  else 'первой линии')(issue)
         emodji = (lambda issue: '❤️' if issue['vip_contragent']
                   else '')(issue)
-        message = (f'{emodji} На {group} закрыто или переведено с шага'
+        message = (f'{emodji} На {group} закрыто или переведено с шага '
                    f'обращение номер {issue.get("number")}')
         result = (
             "issue_notifi",
