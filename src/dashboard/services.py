@@ -217,6 +217,10 @@ class RatingAnalytics(NamedTuple):
 def json_encoding(obj: dict) -> str:
     """Кодирование словаря в JSON.
 
+    Силами JSONEncoder, не получается верно конвертировать NamedTuple
+    вложенный в словарь. Эта функция справляется с этой проблемой и
+    конвретирует все вложенные NamedTuple d dict
+
     Args:
         obj (Mapping): обьект для конвретации.
 
