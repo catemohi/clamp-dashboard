@@ -80,7 +80,22 @@ function changeAnalytics() {
                      document.querySelector(".flr")];
 
 
-    Analytics.forEach(element => console.log(element));
+    Analytics.forEach(function modifyPercentRating(module) {
+        let RatingObjs =  module.querySelector(".rating_to_nominal *, .rating_to_comparison *");
+        RatingObjs.forEach(function modifyPercentRating(ratingObj) {
+            let valueRating = Number(ratingObj.textContent);
+            if (valueRating > 0) {
+                ratingObj.textContent = "> на " + valueRating + "%";
+                ratingObj.classList.add("warning");
+            } else if (valueRating < 0){
+                ratingObj.textContent = "< на " + valueRating + "%";
+                ratingObj.classList.add("success");
+            }
+            else {
+                //pass
+            }
+        });
+    });
 }
 
 function changeCardProgress() {
