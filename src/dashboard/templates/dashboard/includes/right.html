@@ -45,51 +45,23 @@
       <div class="right">
         <div class="info">
           <ul>
-            <li><h3>Данные о SL</h3></li>
-            <li><h3>Первая линия</h3></li>
-            <li><h3>Уровень:</h3></li>
+            <li><h3>SL первая линия</h3></li>
             <li><h5>Количество ТТ за день:</h5></li>
             <li><h5>Количество ТТ принятых за 15 минут:</h5></li>
+            <li><h5>Количество ТТ принятых после 15 минут:</h5></li>
             <li><h5>Нагрузка относительно нормы:</h5></li>
             <li><h5>Нагрузка относительно прошлого дня:</h5></li>
-            <li><h4>Vip линия</h4></li>
-            <li><h5>Уровень:</h5></li>
-            <li><h5>Количество ТТ за день:</h5></li>
-            <li><h5>Количество ТТ принятых за 15 минут:</h5></li>
-            <li><h5>Нагрузка относительно нормы:</h5></li>
-            <li><h5>Нагрузка относительно прошлого дня:</h5></li>   
-            <li><h4>Общий</h4></li>
-            <li><h5>Уровень:</h5></li>
-            <li><h5>Количествово ТТ за день:</h5></li>
-            <li><h5>Количество ТТ принятых за 15 минут:</h5></li>
-            <li><h5>Нагрузка относительно нормы:</h5></li>
-            <li><h5>Нагрузка относительно прошлого дня:</h5></li>         
           </ul>
           <small>Последние 24 часа</small>
         </div>
         <div class="count-info">
           <ul>
-            <li></li>
-            <li></li>
-            <li><h5 class="success">95%</h5></li>
-            <li><h5>166</h5></li>
-            <li><h5>160</h5></li>
-            <li><h5 class="success">> на 3%</h5></li>
-            <li><h5 class="warning">< на 6%</h5></li>
-            <li></li>
-            <li></li>
-            <li><h5 class="success">95%</h5></li>
-            <li><h5>166</h5></li>
-            <li><h5>160</h5></li>
-            <li><h5 class="success">> на 3%</h5></li>
-            <li><h5 class="warning">< на 6%</h5></li>
-            <li></li>
-            <li></li>
-            <li><h5 class="success">95%</h5></li>
-            <li><h5>166</h5></li>
-            <li><h5>160</h5></li>
-            <li><h5 class="success">> на 3%</h5></li>
-            <li><h5 class="warning">< на 6%</h5></li>            
+            <li class="dayly_sl"><h5>{{ dashboard_data.sl.first_line.dayly_sl }}</h5></li>
+            <li class="num_issues"><h5>{{ dashboard_data.sl.first_line.num_issues }}</h5></li>
+            <li class="num_worked_before_deadline"><h5>{{ dashboard_data.sl.first_line.num_worked_before_deadline }}</h5></li>
+            <li class="num_worked_after_deadline"><h5>{{ dashboard_data.sl.first_line.num_worked_after_deadline }}</h5></li>
+            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.sl.first_line.rating_to_nominal }}</h5></li>
+            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.sl.first_line.rating_to_comparison }}</h5></li>
           </ul>
         </div>
       </div>
@@ -101,13 +73,23 @@
       <div class="right">
         <div class="info">
           <ul>
-
+            <li><h3>SL vip линия</h3></li>
+            <li><h5>Количество ТТ за день:</h5></li>
+            <li><h5>Количество ТТ принятых за 15 минут:</h5></li>
+            <li><h5>Количество ТТ принятых после 15 минут:</h5></li>
+            <li><h5>Нагрузка относительно нормы:</h5></li>
+            <li><h5>Нагрузка относительно прошлого дня:</h5></li>
           </ul>
           <small>Последние 24 часа</small>
         </div>
         <div class="count-info">
           <ul>
-
+            <li class="dayly_sl"><h5>{{ dashboard_data.sl.first_line.dayly_sl }}</h5></li>
+            <li class="num_issues"><h5>{{ dashboard_data.sl.first_line.num_issues }}</h5></li>
+            <li class="num_worked_before_deadline"><h5>{{ dashboard_data.sl.first_line.num_worked_before_deadline }}</h5></li>
+            <li class="num_worked_after_deadline"><h5>{{ dashboard_data.sl.first_line.num_worked_after_deadline }}</h5></li>
+            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.sl.first_line.rating_to_nominal }}</h5></li>
+            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.sl.first_line.rating_to_comparison }}</h5></li>
           </ul>
         </div>
       </div>
@@ -118,12 +100,24 @@
       </div> -->
       <div class="right">
         <div class="info">
-          <ul
+          <ul>
+            <li><h3>SL общий</h3></li>
+            <li><h5>Количество ТТ за день:</h5></li>
+            <li><h5>Количество ТТ принятых за 15 минут:</h5></li>
+            <li><h5>Количество ТТ принятых после 15 минут:</h5></li>
+            <li><h5>Нагрузка относительно нормы:</h5></li>
+            <li><h5>Нагрузка относительно прошлого дня:</h5></li>
           </ul>
           <small>Последние 24 часа</small>
         </div>
         <div class="count-info">
           <ul>
+            <li class="dayly_sl"><h5>{{ dashboard_data.sl.first_line.dayly_sl }}</h5></li>
+            <li class="num_issues"><h5>{{ dashboard_data.sl.first_line.num_issues }}</h5></li>
+            <li class="num_worked_before_deadline"><h5>{{ dashboard_data.sl.first_line.num_worked_before_deadline }}</h5></li>
+            <li class="num_worked_after_deadline"><h5>{{ dashboard_data.sl.first_line.num_worked_after_deadline }}</h5></li>
+            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.sl.first_line.rating_to_nominal }}</h5></li>
+            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.sl.first_line.rating_to_comparison }}</h5></li>
           </ul>
         </div>
       </div>
