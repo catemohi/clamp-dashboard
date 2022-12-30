@@ -60,6 +60,7 @@ def dashboard(request):
 def table(request):
     context = {}
     today = datetime.now()
+    ratings = get_load_ratings()
     dates = get_date_collections(today.strftime('%Y-%m-%d'))
     dashboard_data = get_dashboard_data(dates.chosen_date.strftime('%Y-%m-%d'))
     before_day_data = get_dashboard_data(dates.before_day.strftime('%Y-%m-%d'))
@@ -68,7 +69,7 @@ def table(request):
 
     context.update({'dates': dates, 'dashboard_data': dashboard_data})
     context.update(theme_check(request.COOKIES))
-    context.update({'notifications': notifications})
+    context.update({'notifications': notifications, "ratings": ratings})
     context.update(
         {'trouble_ticket_counter': '99+', 'trouble_ticket_vip_counter': '99+'})
     return render(request, 'dashboard/table.html', context=context)
@@ -77,6 +78,7 @@ def table(request):
 def reports(request):
     context = {}
     today = datetime.now()
+    ratings = get_load_ratings()
     dates = get_date_collections(today.strftime('%Y-%m-%d'))
     dashboard_data = get_dashboard_data(dates.chosen_date.strftime('%Y-%m-%d'))
     before_day_data = get_dashboard_data(dates.before_day.strftime('%Y-%m-%d'))
@@ -85,7 +87,7 @@ def reports(request):
 
     context.update({'dates': dates, 'dashboard_data': dashboard_data})
     context.update(theme_check(request.COOKIES))
-    context.update({'notifications': notifications})
+    context.update({'notifications': notifications, "ratings": ratings})
     context.update(
         {'trouble_ticket_counter': '99+', 'trouble_ticket_vip_counter': '99+'})
     return render(request, 'dashboard/reports.html', context=context)
