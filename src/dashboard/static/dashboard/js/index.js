@@ -116,6 +116,14 @@ function changeAnalytics() {
                 daylySL.classList.add("warning");
             }
         }
+
+        let numWorkedAfterDeadline = module.querySelector(".num_worked_after_deadline *")
+        if (numWorkedAfterDeadline != null) {
+            let valueWorkedAfterDeadline= parsingInt(numWorkedAfterDeadline.textContent);
+            if (valueWorkedAfterDeadline > 0) {
+                numWorkedAfterDeadline.classList.add("warning");
+            }
+        }
     });
 }
 
