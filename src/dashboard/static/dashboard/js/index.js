@@ -87,10 +87,10 @@ function changeAnalytics() {
         RatingObjs.forEach(function modifyRating(ratingObj) {
             let valueRating = parseInt(ratingObj.textContent.replace(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/, ''));
             if (valueRating > 0) {
-                ratingObj.textContent = "> на " + valueRating + "%";
+                ratingObj.textContent = "> на " + Math.abs(valueRating) + "%";
                 ratingObj.classList.add("warning");
             } else if (valueRating < 0){
-                ratingObj.textContent = "< на " + valueRating + "%";
+                ratingObj.textContent = "< на " + Math.abs(valueRating) + "%";
                 ratingObj.classList.add("success");
             }
             else {
