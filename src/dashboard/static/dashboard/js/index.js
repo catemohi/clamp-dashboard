@@ -144,7 +144,7 @@ function changeDayValue(data) {
     counterDailyFlr = cardDailyFlr.querySelector(".number *");
     date = cardDailyFlr.querySelector(".middle h1");
     date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options)
-    counterDailycounterDailyFlr.textContent = data.dashboard_data.flr.level;
+    counterDailyFlr.textContent = data.dashboard_data.flr.level;
     changeCardProgress();
     changeAnalytics();
 }
