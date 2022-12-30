@@ -6,12 +6,21 @@ const cardWeeklySlVip = document.querySelector(".weekly-sl-vip");
 const cardMonthlySlVip = document.querySelector(".monthly-sl-vip");
 const cardDailyFlr = document.querySelector(".daily-flr");
 const cardDailyMttr = document.querySelector(".daily-mttr");
-
+const options = {year: 'numeric', month: 'numeric', day: 'numeric',
+                 timezone: 'Moscow'};
 
 function month_name(dt){
     mlist = [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ];
     return mlist[dt.getMonth()];
 };
+
+function formatWeekDataString(dateFirst, dateSecond) {
+    dateFirst = new Date(dateFirst)
+    dateSecond = new Date(dateSecond)
+    let firstPath = dateFirst.getDate() + '.' + dateFirst.getMonth()
+    let secondPath = dateSecond.getDate() + '.' + dateSecond.getMonth()
+    return firstPath + '-' + secondPath
+}
 
 function setProgress(percent, progressCircle) {
     let progress_circle = cart.querySelector("#circle")
@@ -103,11 +112,11 @@ function changeDayValue(data) {
     // first line
     counterDailySlFirstLine = cardDailySl.querySelector(".number *");
     date = cardDailySl.querySelector(".middle h1");
-    date.textContent = data.dates.chosen_date;
+    date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options)
     counterDailySlFirstLine.textContent = data.dashboard_data.sl.first_line.dayly_sl;
     counterWeeklySlFirstLine = cardWeeklySl.querySelector(".number *");
     date = cardWeeklySl.querySelector(".middle h1");
-    date.textContent = data.dates.chosen_date;    
+    date.textContent = formatWeekDataString(dates.monday_this_week, dates.sunday_this_week)
     counterWeeklySlFirstLine.textContent = data.dashboard_data.sl.first_line.weekly_sl;  
     counterMonthlySlFirstLine = cardMonthlySl.querySelector(".number *");
     date = cardMonthlySl.querySelector(".middle h1");
@@ -116,9 +125,11 @@ function changeDayValue(data) {
     // vip line
     counterDailySlVipLine = cardDailySlVip.querySelector(".number *");
     date = cardDailySlVip.querySelector(".middle h1");
-    date.textContent = data.dates.chosen_date;    
+    date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options)    
     counterDailySlVipLine.textContent = data.dashboard_data.sl.vip_line.dayly_sl;
     counterWeeklySlVipLine = cardWeeklySlVip.querySelector(".number *");
+    date = cardWeeklySlVip.querySelector(".middle h1");
+    date.textContent = formatWeekDataString(dates.monday_this_week, dates.sunday_this_week)    
     counterWeeklySlVipLine.textContent = data.dashboard_data.sl.vip_line.weekly_sl; 
     counterMonthlySlVipLine = cardMonthlySlVip.querySelector(".number *");
     date = cardMonthlySlVip.querySelector(".middle h1");
@@ -127,12 +138,12 @@ function changeDayValue(data) {
     // mttr
     counterDailyMttr = cardDailyMttr.querySelector(".number *");
     date = cardDailyMttr.querySelector(".middle h1");
-    date.textContent = data.dates.chosen_date;
-    counterDailycounterDailyMttr.textContent = data.dashboard_data.mttr.average_mttr_tech_support;
+    date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options)
+    counterDailyMttr.textContent = data.dashboard_data.mttr.average_mttr_tech_support;
     // flr
     counterDailyFlr = cardDailyFlr.querySelector(".number *");
     date = cardDailyFlr.querySelector(".middle h1");
-    date.textContent = data.dates.chosen_date;
+    date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options)
     counterDailycounterDailyFlr.textContent = data.dashboard_data.flr.level;
     changeCardProgress();
     changeAnalytics();
