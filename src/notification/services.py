@@ -10,7 +10,6 @@ from .models import NotificationMessage
 
 
 channel_layer = get_channel_layer()
-Slice = tuple[int, int]
 
 
 class IssueNotification(Enum):
@@ -36,8 +35,8 @@ def create_update_message(issue: Mapping, changed: Mapping) -> str:
     Returns:
         str: текст уведомления
     """
-    message = ''
-
+    emodji = (lambda issue: '❤' if issue['vip_contragent'] else '')(issue)
+    message = f'{emodji}'
     if changed.get('return_to_work_time', False):
         message = (f'Время решения обращения номер {issue.get("number")} '
                    f'изменено на {issue.get("return_to_work_time")}')
@@ -48,7 +47,8 @@ def create_update_message(issue: Mapping, changed: Mapping) -> str:
 
     if changed.get('responsible', False):
         message = (f'Ответственным за обращение номер {issue.get("number")} '
-                   f'назначен(а) {issue.get("responsible")}')
+                   f'назначен(а) {issue.get("responsible")} шаг '
+                   f'{issue.get("step")}')
     return message
 
 
@@ -62,14 +62,15 @@ def notify_issue(issue: Mapping, *args, **kwargs):
         message = create_update_message(issue, kwargs['changed'])
         result = (
             "issue_notifi",
-            {"type": "updated", "issue": issue, "text": message,
-              "time": time},
+            {"type": "updated", "issue": issue, "text": message, "time": time},
             )
 
     elif kwargs.get('type') == IssueNotification.NEW:
         group = (lambda issue: 'vip линии' if issue['vip_contragent']
                  else 'первой линии')(issue)
-        message = (f'На {group} появилось новое обращение номер '
+        emodji = (lambda issue: '❤' if issue['vip_contragent']
+                  else '')(issue)
+        message = (f'{emodji} На {group} появилось новое обращение номер '
                    f'{issue.get("number")}')
         result = (
             "issue_notifi",
@@ -79,19 +80,21 @@ def notify_issue(issue: Mapping, *args, **kwargs):
     elif kwargs.get('type') == IssueNotification.CLOSED:
         group = (lambda issue: 'vip линии' if issue['vip_contragent']
                  else 'первой линии')(issue)
-        message = (f'На {group} закрыто или переведено с шага обращение номер '
-                   f'{issue.get("number")}')
+        emodji = (lambda issue: '❤' if issue['vip_contragent']
+                  else '')(issue)
+        message = (f'{emodji} На {group} закрыто или переведено с шага'
+                   f'обращение номер {issue.get("number")}')
         result = (
             "issue_notifi",
             {"type": "closed", "issue": issue, "text": message,
-              "time": time},
+             "time": time},
             )
 
     elif kwargs.get('type') == IssueNotification.RETURNED:
         group = (lambda issue: 'vip линии' if issue['vip_contragent']
                  else 'первой линии')(issue)
-        message = (f'В {issue.get("return_to_work_time")} на {group} c'
-                   f'отложенного шага вернется обращение {issue.get("step")}'
+        message = (f'🧨 ПРЕДУПРЕЖДЕНИЕ! В {issue.get("return_to_work_time")} '
+                   f'на {group} c отложенного шага {issue.get("step")}'
                    f'вернется обращение номер {issue.get("number")}')
         result = (
             "issue_notifi",
@@ -101,8 +104,9 @@ def notify_issue(issue: Mapping, *args, **kwargs):
     elif kwargs.get('type') == IssueNotification.BURNED:
         group = (lambda issue: 'vip линии' if issue['vip_contragent']
                  else 'первой линии')(issue)
-        message = (f'Внимание! Обращение номер {issue.get("number")}'
-                   f'скоро привысит лимит времени отработки!')
+        message = (f'🧨 ПРЕДУПРЕЖДЕНИЕ! Обращение номер {issue.get("number")} '
+                   f'находится на {issue.get("responsible")} '
+                   f'{issue.get("step_time") // 60} минут!')
         result = (
             "issue_notifi",
             {"type": "burned", "issue": issue, "text": message,
