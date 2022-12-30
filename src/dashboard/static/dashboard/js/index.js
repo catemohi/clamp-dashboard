@@ -118,6 +118,7 @@ function changeAnalytics() {
         }
 
         let numWorkedAfterDeadline = module.querySelector(".num_worked_after_deadline *")
+        console.log(numWorkedAfterDeadline)
         if (numWorkedAfterDeadline != null) {
             let valueWorkedAfterDeadline= parsingInt(numWorkedAfterDeadline.textContent);
             if (valueWorkedAfterDeadline > 0) {
