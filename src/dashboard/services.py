@@ -491,7 +491,7 @@ def _get_flr(datestring: str) -> Mapping[Literal['flr'], ReportFlr]:
     return {'flr': flr_report}
 
 
-def _get_load_ratings() -> Union[models.QuerySet, List[models.Model]]:
+def get_load_ratings() -> Union[models.QuerySet, List[models.Model]]:
     """
     Функция получения номинальных значений нагрузки на группу.
 
@@ -738,7 +738,7 @@ def analytics(chosen_day: dict[Literal['sl', 'mttr', 'flr'], Mapping],
         с долнительным ключем выполненного сравнения.
 
     """
-    nominal_values = _get_load_ratings()
+    nominal_values = get_load_ratings()
     modificated_day = chosen_day.copy()
     sl_analytics_dict = _sl_analytics(chosen_day, nominal_values,
                                       comparison_day)

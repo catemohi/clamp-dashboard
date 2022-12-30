@@ -6,7 +6,6 @@ const cardWeeklySlVip = document.querySelector(".weekly-sl-vip");
 const cardMonthlySlVip = document.querySelector(".monthly-sl-vip");
 const cardDailyFlr = document.querySelector(".daily-flr");
 const cardDailyMttr = document.querySelector(".daily-mttr");
-const alarmValueSL = 80
 
 
 function setProgress(percent, progressCircle) {

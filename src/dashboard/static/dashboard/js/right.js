@@ -125,7 +125,8 @@ function changeAnalytics() {
         let daylySL = module.querySelector(".dayly_sl *")
         if (daylySL != null) {
             let valueSL= parsingInt(daylySL.textContent);
-            if (valueSL >= alarmValueSL) {
+			// minSuccessSL прописана в контексте base.html и тянется с БД
+            if (valueSL >= minSuccessSL) {
                 daylySL.classList.add("success");
             }
             else {

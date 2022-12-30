@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from naumen.services import get_issues_from_db
 from notification.services import get_notify
 
-from .services import convert_datestr_to_datetime_obj, get_params, get_dashboard_data, analytics, get_date_collections, json_encoding
+from .services import convert_datestr_to_datetime_obj, get_params, get_dashboard_data, analytics, get_date_collections, json_encoding, get_load_ratings
 
 
 def theme_check(cookies):
@@ -42,6 +42,7 @@ def dashboard(request):
     context = {}
     # Запрос данных для контекста
     today = datetime.now()
+    ratings = get_load_ratings()
     dates = get_date_collections(today.strftime('%Y-%m-%d'))
     dashboard_data = get_dashboard_data(dates.chosen_date.strftime('%Y-%m-%d'))
     before_day_data = get_dashboard_data(dates.before_day.strftime('%Y-%m-%d'))
@@ -50,7 +51,7 @@ def dashboard(request):
 
     context.update({'dates': dates, 'dashboard_data': dashboard_data})
     context.update(theme_check(request.COOKIES))
-    context.update({'notifications': notifications})
+    context.update({'notifications': notifications, "ratings": ratings})
     context.update(
         {'trouble_ticket_counter': '99+', 'trouble_ticket_vip_counter': '99+'})
     return render(request, 'dashboard/dashboard.html', context=context)
