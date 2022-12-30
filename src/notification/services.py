@@ -35,7 +35,8 @@ def create_update_message(issue: Mapping, changed: Mapping) -> str:
     Returns:
         str: текст уведомления
     """
-    emodji = (lambda issue: '❤' if issue['vip_contragent'] else '')(issue)
+    emodji = '&#10084'
+    emodji = (lambda issue: emodji if issue['vip_contragent'] else '')(issue)
     message = ''
     if changed.get('return_to_work_time', False):
         message = (f'{emodji} Время решения обращения номер '
@@ -69,7 +70,7 @@ def notify_issue(issue: Mapping, *args, **kwargs):
     elif kwargs.get('type') == IssueNotification.NEW:
         group = (lambda issue: 'vip линии' if issue['vip_contragent']
                  else 'первой линии')(issue)
-        emodji = (lambda issue: '❤' if issue['vip_contragent']
+        emodji = (lambda issue: '&#10084' if issue['vip_contragent']
                   else '')(issue)
         message = (f'{emodji} На {group} появилось новое обращение номер '
                    f'{issue.get("number")}')
@@ -81,7 +82,7 @@ def notify_issue(issue: Mapping, *args, **kwargs):
     elif kwargs.get('type') == IssueNotification.CLOSED:
         group = (lambda issue: 'vip линии' if issue['vip_contragent']
                  else 'первой линии')(issue)
-        emodji = (lambda issue: '❤' if issue['vip_contragent']
+        emodji = (lambda issue: '&#10084' if issue['vip_contragent']
                   else '')(issue)
         message = (f'{emodji} На {group} закрыто или переведено с шага'
                    f'обращение номер {issue.get("number")}')
