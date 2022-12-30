@@ -17,8 +17,10 @@ function month_name(dt){
 function formatWeekDataString(dateFirst, dateSecond) {
     dateFirst = new Date(dateFirst)
     dateSecond = new Date(dateSecond)
-    let firstPath = dateFirst.getDate() + '.' + dateFirst.getMonth()
-    let secondPath = dateSecond.getDate() + '.' + dateSecond.getMonth()
+    let monthFirstDate = String(dateFirst.getMonth() + 1).length === 1 ? '0' + String(dateFirst.getMonth() + 1): String(dateFirst.getMonth() + 1);
+    let monthSecondDate = String(dateSecond.getMonth() + 1).length === 1 ? '0' + String(dateSecond.getMonth() + 1): String(dateSecond.getMonth() + 1);
+    let firstPath = dateFirst.getDate() + '.' + monthFirstDate
+    let secondPath = dateSecond.getDate() + '.' + monthSecondDate
     return firstPath + '-' + secondPath
 }
 
