@@ -80,9 +80,10 @@ function changeAnalytics() {
                      document.querySelector(".flr")];
 
 
-    Analytics.forEach(function modifyPercentRating(module) {
+    Analytics.forEach(function modifyPercentRatings(module) {
         let RatingObjs =  module.querySelector(".rating_to_nominal *, .rating_to_comparison *");
-        RatingObjs.forEach(function modifyPercentRating(ratingObj) {
+        console.log(RatingObjs)
+        RatingObjs.forEach(function modifyRating(ratingObj) {
             let valueRating = Number(ratingObj.textContent);
             if (valueRating > 0) {
                 ratingObj.textContent = "> на " + valueRating + "%";
