@@ -72,46 +72,52 @@ function setCardProgress(card, unit) {
     }
 }
 
+function changeAnalytics() {
+    let Analytics = [document.querySelector(".sl-first-line"),
+                     document.querySelector(".sl-vip-line"),
+                     document.querySelector(".sl-general"),
+                     document.querySelector(".mttr"),
+                     document.querySelector(".flr")];
 
-function updateCardProgress() {
+
+    Analytics.forEach(element => console.log(element));
+}
+
+function changeCardProgress() {
+    let cardDailySl = document.querySelector(".daily-sl");
+    let cardWeeklySl = document.querySelector(".weekly-sl");
+    let cardMonthlySl = document.querySelector(".monthly-sl");
+    let cardDailySlVip = document.querySelector(".daily-sl-vip");
+    let cardWeeklySlVip = document.querySelector(".weekly-sl-vip");
+    let cardMonthlySlVip = document.querySelector(".monthly-sl-vip");
+    let cardDailyFlr = document.querySelector(".daily-flr");
+    let cardDailyMttr = document.querySelector(".daily-mttr");
+    setCardProgress(cardDailySl, '%')
+    setCardProgress(cardWeeklySl, '%')
+    setCardProgress(cardMonthlySl, '%')
+    setCardProgress(cardDailySlVip, '%')
+    setCardProgress(cardWeeklySlVip, '%')
+    setCardProgress(cardMonthlySlVip, '%')
+    setCardProgress(cardDailyFlr, '%')
+    setCardProgress(cardDailyMttr, ' м.')    
+}
+
+function getDashboardData() {
     let current_date = document.getElementById('date').value;
     $.post('/json/dashboard', { date: current_date, csrfmiddlewaretoken: window.CSRF_TOKEN, }, function (data) {
-        let cardDailySl = document.querySelector(".daily-sl");
-        let cardWeeklySl = document.querySelector(".weekly-sl");
-        let cardMonthlySl = document.querySelector(".monthly-sl");
-        let cardDailySlVip = document.querySelector(".daily-sl-vip");
-        let cardWeeklySlVip = document.querySelector(".weekly-sl-vip");
-        let cardMonthlySlVip = document.querySelector(".monthly-sl-vip");
-        let cardDailyFlr = document.querySelector(".daily-flr");
-        let cardDailyMttr = document.querySelector(".daily-mttr");
         console.log(data)
-        setCardProgress(cardDailySl, '%')
-        setCardProgress(cardWeeklySl, '%')
-        setCardProgress(cardMonthlySl, '%')
-        setCardProgress(cardDailySlVip, '%')
-        setCardProgress(cardWeeklySlVip, '%')
-        setCardProgress(cardMonthlySlVip, '%')
-        setCardProgress(cardDailyFlr, '%')
-        setCardProgress(cardDailyMttr, 'м.')            
-        // setCardProgress(data.DayServiceLevelFirstLine, cardDailySl, data.Today, false, '%');
-        // setCardProgress(data.WeeklyServiceLevelFirstLine, cardWeeklySl, data.Week,  false, '%');
-        // setCardProgress(data.MonthlyServiceLevelFirstLine, cardMonthlySl, data.NameMonth,  false, '%');
-        // setCardProgress(data.DayServiceLevelVipLine, cardDailySlVip, data.Today, false, '%');
-        // setCardProgress(data.WeeklyServiceLevelVipLine, cardWeeklySlVip, data.Week, false, '%');
-        // setCardProgress(data.MonthlyServiceLevelVipLine, cardMonthlySlVip, data.NameMonth, false, '%');
-        // setCardProgress(data.DayFlr, cardDailyFlr, data.Today, false, '%');
-        // setCardProgress(data.DayMttr, cardDailyMttr, data.Today, false, 'м.');
     });
 }
 
 
 $(document).ready(function(){
-    updateCardProgress();
+    changeCardProgress();
+    changeAnalytics();
     setInterval('updateCardProgress()', 600000);
 });
 
 $("#form-date").submit(function(event) {
     event.preventDefault();
-    updateCardProgress();
+    getDashboardData();
 });
 

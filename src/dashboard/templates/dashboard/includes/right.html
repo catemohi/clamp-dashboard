@@ -38,7 +38,7 @@
   <!-- END OF RECENT UPDATES -->
   <div class="analitics">
     <h2>Аналитика смены</h2>
-    <div class="item sl">
+    <div class="item sl-first-line">
       <!-- <div class="icon">
         <span class="material-icons-sharp">donut_small</span>
       </div> -->
@@ -56,17 +56,17 @@
         </div>
         <div class="count-info">
           <ul>
-            <li class="dayly_sl"><h5>{{ dashboard_data.sl.first_line.dayly_sl }}</h5></li>
+            <li class="dayly_sl"><h5>{{ dashboard_data.sl.first_line.dayly_sl }}%</h5></li>
             <li class="num_issues"><h5>{{ dashboard_data.sl.first_line.num_issues }}</h5></li>
             <li class="num_worked_before_deadline"><h5>{{ dashboard_data.sl.first_line.num_worked_before_deadline }}</h5></li>
             <li class="num_worked_after_deadline"><h5>{{ dashboard_data.sl.first_line.num_worked_after_deadline }}</h5></li>
-            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.sl.first_line.rating_to_nominal }}</h5></li>
-            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.sl.first_line.rating_to_comparison }}</h5></li>
+            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.sl.first_line.rating_to_nominal }}%</h5></li>
+            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.sl.first_line.rating_to_comparison }}%</h5></li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="item sl-vip">
+    <div class="item sl-vip-line">
       <!-- <div class="icon">
         <span class="material-icons-sharp">donut_small</span>
       </div> -->
@@ -84,17 +84,17 @@
         </div>
         <div class="count-info">
           <ul>
-            <li class="dayly_sl"><h5>{{ dashboard_data.sl.vip_line.dayly_sl }}</h5></li>
+            <li class="dayly_sl"><h5>{{ dashboard_data.sl.vip_line.dayly_sl }}%</h5></li>
             <li class="num_issues"><h5>{{ dashboard_data.sl.vip_line.num_issues }}</h5></li>
             <li class="num_worked_before_deadline"><h5>{{ dashboard_data.sl.vip_line.num_worked_before_deadline }}</h5></li>
             <li class="num_worked_after_deadline"><h5>{{ dashboard_data.sl.vip_line.num_worked_after_deadline }}</h5></li>
-            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.sl.vip_line.rating_to_nominal }}</h5></li>
-            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.sl.vip_line.rating_to_comparison }}</h5></li>
+            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.sl.vip_line.rating_to_nominal }}%</h5></li>
+            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.sl.vip_line.rating_to_comparison }}%</h5></li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="item sl-com">
+    <div class="item sl-general">
       <!-- <div class="icon">
         <span class="material-icons-sharp">donut_small</span>
       </div> -->
@@ -112,17 +112,17 @@
         </div>
         <div class="count-info">
           <ul>
-            <li class="dayly_sl"><h5>{{ dashboard_data.sl.general.dayly_sl }}</h5></li>
+            <li class="dayly_sl"><h5>{{ dashboard_data.sl.general.dayly_sl }}%</h5></li>
             <li class="num_issues"><h5>{{ dashboard_data.sl.general.num_issues }}</h5></li>
             <li class="num_worked_before_deadline"><h5>{{ dashboard_data.sl.general.num_worked_before_deadline }}</h5></li>
             <li class="num_worked_after_deadline"><h5>{{ dashboard_data.sl.general.num_worked_after_deadline }}</h5></li>
-            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.sl.general.rating_to_nominal }}</h5></li>
-            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.sl.general.rating_to_comparison }}</h5></li>
+            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.sl.general.rating_to_nominal }}%</h5></li>
+            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.sl.general.rating_to_comparison }}%</h5></li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="item mttr-com">
+    <div class="item mttr">
       <!-- <div class="icon">
         <span class="material-icons-sharp">donut_small</span>
       </div> -->
@@ -138,15 +138,15 @@
         </div>
         <div class="count-info">
           <ul>
-            <li class="average_mttr_tech_support"><h5>{{ dashboard_data.mttr.average_mttr_tech_support }}</h5></li>
+            <li class="average_mttr_tech_support"><h5>{{ dashboard_data.mttr.average_mttr_tech_support }} мин.</h5></li>
             <li class="num_issues"><h5>{{ dashboard_data.mttr.num_issues }}</h5></li>
-            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.mttr.rating_to_nominal }}</h5></li>
-            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.mttr.rating_to_comparison }}</h5></li>
+            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.mttr.rating_to_nominal }}%</h5></li>
+            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.mttr.rating_to_comparison }}%</h5></li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="item flr-com">
+    <div class="item flr">
       <!-- <div class="icon">
         <span class="material-icons-sharp">donut_small</span>
       </div> -->
@@ -163,11 +163,11 @@
         </div>
         <div class="count-info">
           <ul>
-            <li class="level"><h5>{{ dashboard_data.flr.level }}</h5></li>
+            <li class="level"><h5>{{ dashboard_data.flr.level }}%</h5></li>
             <li class="num_primary_issues"><h5>{{ dashboard_data.flr.num_primary_issues }}</h5></li>
             <li class="num_issues_closed_independently"><h5>{{ dashboard_data.flr.num_issues_closed_independently }}</h5></li>
-            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.flr.rating_to_nominal }}</h5></li>
-            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.flr.rating_to_comparison }}</h5></li>
+            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.flr.rating_to_nominal }}%</h5></li>
+            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.flr.rating_to_comparison }}%</h5></li>
           </ul>
         </div>
       </div>
