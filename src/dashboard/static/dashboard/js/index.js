@@ -50,40 +50,6 @@ function setProgress(percent, progressCircle) {
 
 }
 
-// function setCardProgress(num, card, cardtext, dangerstatus, unit) {
-//     if (num < 0) {
-//         let num = 0
-//     } else if (num > 100) {
-//         let num = 100
-//     }
-
-//     let progressCircle = card.querySelector(".circle");
-//     let radius = progressCircle.r.baseVal.value;
-//     let circumference = 2 * Math.PI * radius;
-
-//     let offset = circumference - num / 100 * circumference;
-//     progressCircle.style.strokeDashoffset = offset;
-
-//     if (dangerstatus == true) {
-//         card.classList.add("danger-dash")
-//     } else {
-//         card.classList.remove("danger-dash")
-//     }
-
-//     let date = card.querySelector(".middle h1");
-//     date.textContent = cardtext;
-//     let a = -1;
-//     let run = setInterval(frames, 10);
-//     function frames() {
-//         if (a == num) {
-//             clearInterval(run);
-//         }
-//         let counter = card.querySelector(".number *");
-//         counter.textContent = a + unit;
-//         a = a + 1;
-//     }
-// }
-
 function setCardProgress(card, unit) {
     let counter = card.querySelector(".number *");
     let value = +counter.textContent
@@ -156,17 +122,47 @@ function changeDayValue(data) {
     date = cardDailyFlr.querySelector(".middle h1");
     date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options);
     counterDailyFlr.textContent = data.dashboard_data.flr.level;
+    // analytics
+    let analyticsSl = [[document.querySelector(".sl-first-line"),data.dashboard_data.sl.first_line, data.dashboard_data.analytics.sl.first_line],
+                       [document.querySelector(".sl-vip-line"), data.dashboard_data.sl.vip_line, data.dashboard_data.analytics.sl.vip_line],
+                       [document.querySelector(".sl-general"), data.dashboard_data.sl.general, data.dashboard_data.analytics.sl.general]]
+
+    analyticsSl.forEach(function setAnalyticsSlParam(Obj) {
+        Obj[0].querySelector(".dayly_sl *").textContent = Obj[1].dayly_sl + '%'
+        Obj[0].querySelector(".num_issues *").textContent = Obj[1].num_issues
+        Obj[0].querySelector(".num_worked_before_deadline *").textContent = Obj[1].num_worked_before_deadline
+        Obj[0].querySelector(".num_worked_after_deadline *").textContent = Obj[1].num_worked_after_deadline
+        Obj[0].querySelector(".rating_to_nominal *").textContent = Obj[2].rating_to_nominal + '%'
+        Obj[0].querySelector(".rating_to_comparison *").textContent = Obj[2].rating_to_comparison + '%'
+    });
+
+    let analyticsMttr = document.querySelector(".mttr");
+    analyticsMttr.querySelector(".average_mttr_tech_support *").textContent = data.dashboard_data.mttr.average_mttr_tech_support + 'мин.'
+    analyticsMttr.querySelector(".num_issues *").textContent = data.dashboard_data.mttr.num_issues
+    analyticsMttr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.mttr.rating_to_nominal + '%'
+    analyticsMttr.querySelector(".rating_to_comparison *").textContent = data.dashboard_data.analytics.mttr.rating_to_comparison + '%'
+
+    let analyticsFlr = document.querySelector(".flr");
+    analyticsFlr.querySelector(".level *").textContent = data.dashboard_data.flr.level + '%'
+    analyticsFlr.querySelector(".num_primary_issues *").textContent = data.dashboard_data.flr.num_primary_issues
+    analyticsFlr.querySelector(".num_issues_closed_independently *").textContent = data.dashboard_data.flr.num_issues_closed_independently    
+    analyticsFlr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.flr.rating_to_nominal + '%'
+    analyticsFlr.querySelector(".rating_to_comparison *").textContent = data.dashboard_data.analytics.flr.rating_to_comparison + '%'
+
     changeCardProgress();
     changeAnalytics();
 }
 
 function getDashboardData() {
     let current_date = document.getElementById('date').value;
+    if (new Date(current_date) > new Date(Date.now())) {
+        alert("Выбрана недопустимая дата!");
+        return
+    }
     $.post('/json/dashboard', { date: current_date, csrfmiddlewaretoken: window.CSRF_TOKEN, }, function (data) {
         changeDayValue(data)
     });
 }
-
 
 $(document).ready(function(){
     changeCardProgress();
