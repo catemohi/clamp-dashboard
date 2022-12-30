@@ -116,7 +116,7 @@ function changeDayValue(data) {
     counterDailySlFirstLine.textContent = data.dashboard_data.sl.first_line.dayly_sl;
     counterWeeklySlFirstLine = cardWeeklySl.querySelector(".number *");
     date = cardWeeklySl.querySelector(".middle h1");
-    date.textContent = formatWeekDataString(dates.monday_this_week, dates.sunday_this_week)
+    date.textContent = formatWeekDataString(data.dates.monday_this_week, data.dates.sunday_this_week)
     counterWeeklySlFirstLine.textContent = data.dashboard_data.sl.first_line.weekly_sl;  
     counterMonthlySlFirstLine = cardMonthlySl.querySelector(".number *");
     date = cardMonthlySl.querySelector(".middle h1");
@@ -129,7 +129,7 @@ function changeDayValue(data) {
     counterDailySlVipLine.textContent = data.dashboard_data.sl.vip_line.dayly_sl;
     counterWeeklySlVipLine = cardWeeklySlVip.querySelector(".number *");
     date = cardWeeklySlVip.querySelector(".middle h1");
-    date.textContent = formatWeekDataString(dates.monday_this_week, dates.sunday_this_week)    
+    date.textContent = formatWeekDataString(data.dates.monday_this_week, data.dates.sunday_this_week)    
     counterWeeklySlVipLine.textContent = data.dashboard_data.sl.vip_line.weekly_sl; 
     counterMonthlySlVipLine = cardMonthlySlVip.querySelector(".number *");
     date = cardMonthlySlVip.querySelector(".middle h1");
