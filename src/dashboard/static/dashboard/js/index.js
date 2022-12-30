@@ -1,3 +1,11 @@
+const cardDailySl = document.querySelector(".daily-sl");
+const cardWeeklySl = document.querySelector(".weekly-sl");
+const cardMonthlySl = document.querySelector(".monthly-sl");
+const cardDailySlVip = document.querySelector(".daily-sl-vip");
+const cardWeeklySlVip = document.querySelector(".weekly-sl-vip");
+const cardMonthlySlVip = document.querySelector(".monthly-sl-vip");
+const cardDailyFlr = document.querySelector(".daily-flr");
+const cardDailyMttr = document.querySelector(".daily-mttr");
 const alarmValueSL = 80
 
 
@@ -76,14 +84,6 @@ function setCardProgress(card, unit) {
 }
 
 function changeCardProgress() {
-    let cardDailySl = document.querySelector(".daily-sl");
-    let cardWeeklySl = document.querySelector(".weekly-sl");
-    let cardMonthlySl = document.querySelector(".monthly-sl");
-    let cardDailySlVip = document.querySelector(".daily-sl-vip");
-    let cardWeeklySlVip = document.querySelector(".weekly-sl-vip");
-    let cardMonthlySlVip = document.querySelector(".monthly-sl-vip");
-    let cardDailyFlr = document.querySelector(".daily-flr");
-    let cardDailyMttr = document.querySelector(".daily-mttr");
     setCardProgress(cardDailySl, '%')
     setCardProgress(cardWeeklySl, '%')
     setCardProgress(cardMonthlySl, '%')
@@ -94,11 +94,20 @@ function changeCardProgress() {
     setCardProgress(cardDailyMttr, ' м.')    
 }
 
-function getDashboardData() {
-    let current_date = document.getElementById('date').value;
-    $.post('/json/dashboard', { date: current_date, csrfmiddlewaretoken: window.CSRF_TOKEN, }, function (data) {
-        console.log(data)
+async function  getPostDashboardData() {
+    let post_data = {
+        date: document.getElementById('date').value,
+        csrfmiddlewaretoken: window.CSRF_TOKEN};
+    
+    let response = await fetch('/json/dashboard', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(post_data)
     });
+    let result = await response.json();
+    console(result);
 }
 
 
