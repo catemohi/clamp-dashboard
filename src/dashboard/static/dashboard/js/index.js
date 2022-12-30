@@ -21,7 +21,7 @@ function formatWeekDataString(dateFirst, dateSecond) {
     let monthSecondDate = String(dateSecond.getMonth() + 1).length === 1 ? '0' + String(dateSecond.getMonth() + 1): String(dateSecond.getMonth() + 1);
     let firstPath = dateFirst.getDate() + '.' + monthFirstDate
     let secondPath = dateSecond.getDate() + '.' + monthSecondDate
-    return firstPath + '-' + secondPath
+    return firstPath + ' - ' + secondPath
 }
 
 function setProgress(percent, progressCircle) {
