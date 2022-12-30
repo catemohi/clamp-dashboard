@@ -119,6 +119,6 @@ $(document).ready(function(){
 
 $("#form-date").submit(function(event) {
     event.preventDefault();
-    getDashboardData();
+    getPostDashboardData();
 });
 
