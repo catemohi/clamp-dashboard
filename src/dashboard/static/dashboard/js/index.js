@@ -85,7 +85,7 @@ function changeAnalytics() {
                            module.querySelector(".rating_to_comparison *")];
         console.log(RatingObjs)
         RatingObjs.forEach(function modifyRating(ratingObj) {
-            let valueRating = parseInt(ratingObj.textContent.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/));
+            let valueRating = parseInt(ratingObj.textContent.replace(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/, ''));
             if (valueRating > 0) {
                 ratingObj.textContent = "> на " + valueRating + "%";
                 ratingObj.classList.add("warning");
