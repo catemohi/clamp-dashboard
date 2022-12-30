@@ -94,20 +94,36 @@ function changeCardProgress() {
     setCardProgress(cardDailyMttr, ' м.')    
 }
 
-async function  getPostDashboardData() {
-    let post_data = {
-        date: document.getElementById('date').value,
-        csrfmiddlewaretoken: window.CSRF_TOKEN};
-    
-    let response = await fetch('/json/dashboard', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(post_data)
+function changeDayValue(data) {
+    // first line
+    counterDailySlFirstLine = cardDailySl.querySelector(".number *")
+    counterDailySlFirstLine.textContent = data.sl.first_line.dayly_sl
+    counterWeeklySlFirstLine = cardWeeklySl.querySelector(".number *")
+    counterWeeklySlFirstLine.textContent = data.sl.first_line.weekly_sl  
+    counterMonthlySlFirstLine = cardMonthlySl.querySelector(".number *")
+    counterMonthlySlFirstLine.textContent = data.sl.first_line.mountly_sl
+    // vip line
+    counterDailySlVipLine = cardDailySlVip.querySelector(".number *")
+    counterDailySlVipLine.textContent = data.sl.vip_line.dayly_sl
+    counterWeeklySlVipLine = cardWeeklySlVip.querySelector(".number *")
+    counterWeeklySlVipLine.textContent = data.sl.vip_line.weekly_sl  
+    counterMonthlySlVipLine = cardMonthlySlVip.querySelector(".number *")
+    counterMonthlySlVipLine.textContent = data.sl.vip_line.mountly_sl
+    // mttr
+    counterDailyMttr = cardDailyMttr.querySelector(".number *")
+    counterDailycounterDailyMttr.textContent = data.mttr.average_mttr_tech_support
+    // flr
+    counterDailyFlr = cardDailyFlr.querySelector(".number *")
+    counterDailycounterDailyFlr.textContent = data.flr.level
+    changeCardProgress();
+    changeAnalytics();
+}
+
+function getDashboardData() {
+    let current_date = document.getElementById('date').value;
+    $.post('/json/dashboard', { date: current_date, csrfmiddlewaretoken: window.CSRF_TOKEN, }, function (data) {
+        changeDayValue(data)
     });
-    let result = await response.json();
-    console(result);
 }
 
 
@@ -119,6 +135,6 @@ $(document).ready(function(){
 
 $("#form-date").submit(function(event) {
     event.preventDefault();
-    getPostDashboardData();
+    getDashboardData();
 });
 
