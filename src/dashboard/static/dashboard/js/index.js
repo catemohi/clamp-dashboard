@@ -96,28 +96,28 @@ function changeCardProgress() {
 
 function changeDayValue(data) {
     console.log(data)
-    // // first line
-    // counterDailySlFirstLine = cardDailySl.querySelector(".number *")
-    // counterDailySlFirstLine.textContent = data.sl.first_line.dayly_sl
-    // counterWeeklySlFirstLine = cardWeeklySl.querySelector(".number *")
-    // counterWeeklySlFirstLine.textContent = data.sl.first_line.weekly_sl  
-    // counterMonthlySlFirstLine = cardMonthlySl.querySelector(".number *")
-    // counterMonthlySlFirstLine.textContent = data.sl.first_line.mountly_sl
-    // // vip line
-    // counterDailySlVipLine = cardDailySlVip.querySelector(".number *")
-    // counterDailySlVipLine.textContent = data.sl.vip_line.dayly_sl
-    // counterWeeklySlVipLine = cardWeeklySlVip.querySelector(".number *")
-    // counterWeeklySlVipLine.textContent = data.sl.vip_line.weekly_sl  
-    // counterMonthlySlVipLine = cardMonthlySlVip.querySelector(".number *")
-    // counterMonthlySlVipLine.textContent = data.sl.vip_line.mountly_sl
-    // // mttr
-    // counterDailyMttr = cardDailyMttr.querySelector(".number *")
-    // counterDailycounterDailyMttr.textContent = data.mttr.average_mttr_tech_support
-    // // flr
-    // counterDailyFlr = cardDailyFlr.querySelector(".number *")
-    // counterDailycounterDailyFlr.textContent = data.flr.level
-    // changeCardProgress();
-    // changeAnalytics();
+    // first line
+    counterDailySlFirstLine = cardDailySl.querySelector(".number *")
+    counterDailySlFirstLine.textContent = data.sl.first_line.dayly_sl
+    counterWeeklySlFirstLine = cardWeeklySl.querySelector(".number *")
+    counterWeeklySlFirstLine.textContent = data.sl.first_line.weekly_sl  
+    counterMonthlySlFirstLine = cardMonthlySl.querySelector(".number *")
+    counterMonthlySlFirstLine.textContent = data.sl.first_line.mountly_sl
+    // vip line
+    counterDailySlVipLine = cardDailySlVip.querySelector(".number *")
+    counterDailySlVipLine.textContent = data.sl.vip_line.dayly_sl
+    counterWeeklySlVipLine = cardWeeklySlVip.querySelector(".number *")
+    counterWeeklySlVipLine.textContent = data.sl.vip_line.weekly_sl  
+    counterMonthlySlVipLine = cardMonthlySlVip.querySelector(".number *")
+    counterMonthlySlVipLine.textContent = data.sl.vip_line.mountly_sl
+    // mttr
+    counterDailyMttr = cardDailyMttr.querySelector(".number *")
+    counterDailycounterDailyMttr.textContent = data.mttr.average_mttr_tech_support
+    // flr
+    counterDailyFlr = cardDailyFlr.querySelector(".number *")
+    counterDailycounterDailyFlr.textContent = data.flr.level
+    changeCardProgress();
+    changeAnalytics();
 }
 
 function getDashboardData() {

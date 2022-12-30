@@ -1,5 +1,4 @@
 from datetime import date, datetime, time, timedelta
-from json import JSONEncoder
 from typing import Literal, NamedTuple, Mapping
 from typing import Union, List, Any
 
@@ -124,19 +123,6 @@ def get_trouble_ticket_count_from_db():
 ###############################################################################
 
 
-class CustomEncoder(JSONEncoder):
-    """
-    Кастомный енкодер JSON для NamedTuple и DateTime
-
-    """
-    def default(self, o: Any) -> Any:
-        if isinstance(o, (datetime, date, time)):
-            return o.strftime('%d.%m.%Y')
-        elif isinstance(o, timedelta):
-            return o.seconds()
-        return super().default(o)
-
-
 class Dates(NamedTuple):
     """Класс для хранения коллекции дат.
 
@@ -240,6 +226,7 @@ def json_encoding(obj: dict) -> str:
         elif isinstance(obj, timedelta):
             obj = obj.seconds()
         return obj
+
     return _recursive_conversion(obj)
 
 
