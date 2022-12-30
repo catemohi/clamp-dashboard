@@ -121,7 +121,9 @@ function changeAnalytics() {
         console.log(numWorkedAfterDeadline)
         if (numWorkedAfterDeadline != null) {
             let valueWorkedAfterDeadline= parsingInt(numWorkedAfterDeadline.textContent);
+            console.log(valueWorkedAfterDeadline)
             if (valueWorkedAfterDeadline > 0) {
+                console.log('> 0')
                 numWorkedAfterDeadline.classList.add("warning");
             }
         }
