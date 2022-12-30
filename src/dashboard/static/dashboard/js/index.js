@@ -105,13 +105,16 @@ function changeAnalytics() {
                 //pass
             }
         });
+
         let daylySL = module.querySelector(".dayly_sl *")
-        let valueSL= parsingInt(daylySL.textContent);
-        if (valueSL >= alarmValueSL) {
-            daylySL.classList.add("success");
-        }
-        else {
-            daylySL.classList.add("warning");
+        if (daylySL != null) {
+            let valueSL= parsingInt(daylySL.textContent);
+            if (valueSL >= alarmValueSL) {
+                daylySL.classList.add("success");
+            }
+            else {
+                daylySL.classList.add("warning");
+            }
         }
     });
 }
