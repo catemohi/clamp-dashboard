@@ -43,8 +43,9 @@ def dashboard(request):
     # Запрос данных для контекста
     today = datetime.now()
     dates = get_date_collections(today.strftime('%Y-%m-%d'))
-    dashboard_data = get_dashboard_data(today.strftime('%Y-%m-%d'))
-    dashboard_data = analytics(dashboard_data)
+    dashboard_data = get_dashboard_data(dates.chosen_date.strftime('%Y-%m-%d'))
+    before_day_data = get_dashboard_data(dates.before_day.strftime('%Y-%m-%d'))
+    dashboard_data = analytics(dashboard_data, before_day_data)
     notifications = get_notify(slice=50)
 
     context.update({'dates': dates, 'dashboard_data': dashboard_data})
@@ -57,8 +58,15 @@ def dashboard(request):
 
 def table(request):
     context = {}
-    context.update(theme_check(request.COOKIES))
+    today = datetime.now()
+    dates = get_date_collections(today.strftime('%Y-%m-%d'))
+    dashboard_data = get_dashboard_data(dates.chosen_date.strftime('%Y-%m-%d'))
+    before_day_data = get_dashboard_data(dates.before_day.strftime('%Y-%m-%d'))
+    dashboard_data = analytics(dashboard_data, before_day_data)
     notifications = get_notify(slice=50)
+
+    context.update({'dates': dates, 'dashboard_data': dashboard_data})
+    context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications})
     context.update(
         {'trouble_ticket_counter': '99+', 'trouble_ticket_vip_counter': '99+'})
@@ -67,8 +75,15 @@ def table(request):
 
 def reports(request):
     context = {}
-    context.update(theme_check(request.COOKIES))
+    today = datetime.now()
+    dates = get_date_collections(today.strftime('%Y-%m-%d'))
+    dashboard_data = get_dashboard_data(dates.chosen_date.strftime('%Y-%m-%d'))
+    before_day_data = get_dashboard_data(dates.before_day.strftime('%Y-%m-%d'))
+    dashboard_data = analytics(dashboard_data, before_day_data)
     notifications = get_notify(slice=50)
+
+    context.update({'dates': dates, 'dashboard_data': dashboard_data})
+    context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications})
     context.update(
         {'trouble_ticket_counter': '99+', 'trouble_ticket_vip_counter': '99+'})
@@ -78,8 +93,9 @@ def reports(request):
 def dashboard_json_data(request):
     data = request.POST
     dates = get_date_collections(data['date'])
-    dashboard_data = get_dashboard_data(data['date'])
-    dashboard_data = analytics(dashboard_data)
+    dashboard_data = get_dashboard_data(dates.chosen_date.strftime('%Y-%m-%d'))
+    before_day_data = get_dashboard_data(dates.before_day.strftime('%Y-%m-%d'))
+    dashboard_data = analytics(dashboard_data, before_day_data)
     dashboard_data = json_encoding(dashboard_data)
     dates = json_encoding(dates)
     responce = {"dashboard_data": dashboard_data, "dates": dates}

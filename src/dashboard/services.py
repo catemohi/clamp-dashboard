@@ -154,6 +154,7 @@ class Dates(NamedTuple):
     sunday_this_week: date
     chosen_date: date
     next_day: date
+    before_day: date
 
 
 class ReportServiceLevel(NamedTuple):
@@ -297,6 +298,7 @@ def get_date_collections(datestring: str) -> Dates:
         - число конца недели
         - требуемая дата
         - слудующий день от требуемой даты
+        - предыдущий день от требуемой даты
 
     Args:
         datestring (str): строка даты от которой требуется выдать коллекцию
@@ -317,10 +319,11 @@ def get_date_collections(datestring: str) -> Dates:
     _until_sunday = 7 - datetime.isoweekday(chosen_date)
     sunday_this_week = (chosen_datetime + timedelta(days=_until_sunday)).date()
 
-    next_day = date(chosen_date.year, chosen_date.month, chosen_date.day + 1)
+    next_day = chosen_date + timedelta(days=1)
+    before_day = chosen_date - timedelta(days=1)
 
-    return Dates(first_day_month, first_day_next_month,
-                 monday_this_week, sunday_this_week, chosen_date, next_day)
+    return Dates(first_day_month, first_day_next_month, monday_this_week,
+                 sunday_this_week, chosen_date, next_day, before_day)
 
 
 def _parse_service_level(dates: Dates, chosen_group: str,
