@@ -351,12 +351,15 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
     try:
         obj = TroubleTicket.objects.get(uuid=issue['uuid'])
         status = checking_issues_changes(obj, issue)
+        if obj.alarm_deadline and status:
+            obj.alarm_deadline = False
+            obj.save()
+        if obj.alarm_return_to_work and status:
+            obj.alarm_return_to_work = False
+            obj.save()
         change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
-                            {"alarm_deadline": not status,
-                             "alarm_return_to_work": not status,
-                             **_converter_timestring_to_timeobj_for_obj(issue),
-                             },
-                            )
+                            {**_converter_timestring_to_timeobj_for_obj(issue),
+                             })
 
     except TroubleTicket.DoesNotExist:
         notify_issue(issue, **{"type": IssueNotification.NEW})
@@ -654,7 +657,7 @@ def issues_list_synchronization(*args, **kwargs):
 
 
 def checking_issues_changes(old_issue: TroubleTicket,
-                            new_issue: Mapping) -> Mapping:
+                            new_issue: Mapping) -> bool:
     """Функиция для проверки изменений в обращении.
 
     Args:
