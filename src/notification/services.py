@@ -67,7 +67,7 @@ def notify_issue(issue: Mapping, *args, **kwargs):
             )
 
     elif kwargs.get('type') == IssueNotification.NEW:
-        group = (lambda issue: 'vip линии' if issue['vip_contragent']
+        group = (lambda issue: 'VIP линии' if issue['vip_contragent']
                  else 'первой линии')(issue)
         emodji = (lambda issue: '❤️' if issue['vip_contragent']
                   else '')(issue)
@@ -79,7 +79,7 @@ def notify_issue(issue: Mapping, *args, **kwargs):
             )
 
     elif kwargs.get('type') == IssueNotification.CLOSED:
-        group = (lambda issue: 'vip линии' if issue['vip_contragent']
+        group = (lambda issue: 'VIP линии' if issue['vip_contragent']
                  else 'первой линии')(issue)
         emodji = (lambda issue: '❤️' if issue['vip_contragent']
                   else '')(issue)
@@ -92,7 +92,7 @@ def notify_issue(issue: Mapping, *args, **kwargs):
             )
 
     elif kwargs.get('type') == IssueNotification.RETURNED:
-        group = (lambda issue: 'vip линии' if issue['vip_contragent']
+        group = (lambda issue: 'VIP линии' if issue['vip_contragent']
                  else 'первой линии')(issue)
         message = (f'🧨 ПРЕДУПРЕЖДЕНИЕ! В {issue.get("return_to_work_time")} '
                    f'на {group} c отложенного шага {issue.get("step")}'
@@ -103,7 +103,7 @@ def notify_issue(issue: Mapping, *args, **kwargs):
              "time": time})
 
     elif kwargs.get('type') == IssueNotification.BURNED:
-        group = (lambda issue: 'vip линии' if issue['vip_contragent']
+        group = (lambda issue: 'VIP линии' if issue['vip_contragent']
                  else 'первой линии')(issue)
         message = (f'🧨 ПРЕДУПРЕЖДЕНИЕ! Обращение номер {issue.get("number")} '
                    f'находится на {issue.get("responsible")} '
