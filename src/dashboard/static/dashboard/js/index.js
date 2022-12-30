@@ -75,58 +75,6 @@ function setCardProgress(card, unit) {
     }
 }
 
-function parsingInt(textString) {
-    return parseInt(textString.replace(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/, ''));
-}
-
-
-function changeAnalytics() {
-    let Analytics = [document.querySelector(".sl-first-line"),
-                     document.querySelector(".sl-vip-line"),
-                     document.querySelector(".sl-general"),
-                     document.querySelector(".mttr"),
-                     document.querySelector(".flr")];
-
-
-    Analytics.forEach(function modifyPercentRatings(module) {
-        let RatingObjs =  [module.querySelector(".rating_to_nominal *"),
-                           module.querySelector(".rating_to_comparison *")];
-
-        RatingObjs.forEach(function modifyRating(ratingObj) {
-            let valueRating = parsingInt(ratingObj.textContent);
-            if (valueRating > 0) {
-                ratingObj.textContent = "> на " + Math.abs(valueRating) + "%";
-                ratingObj.classList.add("danger");
-            } else if (valueRating < 0){
-                ratingObj.textContent = "< на " + Math.abs(valueRating) + "%";
-                ratingObj.classList.add("success");
-            }
-            else {
-                //pass
-            }
-        });
-
-        let daylySL = module.querySelector(".dayly_sl *")
-        if (daylySL != null) {
-            let valueSL= parsingInt(daylySL.textContent);
-            if (valueSL >= alarmValueSL) {
-                daylySL.classList.add("success");
-            }
-            else {
-                daylySL.classList.add("danger");
-            }
-        }
-
-        let numWorkedAfterDeadline = module.querySelector(".num_worked_after_deadline *")
-        if (numWorkedAfterDeadline != null) {
-            let valueWorkedAfterDeadline= +numWorkedAfterDeadline.textContent;
-            if (valueWorkedAfterDeadline > 0) {
-                numWorkedAfterDeadline.classList.add("danger");
-            }
-        }
-    });
-}
-
 function changeCardProgress() {
     let cardDailySl = document.querySelector(".daily-sl");
     let cardWeeklySl = document.querySelector(".weekly-sl");
