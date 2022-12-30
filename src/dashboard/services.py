@@ -235,11 +235,12 @@ def json_encoding(obj: dict) -> str:
                 obj[key] = _recursive_conversion(val)
         elif isinstance(obj, tuple) and hasattr(obj, '_asdict'):
             obj = obj._asdict()
+        elif isinstance(obj, (datetime, date, time)):
+            obj = obj.strftime('%d.%m.%Y')
+        elif isinstance(obj, timedelta):
+            obj = obj.seconds()
         return obj
-
-    obj = _recursive_conversion(obj)
-    encoder = CustomEncoder()
-    return encoder.encode(obj)
+    return _recursive_conversion(obj)
 
 
 def convert_datestr_to_datetime_obj(datestring: str) -> datetime:
