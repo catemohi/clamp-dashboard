@@ -1,3 +1,6 @@
+const alarmValueSL = 80
+
+
 function setProgress(percent, progressCircle) {
     let progress_circle = cart.querySelector("#circle")
     let offset = circumference - percent / 100 * circumference;
@@ -72,6 +75,11 @@ function setCardProgress(card, unit) {
     }
 }
 
+function parsingInt(textString) {
+    return parseInt(textString.replace(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/, ''));
+}
+
+
 function changeAnalytics() {
     let Analytics = [document.querySelector(".sl-first-line"),
                      document.querySelector(".sl-vip-line"),
@@ -83,9 +91,9 @@ function changeAnalytics() {
     Analytics.forEach(function modifyPercentRatings(module) {
         let RatingObjs =  [module.querySelector(".rating_to_nominal *"),
                            module.querySelector(".rating_to_comparison *")];
-        console.log(RatingObjs)
+
         RatingObjs.forEach(function modifyRating(ratingObj) {
-            let valueRating = parseInt(ratingObj.textContent.replace(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/, ''));
+            let valueRating = parsingInt(ratingObj.textContent);
             if (valueRating > 0) {
                 ratingObj.textContent = "> на " + Math.abs(valueRating) + "%";
                 ratingObj.classList.add("warning");
@@ -97,6 +105,14 @@ function changeAnalytics() {
                 //pass
             }
         });
+        let daylySL = module.querySelector(".dayly_sl *")
+        let valueSL= parsingInt(daylySL.textContent);
+        if (valueSL >= alarmValueSL) {
+            daylySL.classList.add("success");
+        }
+        else {
+            daylySL.classList.add("warning");
+        }
     });
 }
 
