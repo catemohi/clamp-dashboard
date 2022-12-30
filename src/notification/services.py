@@ -36,19 +36,20 @@ def create_update_message(issue: Mapping, changed: Mapping) -> str:
         str: текст уведомления
     """
     emodji = (lambda issue: '❤' if issue['vip_contragent'] else '')(issue)
-    message = f'{emodji}'
+    message = ''
     if changed.get('return_to_work_time', False):
-        message = (f'Время решения обращения номер {issue.get("number")} '
-                   f'изменено на {issue.get("return_to_work_time")}')
+        message = (f'{emodji} Время решения обращения номер'
+                   f'{issue.get("number")} изменено на '
+                   f'{issue.get("return_to_work_time")}')
 
     if changed.get('step', False):
-        message = (f'Обращение номер {issue.get("number")} переведено на шаг '
-                   f'{issue.get("step")}')
+        message = (f'{emodji} Обращение номер {issue.get("number")}'
+                   f'переведено на шаг {issue.get("step")}')
 
     if changed.get('responsible', False):
-        message = (f'Ответственным за обращение номер {issue.get("number")} '
-                   f'назначен(а) {issue.get("responsible")} шаг '
-                   f'{issue.get("step")}')
+        message = (f'{emodji} Ответственным за обращение номер '
+                   f'{issue.get("number")} назначен(а)'
+                   f'{issue.get("responsible")} шаг {issue.get("step")}')
     return message
 
 
