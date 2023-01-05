@@ -813,7 +813,7 @@ def get_day_dates_and_data(datestring: Literal['%Y-%m-%d'] = None
         today = datetime.now().date().isoformat()
 
     dates = get_date_collections(today)
-    dashboard_data = get_dashboard_data(dates.chosen_date)
-    before_day_data = get_dashboard_data(dates.before_day)
+    dashboard_data = get_dashboard_data(dates.chosen_date.isoformat())
+    before_day_data = get_dashboard_data(dates.before_day.isoformat())
     dashboard_data = analytics(dashboard_data, before_day_data)
     return {'dates': dates, 'dashboard_data': dashboard_data}
