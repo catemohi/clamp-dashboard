@@ -40,7 +40,6 @@ function counterUpdate() {
     if (firstLineCounter.textContent > 1) {
         firstLineCounter.style.display = 'block';
         fadeIn(firstLineCounter, 100);
-        console.log('firstLineCounter exist');
     }
     else {
         firstLineCounter.style.display = 'none';
@@ -49,7 +48,6 @@ function counterUpdate() {
     if (vipLineCounter.textContent > 1) {
         vipLineCounter.style.display = 'block';
         fadeIn(vipLineCounter, 100);
-        console.log('vipLineCounter exist')
     }
     else {
         vipLineCounter.style.display = 'none';
