@@ -26,8 +26,4 @@ class DashboardConsumer(AsyncWebsocketConsumer):
                                'time': time_message}))
 
     async def reports(self, event):
-        text_message = event['text']
-        time_message = event['time']
-        await self.send(dumps({'type': 'reports',
-                               'text': text_message,
-                               'time': time_message}))
+        await self.send(dumps({'type': 'reports', **event}))
