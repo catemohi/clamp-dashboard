@@ -27,3 +27,6 @@ class DashboardConsumer(AsyncWebsocketConsumer):
 
     async def reports(self, event):
         await self.send(dumps({'type': 'reports', **event}))
+
+    async def count(self, event):
+        await self.send(dumps({'type': 'count', **event}))
