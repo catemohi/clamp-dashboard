@@ -802,8 +802,8 @@ def get_dashboard_data(datestring: str) -> Mapping:
     return day_report
 
 
-def get_day_dates_and_data(datestring: Literal['%Y-%m-%d'] = None
-    ) ->  dict[Literal['dates', 'dashboard_data'], Any]:
+def get_day_dates_and_data(datestring: Literal['%Y-%m-%d'] = None) -> dict[
+        Literal['dates', 'dashboard_data'], Any]:
     """
     Функция для получения дневного отчета для view.
 

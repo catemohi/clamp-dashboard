@@ -687,7 +687,7 @@ def checking_issues_changes(old_issue: TroubleTicket,
                         'return_to_work_time': return_to_work_time_is_changed}
 
         send_notification(new_issue, **{"type": IssueNotification.CHANGED,
-                                   "changed": changed_dict})
+                                        "changed": changed_dict})
 
     return issue_is_changed
 
