@@ -52,6 +52,7 @@ function startWebSocket() {
 
 	SOCKET.onclose = function(){
 	// Try to reconnect in 5 seconds
-	setTimeout(function() {start_chat_ws()}, 5000);
+	setTimeout(function() {startWebSocket()}, 5000);
 	};
 };
+startWebSocket()
