@@ -288,7 +288,7 @@ aside .sidebar li .task-count span.task-status-on-the-group-count{
   margin-right: 0px;
   border-radius: var(--border-radius-1);
   opacity: 0;
-  display: none;
+  display: block;
   text-align: center;
 }
 
@@ -301,9 +301,8 @@ aside .sidebar li .task-count span.task-status-on-the-vip-count{
   border-radius: var(--border-radius-1);
   opacity: 0;
   text-align: center;
-  display: none;
+  display: block;
 }
-
 .task-count {
   display: grid;
   gap: 0.2rem;
