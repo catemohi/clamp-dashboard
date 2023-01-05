@@ -37,19 +37,25 @@ $(function() {
 function counterUpdate() {
     let firstLineCounter = document.querySelector('.task-status-on-the-group-count');
     let vipLineCounter = document.querySelector('.task-status-on-the-vip-count');
+    console.log(firstLineCounter.textContent);
+    console.log(vipLineCounter.textContent)
     if (firstLineCounter.textContent > 1) {
+        console.log('first yes!')
         firstLineCounter.style.display = 'block';
         fadeIn(firstLineCounter, 100);
     }
     else {
         firstLineCounter.style.display = 'none';
         firstLineCounter.style.opacity = '0';
+        console.log('first no!')
     };
     if (vipLineCounter.textContent > 1) {
+        console.log('vip yes!')
         vipLineCounter.style.display = 'block';
         fadeIn(vipLineCounter, 100);
     }
     else {
+        console.log('vip no!')
         vipLineCounter.style.display = 'none';
         vipLineCounter.style.opacity = '0';
     }
