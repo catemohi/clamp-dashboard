@@ -810,9 +810,9 @@ def get_day_dates_and_data(datestring: Literal['%Y-%m-%d'] = None
         и номинальных значений нагрузки.
     """
     if datestring is None:
-        today = datetime.now().date().isoformat()
+        datestring = datetime.now().date().isoformat()
 
-    dates = get_date_collections(today)
+    dates = get_date_collections(datestring)
     dashboard_data = get_dashboard_data(dates.chosen_date.isoformat())
     before_day_data = get_dashboard_data(dates.before_day.isoformat())
     dashboard_data = analytics(dashboard_data, before_day_data)
