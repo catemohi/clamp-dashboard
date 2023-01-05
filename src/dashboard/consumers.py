@@ -10,35 +10,24 @@ class DashboardConsumer(AsyncWebsocketConsumer):
     """
 
     async def connect(self):
-        await self.channel_layer.group_add("issue_notifi", self.channel_name)
+        await self.channel_layer.group_add("clamp", self.channel_name)
         await self.accept()
 
     async def disconnect(self, code):
-        await self.channel_layer.group_discard("issue_notifi",
+        await self.channel_layer.group_discard("clamp",
                                                self.channel_name)
         return await super().disconnect(code)
 
-    async def updated(self, event):
+    async def notification(self, event):
         text_message = event['text']
         time_message = event['time']
-        await self.send(dumps({'text': text_message, 'time': time_message}))
+        await self.send(dumps({'type': 'notification',
+                               'text': text_message,
+                               'time': time_message}))
 
-    async def new(self, event):
+    async def reports(self, event):
         text_message = event['text']
         time_message = event['time']
-        await self.send(dumps({'text': text_message, 'time': time_message}))
-
-    async def closed(self, event):
-        text_message = event['text']
-        time_message = event['time']
-        await self.send(dumps({'text': text_message, 'time': time_message}))
-
-    async def returned(self, event):
-        text_message = event['text']
-        time_message = event['time']
-        await self.send(dumps({'text': text_message, 'time': time_message}))
-
-    async def burned(self, event):
-        text_message = event['text']
-        time_message = event['time']
-        await self.send(dumps({'text': text_message, 'time': time_message}))
+        await self.send(dumps({'type': 'reports',
+                               'text': text_message,
+                               'time': time_message}))

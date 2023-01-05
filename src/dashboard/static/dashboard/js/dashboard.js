@@ -83,8 +83,7 @@ function changeCardProgress() {
     setCardProgress(cardDailyMttr, ' м.')    
 }
 
-function changeDayValue(data) {
-    console.log(data)
+function changeProgresTabsValue(data) {
     // first line
     counterDailySlFirstLine = cardDailySl.querySelector(".number *");
     date = cardDailySl.querySelector(".middle h1");
@@ -122,35 +121,7 @@ function changeDayValue(data) {
     date = cardDailyFlr.querySelector(".middle h1");
     date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options);
     counterDailyFlr.textContent = data.dashboard_data.flr.level;
-    // analytics
-    let analyticsSl = [[document.querySelector(".sl-first-line"),data.dashboard_data.sl.first_line, data.dashboard_data.analytics.sl.first_line],
-                       [document.querySelector(".sl-vip-line"), data.dashboard_data.sl.vip_line, data.dashboard_data.analytics.sl.vip_line],
-                       [document.querySelector(".sl-general"), data.dashboard_data.sl.general, data.dashboard_data.analytics.sl.general]]
-
-    analyticsSl.forEach(function setAnalyticsSlParam(Obj) {
-        Obj[0].querySelector(".dayly_sl *").textContent = Obj[1].dayly_sl + '%'
-        Obj[0].querySelector(".num_issues *").textContent = Obj[1].num_issues
-        Obj[0].querySelector(".num_worked_before_deadline *").textContent = Obj[1].num_worked_before_deadline
-        Obj[0].querySelector(".num_worked_after_deadline *").textContent = Obj[1].num_worked_after_deadline
-        Obj[0].querySelector(".rating_to_nominal *").textContent = Obj[2].rating_to_nominal + '%'
-        Obj[0].querySelector(".rating_to_comparison *").textContent = Obj[2].rating_to_comparison + '%'
-    });
-
-    let analyticsMttr = document.querySelector(".mttr");
-    analyticsMttr.querySelector(".average_mttr_tech_support *").textContent = data.dashboard_data.mttr.average_mttr_tech_support + 'мин.'
-    analyticsMttr.querySelector(".num_issues *").textContent = data.dashboard_data.mttr.num_issues
-    analyticsMttr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.mttr.rating_to_nominal + '%'
-    analyticsMttr.querySelector(".rating_to_comparison *").textContent = data.dashboard_data.analytics.mttr.rating_to_comparison + '%'
-
-    let analyticsFlr = document.querySelector(".flr");
-    analyticsFlr.querySelector(".level *").textContent = data.dashboard_data.flr.level + '%'
-    analyticsFlr.querySelector(".num_primary_issues *").textContent = data.dashboard_data.flr.num_primary_issues
-    analyticsFlr.querySelector(".num_issues_closed_independently *").textContent = data.dashboard_data.flr.num_issues_closed_independently    
-    analyticsFlr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.flr.rating_to_nominal + '%'
-    analyticsFlr.querySelector(".rating_to_comparison *").textContent = data.dashboard_data.analytics.flr.rating_to_comparison + '%'
-
     changeCardProgress();
-    changeAnalytics();
 }
 
 function getDashboardData() {
@@ -166,8 +137,6 @@ function getDashboardData() {
 
 $(document).ready(function(){
     changeCardProgress();
-    changeAnalytics();
-    setInterval('updateCardProgress()', 600000);
 });
 
 $("#form-date").submit(function(event) {

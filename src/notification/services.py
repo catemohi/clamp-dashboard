@@ -1,5 +1,5 @@
 from json import dumps
-from typing import Mapping
+from typing import Mapping, Literal, Any
 from enum import Enum
 from datetime import datetime
 
@@ -9,7 +9,7 @@ from channels.layers import get_channel_layer
 from .models import NotificationMessage
 
 
-channel_layer = get_channel_layer()
+CHANNEL_LAYER = get_channel_layer()
 
 
 class IssueNotification(Enum):
@@ -53,7 +53,7 @@ def create_update_message(issue: Mapping, changed: Mapping) -> str:
     return message
 
 
-def notify_issue(issue: Mapping, *args, **kwargs):
+def send_notification(issue: Mapping, *args, **kwargs):
     """Уведомление о новом обращении.
     """
 
@@ -62,8 +62,8 @@ def notify_issue(issue: Mapping, *args, **kwargs):
     if kwargs.get('type') == IssueNotification.CHANGED:
         message = create_update_message(issue, kwargs['changed'])
         result = (
-            "issue_notifi",
-            {"type": "updated", "issue": issue, "text": message, "time": time},
+            "clamp",
+            {"type": "notification", "subtype": "updated", "issue": issue, "text": message, "time": time},
             )
 
     elif kwargs.get('type') == IssueNotification.NEW:
@@ -74,8 +74,8 @@ def notify_issue(issue: Mapping, *args, **kwargs):
         message = (f'{emodji} На {group} появилось новое обращение номер '
                    f'{issue.get("number")}')
         result = (
-            "issue_notifi",
-            {"type": "new", "issue": issue, "text": message, "time": time},
+            "clamp",
+            {"type": "notification", "subtype": "new", "issue": issue, "text": message, "time": time},
             )
 
     elif kwargs.get('type') == IssueNotification.CLOSED:
@@ -86,8 +86,8 @@ def notify_issue(issue: Mapping, *args, **kwargs):
         message = (f'{emodji} На {group} закрыто или переведено с шага '
                    f'обращение номер {issue.get("number")}')
         result = (
-            "issue_notifi",
-            {"type": "closed", "issue": issue, "text": message,
+            "clamp",
+            {"type": "notification", "subtype": "closed", "issue": issue, "text": message,
              "time": time},
             )
 
@@ -98,8 +98,8 @@ def notify_issue(issue: Mapping, *args, **kwargs):
                    f'на {group} c отложенного шага {issue.get("step")}'
                    f'вернется обращение номер {issue.get("number")}')
         result = (
-            "issue_notifi",
-            {"type": "returned", "issue": issue, "text": message,
+            "clamp",
+            {"type": "notification", "subtype": "returned", "issue": issue, "text": message,
              "time": time})
 
     elif kwargs.get('type') == IssueNotification.BURNED:
@@ -109,15 +109,14 @@ def notify_issue(issue: Mapping, *args, **kwargs):
                    f'находится на {issue.get("responsible")} '
                    f'{issue.get("step_time") // 60} минут!')
         result = (
-            "issue_notifi",
-            {"type": "burned", "issue": issue, "text": message,
+            "clamp",
+            {"type": "notification", "subtype": "burned", "issue": issue, "text": message,
              "time": time})
 
     NotificationMessage(text=result[1]["text"],
                         datetime=result[1]["time"],
                         issue=result[1]["issue"]).save()
-    async_to_sync(channel_layer.group_send)(*result)
-    return result
+    async_to_sync(CHANNEL_LAYER.group_send)(*result)
 
 
 def get_notify(*args, slice: int = 0, **kwargs) -> list[dict]:
@@ -134,3 +133,11 @@ def get_notify(*args, slice: int = 0, **kwargs) -> list[dict]:
     """
     notify = NotificationMessage.objects.order_by('datetime').reverse()[:50]
     return notify
+
+
+def send_report(sended_data: dict[Literal['dates', 'dashboard_data'], Any]):
+    """
+    """
+    result = ("clamp", {"type": "reports", **sended_data})
+    async_to_sync(CHANNEL_LAYER.group_send)(*result)
+

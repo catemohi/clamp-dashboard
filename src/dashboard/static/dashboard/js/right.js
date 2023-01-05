@@ -44,23 +44,6 @@ function fadeIn(el, speed) {
 	}, speed / 1000);
 }
 
-function start_chat_ws() {
-	let url = 'ws://' + window.location.hostname + ':80/ws/log/';
-	let socket = new WebSocket(url);
-	let notification_box = document.querySelector('.right .recent-updates .updates');
-
-	socket.onmessage = function(event){
-	// Processing new messages in the group
-		let notify = JSON.parse(event.data)
-		createNotify(notify, notification_box);
-	};
-
-	socket.onclose = function(){
-	// Try to reconnect in 5 seconds
-	setTimeout(function() {start_chat_ws()}, 5000);
-	};
-};
-
 function createNotify(notify, notifyParent) {
 	// Creating a new block
 	let update_item = document.createElement('div');
@@ -91,10 +74,10 @@ function createNotify(notify, notifyParent) {
 	notifyParent.insertBefore(update_item, notifyParent.firstElementChild);
 	fadeIn(update_item, 200);
 };
+
 function parsingInt(textString) {
     return parseInt(textString.replace(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/, ''));
 };
-
 
 function changeAnalytics() {
     let Analytics = [document.querySelector(".sl-first-line"),
@@ -143,5 +126,34 @@ function changeAnalytics() {
         }
     });
 };
+
+function changeAnlyticsValue(data) {
+    let analyticsSl = [[document.querySelector(".sl-first-line"),data.dashboard_data.sl.first_line, data.dashboard_data.analytics.sl.first_line],
+                       [document.querySelector(".sl-vip-line"), data.dashboard_data.sl.vip_line, data.dashboard_data.analytics.sl.vip_line],
+                       [document.querySelector(".sl-general"), data.dashboard_data.sl.general, data.dashboard_data.analytics.sl.general]]
+
+    analyticsSl.forEach(function setAnalyticsSlParam(Obj) {
+        Obj[0].querySelector(".dayly_sl *").textContent = Obj[1].dayly_sl + '%'
+        Obj[0].querySelector(".num_issues *").textContent = Obj[1].num_issues
+        Obj[0].querySelector(".num_worked_before_deadline *").textContent = Obj[1].num_worked_before_deadline
+        Obj[0].querySelector(".num_worked_after_deadline *").textContent = Obj[1].num_worked_after_deadline
+        Obj[0].querySelector(".rating_to_nominal *").textContent = Obj[2].rating_to_nominal + '%'
+        Obj[0].querySelector(".rating_to_comparison *").textContent = Obj[2].rating_to_comparison + '%'
+    });
+
+    let analyticsMttr = document.querySelector(".mttr");
+    analyticsMttr.querySelector(".average_mttr_tech_support *").textContent = data.dashboard_data.mttr.average_mttr_tech_support + 'мин.'
+    analyticsMttr.querySelector(".num_issues *").textContent = data.dashboard_data.mttr.num_issues
+    analyticsMttr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.mttr.rating_to_nominal + '%'
+    analyticsMttr.querySelector(".rating_to_comparison *").textContent = data.dashboard_data.analytics.mttr.rating_to_comparison + '%'
+
+    let analyticsFlr = document.querySelector(".flr");
+    analyticsFlr.querySelector(".level *").textContent = data.dashboard_data.flr.level + '%'
+    analyticsFlr.querySelector(".num_primary_issues *").textContent = data.dashboard_data.flr.num_primary_issues
+    analyticsFlr.querySelector(".num_issues_closed_independently *").textContent = data.dashboard_data.flr.num_issues_closed_independently    
+    analyticsFlr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.flr.rating_to_nominal + '%'
+    analyticsFlr.querySelector(".rating_to_comparison *").textContent = data.dashboard_data.analytics.flr.rating_to_comparison + '%'
+    changeAnalytics();
+}
+
 changeAnalytics();
-start_chat_ws();

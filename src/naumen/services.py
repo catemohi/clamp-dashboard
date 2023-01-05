@@ -15,7 +15,7 @@ from naumen_api.naumen_api.naumen_api import Client
 
 from notification.models import StepNotificationSetting
 from notification.models import RetrunToWorkNotificationSetting
-from notification.services import notify_issue, IssueNotification
+from notification.services import send_notification, IssueNotification
 
 from pytz import timezone
 
@@ -362,7 +362,7 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
                              })
 
     except TroubleTicket.DoesNotExist:
-        notify_issue(issue, **{"type": IssueNotification.NEW})
+        send_notification(issue, **{"type": IssueNotification.NEW})
         change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
                             {"alarm_deadline": False,
                              "alarm_return_to_work": False,
@@ -389,7 +389,7 @@ def delete_trouble_ticket_model(issue: dict) -> bool:
                                  '%s' % issue.get('uuid'))
 
     obj.delete()
-    notify_issue(issue, **{"type": IssueNotification.CLOSED})
+    send_notification(issue, **{"type": IssueNotification.CLOSED})
     return True
 
 
@@ -686,7 +686,7 @@ def checking_issues_changes(old_issue: TroubleTicket,
                         'step': step_is_changed,
                         'return_to_work_time': return_to_work_time_is_changed}
 
-        notify_issue(new_issue, **{"type": IssueNotification.CHANGED,
+        send_notification(new_issue, **{"type": IssueNotification.CHANGED,
                                    "changed": changed_dict})
 
     return issue_is_changed
@@ -721,7 +721,7 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
     pushing = 0 < time_difference < timer.alarm_time
 
     if pushing is True and not issue['alarm_return_to_work']:
-        notify_issue(issue, type=IssueNotification.RETURNED)
+        send_notification(issue, type=IssueNotification.RETURNED)
         change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
                             {"alarm_return_to_work": True})
 
@@ -751,7 +751,7 @@ def check_issue_deadline(issue: Mapping, *args, **kwargs) -> None:
     pushing = 0 < time_difference < deadline.alarm_time
 
     if pushing is True and not issue['alarm_deadline']:
-        notify_issue(issue, type=IssueNotification.BURNED)
+        send_notification(issue, type=IssueNotification.BURNED)
         change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
                             {"alarm_deadline": True})
 

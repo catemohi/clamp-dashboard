@@ -798,3 +798,22 @@ def get_dashboard_data(datestring: str) -> Mapping:
     flr_dict = _get_flr(datestring)
     day_report = {**service_level_dict, **mttr_dict, **flr_dict}
     return day_report
+
+
+def get_day_dates_and_data(datestring: Literal['%Y-%m-%d'] = None
+    ) ->  dict[Literal['dates', 'dashboard_data'], Any]:
+    """
+    Функция для получения дневного отчета для view.
+
+    Возвращает:
+        Данные за день и аналитику относительно предыдущего дня
+        и номинальных значений нагрузки.
+    """
+    if datestring is None:
+        today = datetime.now().date().isoformat()
+
+    dates = get_date_collections(today)
+    dashboard_data = get_dashboard_data(dates.chosen_date)
+    before_day_data = get_dashboard_data(dates.before_day)
+    dashboard_data = analytics(dashboard_data, before_day_data)
+    return {'dates': dates, 'dashboard_data': dashboard_data}
