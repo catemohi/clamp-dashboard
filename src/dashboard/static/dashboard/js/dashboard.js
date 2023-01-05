@@ -84,6 +84,8 @@ function changeCardProgress() {
 }
 
 function changeProgresTabsValue(data) {
+    let current_date = document.getElementById('date')
+    current_date.value = new Date(data.dates.chosen_date)
     // first line
     counterDailySlFirstLine = cardDailySl.querySelector(".number *");
     date = cardDailySl.querySelector(".middle h1");
@@ -131,7 +133,7 @@ function getDashboardData() {
         return
     }
     $.post('/json/dashboard', { date: current_date, csrfmiddlewaretoken: window.CSRF_TOKEN, }, function (data) {
-        changeDayValue(data)
+        changeProgresTabsValue(data)
     });
 }
 
