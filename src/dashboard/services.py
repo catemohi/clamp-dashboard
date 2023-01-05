@@ -221,8 +221,10 @@ def json_encoding(obj: dict) -> str:
                 obj[key] = _recursive_conversion(val)
         elif isinstance(obj, tuple) and hasattr(obj, '_asdict'):
             obj = obj._asdict()
+            for key, val in obj.items():
+                obj[key] = _recursive_conversion(val)
         elif isinstance(obj, (datetime, date, time)):
-            obj = obj.strftime('%d.%m.%Y')
+            obj = obj.isoformat()
         elif isinstance(obj, timedelta):
             obj = obj.seconds()
         return obj
