@@ -84,8 +84,8 @@ function changeCardProgress() {
 }
 
 function changeProgresTabsValue(data) {
-    let current_date = document.getElementById('date')
-    current_date.value = new Date(data.dates.chosen_date)
+    let current_date = document.getElementById('date');
+    current_date.value = data.dates.chosen_date;
     // first line
     counterDailySlFirstLine = cardDailySl.querySelector(".number *");
     date = cardDailySl.querySelector(".middle h1");
