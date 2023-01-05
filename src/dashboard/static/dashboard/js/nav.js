@@ -2,6 +2,17 @@ const sideMenu = document.querySelector("aside");
 const closeBtn = document.querySelector("#close-btn");
 const navBar = document.querySelector(".sidebar ul");
 
+function fadeIn(el, speed) {
+	// Fade in block
+	var step = 1 / speed;
+	var interval = setInterval(function() {
+		if (+el.style.opacity >= 1)
+			clearInterval(interval);
+			
+		el.style.opacity = + el.style.opacity + step;
+	}, speed / 1000);
+}
+
 //check active aside menu
 $(function () {
     $('#sidebar').on('click', 'li', function (event) {
@@ -22,19 +33,30 @@ $(function() {
      });
 });
 
-function counterUpdate(data) {
-    Counter = data.first_line_counter
-    vipCounter = data.vip_line_counter
-    if (Counter < 1) {
-        $('#sidebar .task-status-on-the-group-count').text('').css({'opacity': '0', 'display': 'none'});
+
+function counterUpdate() {
+    let firstLineCounter = document.querySelector('.task-status-on-the-group-count');
+    let vipLineCounter = document.querySelector('.task-status-on-the-vip-count');
+    if (Number(firstLineCounter.text) < 1) {
+        firstLineCounter.style.display = 'block';
+        fadeIn(firstLineCounter, 100);}
+    else {
+        firstLineCounter.style.display = 'none';
+        firstLineCounter.style.opacity = '0';
+    };
+    if (Number(vipLineCounter.text) < 1) {
+        vipLineCounter.style.display = 'block';
+        fadeIn(vipLineCounter, 100);
     }
     else {
-        $('#sidebar .task-status-on-the-group-count').text(Counter).css({'opacity': '1', 'display': 'block'});
-    }
-    if (vipCounter < 1) {
-        $('#sidebar .task-status-on-the-vip-count').text('').css({'opacity': '0', 'display': 'none'});
-    }
-    else {
-        $('#sidebar .task-status-on-the-vip-count').text(vipCounter).css({'opacity': '1', 'display': 'block'});
+        vipLineCounter.style.display = 'none';
+        vipLineCounter.style.opacity = '0';
     }
 };
+
+function valueCounterUpdate(data) {
+    document.querySelector('.task-status-on-the-group-count').textContent = data.first_line_counter
+    document.querySelector('.task-status-on-the-vip-count').textContent = data.first_line_counter
+    counterUpdate()
+};
+counterUpdate()
