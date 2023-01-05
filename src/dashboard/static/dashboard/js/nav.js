@@ -59,7 +59,7 @@ function counterUpdate() {
 
 function valueCounterUpdate(data) {
     document.querySelector('.task-status-on-the-group-count').textContent = data.first_line_counter
-    document.querySelector('.task-status-on-the-vip-count').textContent = data.first_line_counter
+    document.querySelector('.task-status-on-the-vip-count').textContent = data.vip_line_counter
     counterUpdate()
 };
 counterUpdate()

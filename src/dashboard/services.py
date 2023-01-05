@@ -279,6 +279,18 @@ def _get_group_name(required_group: Literal['first_line_group_name',
     return ''
 
 
+def _get_group_step_name() -> str:
+    """
+    Функция получения названия шага, когда обращение передано на группы ТП
+
+    Returns:
+        str: название шага группы
+    """
+    # TODO обращение к таблице с хранением имен шага групп
+
+    return 'передано в работу (напр тех под В2В)'
+
+
 def get_date_collections(datestring: str) -> Dates:
     """Функция для возврата коллекции дат.
 
@@ -830,8 +842,10 @@ def issues_on_group():
         (dict): словарь с счетчиками.
     """
     first_line_count = len(get_issues_from_db(
-        **{'responsible': _get_group_name('first_line_group_name')}))
+        **{'responsible': _get_group_name('first_line_group_name'),
+           'step': _get_group_step_name()}))
     vip_line_count = len(get_issues_from_db(
-        **{'responsible': _get_group_name('vip_line_group_name')}))
+        **{'responsible': _get_group_name('vip_line_group_name'),
+           'step': _get_group_step_name()}))
     return {'first_line_counter': first_line_count,
             'vip_line_counter': vip_line_count}
