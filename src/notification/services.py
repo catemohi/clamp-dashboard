@@ -1,4 +1,3 @@
-from json import dumps
 from typing import Mapping, Literal, Any
 from enum import Enum
 from datetime import datetime
@@ -63,7 +62,8 @@ def send_notification(issue: Mapping, *args, **kwargs):
         message = create_update_message(issue, kwargs['changed'])
         result = (
             "clamp",
-            {"type": "notification", "subtype": "updated", "issue": issue, "text": message, "time": time},
+            {"type": "notification", "subtype": "updated", "issue": issue,
+             "text": message, "time": time},
             )
 
     elif kwargs.get('type') == IssueNotification.NEW:
@@ -75,7 +75,8 @@ def send_notification(issue: Mapping, *args, **kwargs):
                    f'{issue.get("number")}')
         result = (
             "clamp",
-            {"type": "notification", "subtype": "new", "issue": issue, "text": message, "time": time},
+            {"type": "notification", "subtype": "new", "issue": issue,
+             "text": message, "time": time},
             )
 
     elif kwargs.get('type') == IssueNotification.CLOSED:
@@ -87,8 +88,8 @@ def send_notification(issue: Mapping, *args, **kwargs):
                    f'обращение номер {issue.get("number")}')
         result = (
             "clamp",
-            {"type": "notification", "subtype": "closed", "issue": issue, "text": message,
-             "time": time},
+            {"type": "notification", "subtype": "closed", "issue": issue,
+             "text": message, "time": time},
             )
 
     elif kwargs.get('type') == IssueNotification.RETURNED:
@@ -99,8 +100,8 @@ def send_notification(issue: Mapping, *args, **kwargs):
                    f'вернется обращение номер {issue.get("number")}')
         result = (
             "clamp",
-            {"type": "notification", "subtype": "returned", "issue": issue, "text": message,
-             "time": time})
+            {"type": "notification", "subtype": "returned", "issue": issue,
+             "text": message, "time": time})
 
     elif kwargs.get('type') == IssueNotification.BURNED:
         group = (lambda issue: 'VIP линии' if issue['vip_contragent']
@@ -110,8 +111,8 @@ def send_notification(issue: Mapping, *args, **kwargs):
                    f'{issue.get("step_time") // 60} минут!')
         result = (
             "clamp",
-            {"type": "notification", "subtype": "burned", "issue": issue, "text": message,
-             "time": time})
+            {"type": "notification", "subtype": "burned", "issue": issue,
+             "text": message, "time": time})
 
     NotificationMessage(text=result[1]["text"],
                         datetime=result[1]["time"],

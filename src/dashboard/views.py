@@ -1,6 +1,3 @@
-from datetime import datetime
-from json import loads
-
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -8,7 +5,8 @@ from django.urls import reverse_lazy
 from naumen.services import get_issues_from_db
 from notification.services import get_notify
 
-from .services import convert_datestr_to_datetime_obj, get_params, get_dashboard_data, get_day_dates_and_data, analytics, get_date_collections, json_encoding, get_load_ratings, issues_on_group
+from .services import get_day_dates_and_data, json_encoding, get_load_ratings
+from .services import issues_on_group
 
 
 def theme_check(cookies):
