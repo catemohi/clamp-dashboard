@@ -22,26 +22,19 @@ $(function() {
      });
 });
 
-function updateCounter() {
-    $.post('/json/counter', { csrfmiddlewaretoken: window.CSRF_TOKEN }, function (data) {
-        Counter = data.data['trouble_ticket_counter']
-        vipCounter = data.data['trouble_ticket_vip_counter']
-        if (Counter < 1) {
-            $('#sidebar .task-status-on-the-group-count').text('').css({'opacity': '0', 'display': 'none'});
-        }
-        else {
-            $('#sidebar .task-status-on-the-group-count').text(Counter).css({'opacity': '1', 'display': 'block'});
-        }
-        if (vipCounter < 1) {
-            $('#sidebar .task-status-on-the-vip-count').text('').css({'opacity': '0', 'display': 'none'});
-        }
-        else {
-            $('#sidebar .task-status-on-the-vip-count').text(vipCounter).css({'opacity': '1', 'display': 'block'});
-        }
-    });
-}
-
-$(document).ready(function(){
-    updateCounter()
-    setInterval('updateCounter()', 60000);
-});
+function counterUpdate(data) {
+    Counter = data.first_line_counter
+    vipCounter = data.vip_line_counter
+    if (Counter < 1) {
+        $('#sidebar .task-status-on-the-group-count').text('').css({'opacity': '0', 'display': 'none'});
+    }
+    else {
+        $('#sidebar .task-status-on-the-group-count').text(Counter).css({'opacity': '1', 'display': 'block'});
+    }
+    if (vipCounter < 1) {
+        $('#sidebar .task-status-on-the-vip-count').text('').css({'opacity': '0', 'display': 'none'});
+    }
+    else {
+        $('#sidebar .task-status-on-the-vip-count').text(vipCounter).css({'opacity': '1', 'display': 'block'});
+    }
+};

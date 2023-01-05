@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from naumen.services import get_issues_from_db
 from notification.services import get_notify
 
-from .services import convert_datestr_to_datetime_obj, get_params, get_dashboard_data, get_day_dates_and_data, analytics, get_date_collections, json_encoding, get_load_ratings
+from .services import convert_datestr_to_datetime_obj, get_params, get_dashboard_data, get_day_dates_and_data, analytics, get_date_collections, json_encoding, get_load_ratings, issues_on_group
 
 
 def theme_check(cookies):
@@ -44,12 +44,12 @@ def dashboard(request):
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
     notifications = get_notify(slice=50)
+    issues_count = issues_on_group()
 
     context.update(day_dict)
     context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications, "ratings": ratings})
-    context.update(
-        {'trouble_ticket_counter': '99+', 'trouble_ticket_vip_counter': '99+'})
+    context.update(issues_count)
     return render(request, 'dashboard/dashboard.html', context=context)
 
 
@@ -58,12 +58,12 @@ def table(request):
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
     notifications = get_notify(slice=50)
+    issues_count = issues_on_group()
 
     context.update(day_dict)
     context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications, "ratings": ratings})
-    context.update(
-        {'trouble_ticket_counter': '99+', 'trouble_ticket_vip_counter': '99+'})
+    context.update(issues_count)
     return render(request, 'dashboard/table.html', context=context)
 
 
@@ -72,12 +72,12 @@ def reports(request):
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
     notifications = get_notify(slice=50)
+    issues_count = issues_on_group()
 
     context.update(day_dict)
     context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications, "ratings": ratings})
-    context.update(
-        {'trouble_ticket_counter': '99+', 'trouble_ticket_vip_counter': '99+'})
+    context.update(issues_count)
     return render(request, 'dashboard/reports.html', context=context)
 
 

@@ -141,3 +141,9 @@ def send_report(sended_data: dict[Literal['dates', 'dashboard_data'], Any]):
     result = ("clamp", {"type": "reports", **sended_data})
     async_to_sync(CHANNEL_LAYER.group_send)(*result)
 
+
+def send_count(sended_data: dict[Literal['first_line', 'vip_line'], Any]):
+    """
+    """
+    result = ("clamp", {"type": "count", **sended_data})
+    async_to_sync(CHANNEL_LAYER.group_send)(*result)

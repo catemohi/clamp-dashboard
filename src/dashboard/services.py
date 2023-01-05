@@ -5,6 +5,7 @@ from typing import Union, List, Any
 from django.db import models
 
 from naumen.services import add_months, get_report_to_period
+from naumen.services import get_issues_from_db
 
 
 # TODO https://docs.djangoproject.com/en/dev/ref/templates/builtins/#std:templatefilter-date
@@ -819,3 +820,18 @@ def get_day_dates_and_data(datestring: Literal['%Y-%m-%d'] = None) -> dict[
     before_day_data = get_dashboard_data(dates.before_day.isoformat())
     dashboard_data = analytics(dashboard_data, before_day_data)
     return {'dates': dates, 'dashboard_data': dashboard_data}
+
+
+def issues_on_group():
+    """
+    Функция для получения количества тикетов на группах.
+
+    Returns:
+        (dict): словарь с счетчиками.
+    """
+    first_line_count = len(get_issues_from_db(
+        **{'responsible': _get_group_name('first_line_group_name')}))
+    vip_line_count = len(get_issues_from_db(
+        **{'responsible': _get_group_name('vip_line_group_name')}))
+    return {'first_line_counter': first_line_count,
+            'vip_line_counter': vip_line_count}

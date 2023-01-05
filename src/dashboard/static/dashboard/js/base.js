@@ -45,6 +45,9 @@ function startWebSocket() {
 		else if(message.type === "notification"){
 			createNotify(message, NOTIFICATION_BOX);
 		}
+		else if(message.type === "count"){
+			counterUpdate(message);
+		}
 		else {
 			// pass
 		};
