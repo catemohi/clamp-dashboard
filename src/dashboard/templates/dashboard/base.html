@@ -20,15 +20,16 @@
     <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
     <script>
       const img_link = "{% static 'dashboard/img/profile/bot-profile.png' %}"
-      const minSuccessSL = {{ ratings.service_level}}
-      const minSuccessMTTR = {{ ratings.average_mttr_tech_support}}
-      const minSuccessFLR = {{ ratings.flr_level}}
+      const minSuccessSL = {{ ratings.service_level }}
+      const minSuccessMTTR = {{ ratings.average_mttr_tech_support }}
+      const minSuccessFLR = {{ ratings.flr_level }}
     </script>
-      <div class="container" id="body-container">
-        {% include 'dashboard/includes/navigation.html' %}
-        {% block content %}
-        {% endblock %}
-        {% include 'dashboard/includes/right.html'%}
-      </div>
+    <div class="container" id="body-container">
+      {% include 'dashboard/includes/navigation.html' %}
+      {% block content %}
+      {% endblock %}
+      {% include 'dashboard/includes/right.html'%}
+    </div>
+    <script src="{% static 'dashboard/js/base.js' %}"></script>
   </body>
 </html>
