@@ -37,18 +37,14 @@ $(function() {
 function counterUpdate() {
     let firstLineCounter = document.querySelector('.task-status-on-the-group-count');
     let vipLineCounter = document.querySelector('.task-status-on-the-vip-count');
-    console.log(firstLineCounter);
-    console.log(vipLineCounter);
-    console.log((firstLineCounter.textContent));
-    console.log((vipLineCounter.textContent));
-    if (firstLineCounter.text < 1) {
+    if (firstLineCounter.text > 1) {
         firstLineCounter.style.display = 'block';
         fadeIn(firstLineCounter, 100);}
     else {
         firstLineCounter.style.display = 'none';
         firstLineCounter.style.opacity = '0';
     };
-    if (vipLineCounter.text < 1) {
+    if (vipLineCounter.text > 1) {
         vipLineCounter.style.display = 'block';
         fadeIn(vipLineCounter, 100);
     }
