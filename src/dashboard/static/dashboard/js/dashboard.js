@@ -134,6 +134,7 @@ function getDashboardData() {
     }
     $.post('/json/dashboard', { date: current_date, csrfmiddlewaretoken: window.CSRF_TOKEN, }, function (data) {
         changeProgresTabsValue(data)
+        changeAnlyticsValue(data)
     });
 }
 
