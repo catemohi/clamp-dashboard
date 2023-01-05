@@ -12,7 +12,7 @@
   <nav id="sidebar" class="sidebar">
     <ul>
       <li><a data_target="{% url 'dashboard' %}" href="{% url 'dashboard' %}"> <span class="material-icons-sharp">dashboard</span><h3>Главное</h3></a></li>
-      <li><a data_target="{% url 'table' %}" href="{% url 'table' %}"> <span class="material-icons-sharp">report_problem</span><h3>Проблемы</h3><span class="task-status-on-the-group-count">{{ trouble_ticket_counter }}</span><span class="task-status-on-the-vip-count">{{ trouble_ticket_vip_counter }}</span></a></li>
+      <li><a data_target="{% url 'table' %}" href="{% url 'table' %}"> <span class="material-icons-sharp">report_problem</span><h3>Проблемы</h3></a><div class="task-count"><span class="task-status-on-the-group-count">{{ trouble_ticket_counter }}</span><span class="task-status-on-the-vip-count">{{ trouble_ticket_vip_counter }}</span></div></li>
       <li><a data_target="{% url 'reports' %}" href="{% url 'reports' %}"> <span class="material-icons-sharp">summarize</span><h3>Отчёты</h3></a></li>
       <!-- <li><a href="#"> <span class="material-icons-sharp">settings</span><h3>Настройки</h3></a</li>
       <li><a href="#"> <span class="material-icons-sharp">add</span><h3>Добавить пункт</h3></a></li> -->

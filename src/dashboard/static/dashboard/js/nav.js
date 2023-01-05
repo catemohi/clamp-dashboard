@@ -27,16 +27,16 @@ function updateCounter() {
         Counter = data.data['trouble_ticket_counter']
         vipCounter = data.data['trouble_ticket_vip_counter']
         if (Counter < 1) {
-            $('#sidebar .task-status-on-the-group-count').text('').css('display', 'none');
+            $('#sidebar .task-status-on-the-group-count').text('').css({'opacity': '0', 'display': 'none'});
         }
         else {
-            $('#sidebar .task-status-on-the-group-count').text(Counter).css('display', 'inline');
+            $('#sidebar .task-status-on-the-group-count').text(Counter).css({'opacity': '1', 'display': 'block'});
         }
         if (vipCounter < 1) {
-            $('#sidebar .task-status-on-the-vip-count').text('').css('display', 'none');
+            $('#sidebar .task-status-on-the-vip-count').text('').css({'opacity': '0', 'display': 'none'});
         }
         else {
-            $('#sidebar .task-status-on-the-vip-count').text(vipCounter).css('display', 'inline');
+            $('#sidebar .task-status-on-the-vip-count').text(vipCounter).css({'opacity': '1', 'display': 'block'});
         }
     });
 }
