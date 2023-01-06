@@ -41,8 +41,11 @@ $(document).ready(function () {
         },
         "autoWidth": false,
         "bAutoWidth": false,
-        orderCellsTop: true,
-        fixedHeader: true,
+        "orderCellsTop": true,
+        "fixedHeader": true,
+        "pageLength": 30,
+        "lengthMenu": [ 15, 30, 45, 60 ],
+        
         initComplete: function () {
             var api = this.api();
  
