@@ -32,10 +32,10 @@ $(document).ready(function () {
                 var hours = Math.floor(timestamp / 60 / 60 - days * 24);
                 var minutes = Math.floor(timestamp / 60) - (hours * 60) - (days * 24 * 60);
                 time = days + ' дней ' + hours + ' ч ' + minutes + ' мин ';
-                $(row).find('td.step-time').text(time);
+                $(row).find('.step-time').text(time);
             };
-            $(row).find('td.name').text('');
-            $(row).find('td.name').append('<a href="#">'+ data.name +'</a>');
+            $(row).find('.name').text('');
+            $(row).find('.name').append('<a href="#">'+ data.name +'</a>');
 
 
         },
