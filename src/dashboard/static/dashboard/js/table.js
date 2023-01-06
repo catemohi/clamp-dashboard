@@ -26,17 +26,16 @@ $(document).ready(function () {
             } else if (data["step_time"] > 1140 && data["step"] == 'принято в работу') {
                 $(row).css('background-color', '#ff7B7B');
             }
-            console.log($(row).children('.step-time'))
-            if ($(row).find('.step-time')) {
+            if ($(row).children('.step-time')) {
                 var timestamp = data["step_time"];
                 var days = Math.floor(timestamp / 60 / 60 / 24);
                 var hours = Math.floor(timestamp / 60 / 60 - days * 24);
                 var minutes = Math.floor(timestamp / 60) - (hours * 60) - (days * 24 * 60);
                 time = days + ' дней ' + hours + ' ч ' + minutes + ' мин ';
-                $(row).find('.step-time').text(time);
+                $(row).children('.step-time').text(time);
             };
-            $(row).find('.name').text('');
-            $(row).find('.name').append('<a href="#">'+ data.name +'</a>');
+            $(row).children('.name').text('');
+            $(row).children('.name').append('<a href=' + data.issue_url + '>'+ data.name +'</a>');
 
 
         },

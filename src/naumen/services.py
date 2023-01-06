@@ -628,7 +628,10 @@ def parse_issue_card(issue: Mapping, *args, **kwargs) -> Mapping:
 def get_issues_from_db(*args, **kwargs):
     """Функция для возврата обращений из базы данных
     """
-    issues = [{'uuid': issue.get('pk'), **issue.get("fields")}
+    issues = [{'uuid': issue.get('pk'),
+               'issue_url': settings.NAUMEN_URL['open'] + '?uuid=' +
+               issue.get('pk'),
+               **issue.get("fields")}
               for issue in loads(get_json_for_model(TroubleTicket, **kwargs))]
     return issues
 
