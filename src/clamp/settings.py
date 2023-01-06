@@ -169,7 +169,7 @@ NAUMEN_PASSWORD = environ.get('NAUMEN_PASSWORD')
 
 NAUMEN_DOMAIN = environ.get('NAUMEN_DOMAIN')
 
-with open('.venv/config.json') as naumen_settings:
+with open('config.json') as naumen_settings:
     NAUMEN_URL = load(naumen_settings)['url']
 
 CHANNEL_LAYERS = {
