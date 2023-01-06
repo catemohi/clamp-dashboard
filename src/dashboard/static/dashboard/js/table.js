@@ -31,7 +31,7 @@ $(document).ready(function () {
             var hours = Math.floor(timestamp / 60 / 60 - days * 24);
             var minutes = Math.floor(timestamp / 60) - (hours * 60) - (days * 24 * 60);
             time = days + ' дней ' + hours + ' ч ' + minutes + ' мин ';
-            $(row).find('td:eq(3)').text(time);
+            $(row).find('td.step_time)').text(time);
 
         },
         "autoWidth": false,
