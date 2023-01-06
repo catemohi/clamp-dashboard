@@ -19,6 +19,7 @@ $(document).ready(function () {
             {"data": "last_edit_time"},
 
         ],
+        "order": [[6, 'asc']],
         'rowCallback': function(row, data, index){
             if(data["step_time"] > 540 && data["step"] == 'передано в работу (напр тех под В2В)'){
                 $(row).css('background-color', '#ff7B7B');
@@ -101,18 +102,18 @@ $(document).ready(function () {
             table.column(7).visible(true);
             table.column(8).visible(true);
             table.column(9).visible(false);
-        } else if (window.innerWidth < 1800 && window.innerWidth > 1000) {
+        } else if (window.innerWidth < 1800 && window.innerWidth > 1200) {
             table.column(0).visible(false);
             table.column(1).visible(false);
             table.column(2).visible(true);
             table.column(3).visible(false);
             table.column(4).visible(false);
             table.column(5).visible(false);
-            table.column(6).visible(false);
+            table.column(6).visible(true);
             table.column(7).visible(true);
             table.column(8).visible(true);
             table.column(9).visible(false);
-        } else if (window.innerWidth < 1000 && window.innerWidth > 500){
+        } else if (window.innerWidth < 1200 && window.innerWidth > 500){
             table.column(0).visible(false);
             table.column(1).visible(false);
             table.column(2).visible(true);
