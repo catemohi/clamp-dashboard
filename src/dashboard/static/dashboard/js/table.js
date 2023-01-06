@@ -26,7 +26,7 @@ $(document).ready(function () {
             } else if (data["step_time"] > 1140 && data["step"] == 'принято в работу') {
                 $(row).css('background-color', '#ff7B7B');
             }
-            console.log($('tr td.step_time', row))
+            console.log($(row).children('.step_time'))
             if ($(row).find('.step-time)')) {
                 var timestamp = data["step_time"];
                 var days = Math.floor(timestamp / 60 / 60 / 24);
