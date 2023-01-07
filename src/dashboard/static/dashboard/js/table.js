@@ -17,6 +17,7 @@ $(document).ready(function () {
             {"data": "step", "className": "step"},
             {"data": "responsible", "className": "responsible"},
             {"data": "last_edit_time", "className": "last-edit-time"},
+            {"data": "return_to_work_time", "className": "return-work-time"},
 
         ],
         "order": [[6, 'asc']],
@@ -106,10 +107,11 @@ $(document).ready(function () {
             table.column(5).visible(true);
             table.column(4).visible(true);
             table.column(5).visible(true);
-            table.column(6).visible(true);
+            table.column(6).visible(false);
             table.column(7).visible(true);
             table.column(8).visible(true);
             table.column(9).visible(false);
+            table.column(10).visible(true);
         } else if (window.innerWidth < 1800 && window.innerWidth > 1200) {
             table.column(0).visible(false);
             table.column(1).visible(false);
@@ -117,10 +119,11 @@ $(document).ready(function () {
             table.column(3).visible(false);
             table.column(4).visible(false);
             table.column(5).visible(false);
-            table.column(6).visible(true);
+            table.column(6).visible(false);
             table.column(7).visible(true);
             table.column(8).visible(true);
             table.column(9).visible(false);
+            table.column(10).visible(true);
         } else if (window.innerWidth < 1200 && window.innerWidth > 500){
             table.column(0).visible(false);
             table.column(1).visible(false);
@@ -132,6 +135,7 @@ $(document).ready(function () {
             table.column(7).visible(true);
             table.column(8).visible(true);
             table.column(9).visible(false);
+            table.column(10).visible(false);
         } else {
             table.column(0).visible(false);
             table.column(1).visible(false);
@@ -143,6 +147,7 @@ $(document).ready(function () {
             table.column(7).visible(false);
             table.column(8).visible(false);
             table.column(9).visible(false);
+            table.column(10).visible(false);
         }
     }
     resizeTable();
