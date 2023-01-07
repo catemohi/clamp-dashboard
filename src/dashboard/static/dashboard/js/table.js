@@ -24,7 +24,7 @@ $(document).ready(function () {
             {"data": "return_to_work_time", "className": "return-work-time"},
 
         ],
-        "order": [[6, 'asc'],[10, 'asc']],
+        "order": [[6, 'asc'], [10, 'asc']],
         'rowCallback': function(row, data, index){
             if(data.step_time > 540 && data.step == 'передано в работу (напр тех под В2В)'){
                 $(row).css('background-color', '#ff7B7B');
