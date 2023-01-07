@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    const options = {year: 'numeric', month: 'numeric', day: 'numeric', 
+                     timezone: 'Moscow'};
+
     $('#trouble-table thead tr')
         .clone(true)
         .addClass('filters')
@@ -37,7 +40,7 @@ $(document).ready(function () {
             };
             $(row).children('.name').text('');
             $(row).children('.name').append('<a href=' + data.issue_url + '>'+ data.name +'</a>');
-            $(row).children('.return-work-time').text(new Date(data.return_to_work_time));
+            $(row).children('.return-work-time').text(new Date(data.return_to_work_time).toLocaleString("ru", options));
 
 
         },
