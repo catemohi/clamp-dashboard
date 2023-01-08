@@ -3,10 +3,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 
 
 class DashboardConsumer(AsyncWebsocketConsumer):
-    """_summary_
-
-    Args:
-        AsyncWebsocketConsumer (_type_): _description_
+    """Обработчик уведомлений
     """
 
     async def connect(self):
@@ -14,16 +11,11 @@ class DashboardConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, code):
-        await self.channel_layer.group_discard("clamp",
-                                               self.channel_name)
+        await self.channel_layer.group_discard("clamp", self.channel_name)
         return await super().disconnect(code)
 
     async def notification(self, event):
-        text_message = event['text']
-        time_message = event['time']
-        await self.send(dumps({'type': 'notification',
-                               'text': text_message,
-                               'time': time_message}))
+        await self.send(dumps({'type': 'notification', **event}))
 
     async def reports(self, event):
         await self.send(dumps({'type': 'reports', **event}))
