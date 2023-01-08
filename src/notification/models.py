@@ -18,7 +18,7 @@ class StepNotificationSetting(models.Model):
         )
     alarm_time = models.IntegerField(
         default=0,
-        verbose_name='Время до лимита до которое предупредить (сек.)',
+        verbose_name='Время до лимита за которое предупредить (сек.)',
         db_index=True,
         )
 

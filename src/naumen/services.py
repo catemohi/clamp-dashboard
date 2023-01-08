@@ -751,7 +751,7 @@ def check_issue_deadline(issue: Mapping, *args, **kwargs) -> None:
         return
 
     time_difference = deadline.step_time - issue['step_time']
-    pushing = 0 < time_difference < deadline.alarm_time
+    pushing = deadline.alarm_time >= time_difference > 0
 
     if pushing is True and not issue['alarm_deadline']:
         send_notification(issue, type=IssueNotification.BURNED)
