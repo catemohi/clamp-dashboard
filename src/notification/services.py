@@ -4,6 +4,7 @@ from datetime import datetime
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from django.core import serializers
 
 from .models import NotificationMessage
 
@@ -56,7 +57,7 @@ def send_notification(issue: Mapping, *args, **kwargs):
     """Уведомление о новом обращении.
     """
 
-    time = datetime.strftime(datetime.now(), '%d.%m.%y %H:%M:%S')
+    time = datetime.now()
 
     if kwargs.get('type') == IssueNotification.CHANGED:
         message = create_update_message(issue, kwargs['changed'])
@@ -112,7 +113,7 @@ def send_notification(issue: Mapping, *args, **kwargs):
         result = (
             "clamp",
             {"type": "notification", "subtype": "burned", "issue": issue,
-             "text": message, "time": time})
+             "text": message, "time": time.isoformat()})
 
     NotificationMessage(text=result[1]["text"],
                         datetime=result[1]["time"],
@@ -133,7 +134,7 @@ def get_notify(*args, slice: int = 0, **kwargs) -> list[dict]:
         str: JSON строка уведомлений.
     """
     notify = NotificationMessage.objects.order_by('datetime').reverse()[:50]
-    return notify
+    return serializers.serialize('json', notify)
 
 
 def send_report(sended_data: dict[Literal['dates', 'dashboard_data'], Any]):

@@ -64,11 +64,14 @@ class NotificationMessage(models.Model):
     Модель сообщения
     """
     text = models.TextField(verbose_name='Текст сообщения')
-    datetime = models.CharField(max_length=100, verbose_name='Время')
+    datetime = models.DateTimeField(
+        auto_now=False, null=True, auto_now_add=False,
+        verbose_name='Время события',
+        )
     issue = models.TextField(verbose_name='JSON обращения')
 
     def __str__(self):
-        return f'{self.datetime}: {self.text}'
+        return f'{self.text}'
 
     class Meta:
         ordering = ('datetime',)
