@@ -719,6 +719,8 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
     issue_return_to_work_time = datetime.strptime(
                                             issue['return_to_work_time'],
                                             '%Y-%m-%dT%H:%M:%SZ')
+    issue_return_to_work_time = issue_return_to_work_time\
+        .astimezone(timezone(settings.TIME_ZONE))
 
     time_difference = (issue_return_to_work_time - datetime.now()).seconds
     pushing = 0 < time_difference < timer.alarm_time
