@@ -596,6 +596,7 @@ main .monitoring h3 {
   grid-template-columns: 2.6rem auto;
   gap: 1rem;
   margin-bottom: 1rem;
+  opacity: 0;
 }
 
 .right .recent-updates .updates:hover {
@@ -824,8 +825,4 @@ main .monitoring h3 {
     grid-template-columns: repeat(2, 2rem);
     padding-left: 0;
   }
-}
-
-.right .recent-updates .updates .raw-update {
-  display: none;
 }
