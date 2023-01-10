@@ -157,7 +157,7 @@ function changeAnlyticsValue(data) {
     changeAnalytics();
 }
 function createNotification(){
-    let updatesCollection = document.querySelectorAll('update');
+    let updatesCollection = document.querySelectorAll('.update');
     updatesCollection.forEach(function (update) {
         let updateRawMassage = update.querySelector(".text-massage");
         updateRawMassage = JSON.parse(updateRawMassage.textContent);
