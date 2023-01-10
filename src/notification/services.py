@@ -1,4 +1,4 @@
-from typing import Mapping, Literal, Any
+from typing import Mapping, Literal, Union, Any
 from enum import Enum
 from datetime import datetime
 
@@ -118,20 +118,24 @@ def send_notification(issue: Mapping, *args, **kwargs):
     async_to_sync(CHANNEL_LAYER.group_send)(*result)
 
 
-def get_notify(*args, slice: int = 50, **kwargs) -> list[dict]:
+def get_notification(*args, json_type:bool = False,
+                     slice: int = 50, **kwargs) -> Union[list[dict], str]:
     """
     Функция для получения сохраненных в БД уведомлений.
     Можно использовать slice для извлечения определенного количества данных
     По умолчанию выдаст все сохраненные строки.
 
     Args:
+        json_type (bool): Вывести как json строку False
         slice (int): Срез. По умолчанию 50.
 
     Returns:
-        str: JSON строка уведомлений.
+        Union[list[dict], str]: JSON строка уведомлений или список.
     """
-    notify = NotificationMessage.objects.order_by('datetime').reverse()[:slice]
-    return serializers.serialize('json', notify)
+    notifications = NotificationMessage.objects.order_by('datetime').reverse()[:slice]
+    if json_type:
+        return serializers.serialize('json', notifications)
+    return notifications
 
 
 def send_report(sended_data: dict[Literal['dates', 'dashboard_data'], Any]):

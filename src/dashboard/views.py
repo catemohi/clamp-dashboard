@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
 from naumen.services import get_issues_from_db
-from notification.services import get_notify
+from notification.services import get_notification
 
 from .services import get_day_dates_and_data, json_encoding, get_load_ratings
 from .services import issues_on_group
@@ -41,8 +41,7 @@ def dashboard(request):
     # Запрос данных для контекста
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
-    notifications = get_notify(slice=50)
-    print(notifications)
+    notifications = get_notification(slice=50)
     issues_count = issues_on_group()
 
     context.update(day_dict)
@@ -56,7 +55,7 @@ def table(request):
     context = {}
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
-    notifications = get_notify(slice=50)
+    notifications = get_notification(slice=50)
     issues_count = issues_on_group()
 
     context.update(day_dict)
@@ -70,7 +69,7 @@ def reports(request):
     context = {}
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
-    notifications = get_notify(slice=50)
+    notifications = get_notification(slice=50)
     issues_count = issues_on_group()
 
     context.update(day_dict)
@@ -101,7 +100,7 @@ def table_counter_json_data(request):
 
 def log(request):
     context = {}
-    notifications = get_notify(slice=50)
+    notifications = get_notification(slice=50)
     context.update({'notifications': notifications})
     context.update(theme_check(request.COOKIES))
     return render(request, 'dashboard/log.html', context)
