@@ -38,9 +38,10 @@ function startWebSocket() {
 
 	SOCKET.onmessage = function(event){
 	// Processing new messages in the group
-		let message = JSON.parse(event.data)
+		let message = JSON.parse(event.data);
+		console.log(message);
 		if (message.type === "reports"){
-			reportDataUpdate(message)
+			reportDataUpdate(message);
 		}
 		else if(message.type === "notification"){
 			createNotify(message, NOTIFICATION_BOX);
