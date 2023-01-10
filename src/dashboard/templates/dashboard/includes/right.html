@@ -28,8 +28,8 @@
           <img src="{% static 'dashboard/img/profile/bot-profile.png' %}" alt="profile photo">
         </div>
         <div class="massage">
-          <p>{{ notification }}</p>
-          <small class="text-muted">{{ notification }}</small>
+          <p>{{ notification.issue }}</p>
+          <small class="text-muted">{{ notification.datetime }}</small>
         </div>
       </div>
       {% endfor %}
