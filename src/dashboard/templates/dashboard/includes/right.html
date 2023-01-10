@@ -24,13 +24,7 @@
     <div class="updates">
       {% for notification in notifications %}
       <div class="update">
-        <div class="profile-photo">
-          <img src="{% static 'dashboard/img/profile/bot-profile.png' %}" alt="profile photo">
-        </div>
-        <div class="massage">
-          <p>{{ notification.fields.issue }}</p>
-          <small class="text-muted">{{ notification.fields.datetime }}</small>
-        </div>
+        {{ notification }}
       </div>
       {% endfor %}
     </div>
