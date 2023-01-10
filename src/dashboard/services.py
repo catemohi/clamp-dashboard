@@ -237,7 +237,7 @@ def _parse_service_level(dates: Dates, chosen_group: str,
         ReportServiceLevel: коллекция необходимых данных
     """
     if not qs.exists():
-        ReportServiceLevel(0, 0, 0, 0, 0, 0, 0)
+        return ReportServiceLevel(0, 0, 0, 0, 0, 0, 0)
     # Фильтруем данные для группы
     qs_for_month = qs.filter(name_group=chosen_group)
     qs_for_week = qs_for_month.filter(
