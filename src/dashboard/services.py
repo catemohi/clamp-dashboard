@@ -378,7 +378,7 @@ def _get_flr(datestring: str) -> Mapping[Literal['flr'], ReportFlr]:
     dates = get_date_collections(datestring)
     qs = get_report_to_period('flr', dates.chosen_date, dates.next_day)
     if not qs.exists():
-        {'flr': ReportFlr(0, 0, 0)}
+        return {'flr': ReportFlr(0, 0, 0)}
     # Формируем данные
     level = int(round(qs.first().flr_level, 0))
     num_issues_closed_independently = qs.first().\
