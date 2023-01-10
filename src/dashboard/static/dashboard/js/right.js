@@ -60,6 +60,7 @@ function createNotify(notify, notifyParent) {
 	message.className = "message";
 
 	let text = document.createElement('p');
+    text.className = "text-massage";
 	let name_hendler = document.createElement('b');
 	text.innerText = notify.text;
 	let time = document.createElement('small');
@@ -155,5 +156,14 @@ function changeAnlyticsValue(data) {
     analyticsFlr.querySelector(".rating_to_comparison *").textContent = data.dashboard_data.analytics.flr.rating_to_comparison + '%'
     changeAnalytics();
 }
+function createNotification(){
+    let updatesCollection = document.querySelectorAll('update');
+    updatesCollection.forEach(function (update) {
+        let updateRawMassage = update.querySelector(".text-massage");
+        updateRawMassage = JSON.parse(updateRawMassage.textContent);
+        console.log(updateRawMassage);
+    });
+}
 
 changeAnalytics();
+createNotification();
