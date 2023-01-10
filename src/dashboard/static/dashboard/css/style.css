@@ -180,10 +180,6 @@ b {
   color: var(--color-warning);
 }
 
-.raw-update {
-  display: none;
-}
-
 .warning-dash {
   --color-dash:#FF7070;
 }
@@ -828,4 +824,8 @@ main .monitoring h3 {
     grid-template-columns: repeat(2, 2rem);
     padding-left: 0;
   }
+}
+
+.right .recent-updates .updates .raw-update {
+  display: none;
 }
