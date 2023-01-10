@@ -180,6 +180,9 @@ b {
   color: var(--color-warning);
 }
 
+.raw-update {
+  display: none;
+}
 
 .warning-dash {
   --color-dash:#FF7070;
