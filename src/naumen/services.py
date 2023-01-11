@@ -349,6 +349,14 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
     Args:
         issue (dict): словарь параметров обращения.
     """
+    issue = {**issue,
+             'url_issue': settings.NAUMEN_URL['open2'] +
+             '?uuid=' + issue.get('uuid'),
+             'url_contragent': settings.NAUMEN_URL['open2'] +
+             '?uuid=' + issue.get('uuid_contragent'),
+             'url_service': settings.NAUMEN_URL['open2'] +
+             '?uuid=' + issue.get('uuid_service'),
+             }
 
     try:
         obj = TroubleTicket.objects.get(uuid=issue['uuid'])
@@ -359,24 +367,24 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
         if obj.alarm_return_to_work and status:
             obj.alarm_return_to_work = False
             obj.save()
-        issue_obj = change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
-                            {**_converter_timestring_to_timeobj_for_obj(issue),
-                             })
+        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+                            {**_converter_timestring_to_timeobj_for_obj(
+                                issue)})
+
         if status:
-            send_notification(serializers.serialize('json', [issue_obj]),
-                             **{"type": IssueNotification.CHANGED,
-                             "changed": changed_dict})
+            send_notification(
+                issue,
+                **{"type": IssueNotification.CHANGED, "changed": changed_dict})
 
     except TroubleTicket.DoesNotExist:
-        issue_obj = change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
                             {"alarm_deadline": False,
                              "alarm_return_to_work": False,
-                             **_converter_timestring_to_timeobj_for_obj(issue),
-                             'url_issue': settings.NAUMEN_URL['open2'] + '?uuid=' + issue.get('uuid'),
-                             'url_contragent': settings.NAUMEN_URL['open2'] + '?uuid=' + issue.get('uuid_contragent'),
-                             'url_service': settings.NAUMEN_URL['open2'] + '?uuid=' + issue.get('uuid_service'),
-                             }, is_created=False)
-        send_notification(serializers.serialize('json', [issue_obj]), **{"type": IssueNotification.NEW})
+                             **_converter_timestring_to_timeobj_for_obj(
+                                 issue)},
+                            is_created=False)
+
+        send_notification(issue, **{"type": IssueNotification.NEW})
     except:
         raise NaumenServiceError
 
@@ -397,7 +405,7 @@ def delete_trouble_ticket_model(issue: dict) -> bool:
         raise NaumenServiceError('Не удалось удалить обьект обращение с UUID: '
                                  '%s' % issue.get('uuid'))
 
-    send_notification(serializers.serialize('json', [obj]), **{"type": IssueNotification.CLOSED})
+    send_notification(issue, **{"type": IssueNotification.CLOSED})
     obj.delete()
     return True
 
@@ -667,12 +675,14 @@ def issues_list_synchronization(*args, **kwargs):
 
 
 def checking_issues_changes(old_issue: TroubleTicket,
-                            new_issue: Mapping) -> bool:
+                            new_issue: Mapping) -> Tuple[bool, dict]:
     """Функиция для проверки изменений в обращении.
 
     Args:
         old_issues (Mapping): старое обращения.
         old_issues (Mapping): новое обращение.
+    Returns:
+        Tuple[bool, dict]: статус проверки, словарь изменений
     """
     changed_dict = {}
     step_is_changed = old_issue.step != new_issue["step"]
@@ -730,10 +740,9 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
     pushing = 0 < time_difference < timer.alarm_time
 
     if pushing is True and not issue['alarm_return_to_work']:
-        issue_obj = change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
                             {"alarm_return_to_work": True})
-        send_notification(serializers.serialize('json', [issue_obj]), type=IssueNotification.RETURNED)
-
+        send_notification(issue, type=IssueNotification.RETURNED)
 
 
 def check_issue_deadline(issue: Mapping, *args, **kwargs) -> None:
@@ -761,9 +770,9 @@ def check_issue_deadline(issue: Mapping, *args, **kwargs) -> None:
     pushing = deadline.alarm_time >= time_difference > 0
 
     if pushing is True and not issue['alarm_deadline']:
-        issue_obj = change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
-                                        {"alarm_deadline": True})
-        send_notification(serializers.serialize('json', [issue_obj]), type=IssueNotification.BURNED)
+        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+                            {"alarm_deadline": True})
+        send_notification(issue, type=IssueNotification.BURNED)
 
 
 def get_report_to_period(
