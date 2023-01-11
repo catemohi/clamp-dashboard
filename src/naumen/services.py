@@ -9,7 +9,7 @@ from django.core import serializers
 from django.db import models
 from django.utils.timezone import make_aware
 from django.db.models import QuerySet
-from django.forms.models import model_to_dict
+
 
 from naumen_api.naumen_api.config.config import CONFIG
 from naumen_api.naumen_api.naumen_api import Client

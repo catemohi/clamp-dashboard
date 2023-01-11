@@ -44,7 +44,7 @@ def create_update_message(issue: Mapping, changed: Mapping) -> str:
     if changed.get('return_to_work_time', False):
         issue_return_to_work_time = datetime.strptime(
                                                 issue['return_to_work_time'],
-                                                '%Y-%m-%dT%H:%M:%SZ')
+                                                '%Y-%m-%dT%H:%M:%S+03:00')
         issue_return_to_work_time = issue_return_to_work_time\
         .astimezone(timezone(settings.TIME_ZONE))
         issue_return_to_work_time = issue_return_to_work_time.strftime("%d.%m.%Y, %H:%M:%S")
@@ -103,7 +103,7 @@ def send_notification(issue: str, *args, **kwargs):
     elif kwargs.get('type') == IssueNotification.RETURNED:
         issue_return_to_work_time = datetime.strptime(
                                                 issue['return_to_work_time'],
-                                                '%Y-%m-%dT%H:%M:%SZ')
+                                                '%Y-%m-%dT%H:%M:%S+03:00')
         issue_return_to_work_time = issue_return_to_work_time\
         .astimezone(timezone(settings.TIME_ZONE))
         issue_return_to_work_time = issue_return_to_work_time.strftime("%d.%m.%Y, %H:%M:%S")
