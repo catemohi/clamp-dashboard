@@ -362,9 +362,10 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
         issue_obj = change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
                             {**_converter_timestring_to_timeobj_for_obj(issue),
                              })
-        send_notification(serializers.serialize('json', [issue_obj]),
-                         **{"type": IssueNotification.CHANGED,
-                         "changed": changed_dict})
+        if status:
+            send_notification(serializers.serialize('json', [issue_obj]),
+                             **{"type": IssueNotification.CHANGED,
+                             "changed": changed_dict})
 
     except TroubleTicket.DoesNotExist:
         issue_obj = change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
