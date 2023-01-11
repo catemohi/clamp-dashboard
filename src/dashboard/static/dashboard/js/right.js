@@ -158,12 +158,12 @@ function changeAnlyticsValue(data) {
     changeAnalytics();
 };
 function createNotification(){
-    let updatesCollection = document.querySelector('#raw-notifications');
-    updatesCollection = JSON.parse(updatesCollection.textContent);
+    let updatesCollectionElem = document.querySelector('#raw-notifications');
+    let updatesCollection = JSON.parse(updatesCollection.textContent);
     updatesCollection.forEach(function(notification){
         createNotify(notification.fields, document.querySelector('.updates'))
     });
-    updatesCollection.remove();
+    updatesCollectionElem.remove();
 };
 
 changeAnalytics();
