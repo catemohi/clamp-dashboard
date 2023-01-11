@@ -61,22 +61,28 @@ function createNotify(notify, notifyParent) {
 	let message = document.createElement('div');
 	message.className = "message";
 
-	let text = document.createElement('p');
-    text.className = "text-massage";
+	let textBox = document.createElement('p');
+    textBox.className = "text-massage";
 	let emoji = document.createElement('span');
-    if (notify.issue.is_vip == true) {
+    let text = document.createElement('span');
+
+    if (notify.subtype === 'burned') {
+        emoji.innerText = '🧨';
+    } else if (notify.issue.is_vip === true) {
         emoji.innerText = '❤️';
     } else {
         emoji.innerText = '⚙️';
-    }
+    };
+    
 	text.innerText = notify.text;
-    text.insertBefore(emoji, text.firstElementChild)
+    textBox.appendChild(emoji);
+    textBox.appendChild(text);
 	let time = document.createElement('small');
 	time.className = "text-muted";
 	time.innerText = (new Intl.DateTimeFormat("ru", options).format(new Date(notify.time)));
     
 
-	message.appendChild(text);
+	message.appendChild(textBox);
 	message.appendChild(time);
 	img_box.appendChild(img)
 	update_item.appendChild(img_box);
