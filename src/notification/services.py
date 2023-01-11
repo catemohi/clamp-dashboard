@@ -119,7 +119,7 @@ def send_notification(issue: Mapping, *args, **kwargs):
     async_to_sync(CHANNEL_LAYER.group_send)(*result)
 
 
-def get_notification(*args, json_type:bool = False,
+def get_notification(*args, json_type: bool = False,
                      slice: int = 50, **kwargs) -> Union[list[dict], str]:
     """
     Функция для получения сохраненных в БД уведомлений.

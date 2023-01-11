@@ -160,6 +160,7 @@ function createNotification(){
     let updatesCollection = document.querySelectorAll('.update');
     updatesCollection.forEach(function (update) {
         let updateRawMassage = update.querySelector(".text-massage");
+        updateRawMassage = JSON.parse(updateRawMassage.textContent);
         console.log(updateRawMassage);
     });
 }
