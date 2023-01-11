@@ -75,6 +75,6 @@ class NotificationMessage(models.Model):
         return f'{self.text}'
 
     class Meta:
-        ordering = ('datetime',)
+        ordering = ('time',)
         verbose_name = 'Настройки события'
         verbose_name_plural = 'Настройки событий'
