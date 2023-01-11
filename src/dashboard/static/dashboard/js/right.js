@@ -174,6 +174,7 @@ function changeAnlyticsValue(data) {
 function createNotification(){
     let updatesCollectionElem = document.querySelector('#raw-notifications');
     let updatesCollection = JSON.parse(updatesCollectionElem.textContent);
+    updatesCollection = updatesCollection.reverse()
     updatesCollection.forEach(function(notification){
         notification.fields.issue = JSON.parse(notification.fields.issue)
         createNotify(notification.fields, document.querySelector('.updates'))
