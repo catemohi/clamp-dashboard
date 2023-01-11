@@ -1,6 +1,8 @@
 from datetime import timedelta
 
 from django.db import models
+from django.conf import settings
+
 
 # Create your models here.
 
@@ -14,6 +16,10 @@ class TroubleTicket(models.Model):
     uuid = models.CharField(
         primary_key=True, max_length=100,
         verbose_name='Идентификатор обращения',
+        )
+    url_issue = models.CharField(
+        default=settings.NAUMEN_URL['open2'] + '?uuid=' + uuid , max_length=150,
+        verbose_name='Ссылка на обращение',
         )
     number = models.CharField(
         max_length=50, verbose_name='Номер',
@@ -47,11 +53,19 @@ class TroubleTicket(models.Model):
     name_service = models.TextField(
         null=True, verbose_name='Услуги',
         )
+    url_service = models.CharField(
+        default=settings.NAUMEN_URL['open2'] + '?uuid=' + uuid_service , max_length=150,
+        verbose_name='Ссылка на контрагента',
+        )
     uuid_contragent = models.CharField(
         max_length=100, null=True, verbose_name='Идентификатор контрагента',
         )
     name_contragent = models.CharField(
         max_length=100, null=True, verbose_name='Контрагент',
+        )
+    url_contragent = models.CharField(
+        default=settings.NAUMEN_URL['open2'] + '?uuid=' + uuid_contragent , max_length=150,
+        verbose_name='Ссылка на контрагента',
         )
     return_to_work_time = models.DateTimeField(
         auto_now=False, null=True, auto_now_add=False,

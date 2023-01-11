@@ -37,7 +37,9 @@ $(document).ready(function () {
                 $(row).children('.step-time').text(time);
             };
             $(row).children('.name').text('');
-            $(row).children('.name').append('<a href=' + data.issue_url + '>'+ data.name +'</a>');
+            $(row).children('.name').append('<a href=' + data.url_issue + '>'+ data.name +'</a>');
+            $(row).children('.name-service').append('<a href=' + data.url_service + '>'+ data.name +'</a>');
+            $(row).children('.name-contragent').append('<a href=' + data.url_contragent + '>'+ data.name +'</a>');
             $(row).children('.return-work-time').text(new Intl.DateTimeFormat("ru", options).format(new Date(data.return_to_work_time)));
             
 

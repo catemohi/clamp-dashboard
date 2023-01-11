@@ -68,13 +68,13 @@ function createNotify(notify, notifyParent) {
 
     if (notify.subtype === 'burned') {
         emoji.innerText = '🧨';
-    } else if (notify.issue.is_vip === true) {
+    } else if (notify.issue.vip_contragent === true) {
         emoji.innerText = '❤️';
     } else {
         emoji.innerText = '⚙️';
     };
     
-	text.innerText = notify.text;
+	text.innerHTML = '<a href="' + notify.issue.url_issue + '">'+ notify.text + '</a>';
     textBox.appendChild(emoji);
     textBox.appendChild(text);
 	let time = document.createElement('small');
