@@ -135,7 +135,7 @@ def get_notification(*args, json_type: bool = False,
     Returns:
         Union[list[dict], str]: JSON строка уведомлений или список.
     """
-    notifications = (NotificationMessage.objects.order_by('-time')[:slice]).reverse()
+    notifications = NotificationMessage.objects.order_by('-time')[:slice:-1]
     if json_type:
         return serializers.serialize('json', notifications)
     return notifications
