@@ -46,7 +46,6 @@ function fadeIn(el, speed) {
 
 function createNotify(notify, notifyParent) {
     let notificationText
-    let issue = JSON.parse(notify.issue)
     console.log(notify)
 	// Creating a new block
 	let update_item = document.createElement('div');
@@ -65,10 +64,10 @@ function createNotify(notify, notifyParent) {
 	let text = document.createElement('p');
     text.className = "text-massage";
 	let name_hendler = document.createElement('b');
-    if (issue.is_vip == true) {
-        notificationText = '\u2764' + notify.text;
+    if (notify.issue.is_vip == true) {
+        let notificationText = '\u2764' + ' ' + notify.text;
     } else {
-        notificationText = '\u1F527' + notify.text;
+        let notificationText = '\u1F527' + ' ' + notify.text;
     }
 	text.innerText = notificationText;
 	let time = document.createElement('small');
@@ -169,6 +168,7 @@ function createNotification(){
     let updatesCollectionElem = document.querySelector('#raw-notifications');
     let updatesCollection = JSON.parse(updatesCollectionElem.textContent);
     updatesCollection.forEach(function(notification){
+        notification.fields.issue = JSON.parse(notification.fields.issue)
         createNotify(notification.fields, document.querySelector('.updates'))
     });
     updatesCollectionElem.remove();
