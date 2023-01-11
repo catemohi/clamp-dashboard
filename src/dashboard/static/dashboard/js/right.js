@@ -157,9 +157,9 @@ function changeAnlyticsValue(data) {
     changeAnalytics();
 }
 function createNotification(){
-    let updatesCollection = document.querySelectorAll('.update');
-    updatesCollection = JSON.parse(updatesCollection.textContent)
-    console.log(updatesCollection)
+    let updatesCollection = document.querySelector('.update');
+    updatesCollection = JSON.parse(updatesCollection.textContent);
+    console.log(updatesCollection);
     // updatesCollection.forEach(function (update) {
     //     let updateRawMassage = update.querySelector(".text-massage");
     //     updateRawMassage = JSON.parse(updateRawMassage.textContent);
