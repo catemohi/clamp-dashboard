@@ -63,7 +63,12 @@ function createNotify(notify, notifyParent) {
 	let text = document.createElement('p');
     text.className = "text-massage";
 	let name_hendler = document.createElement('b');
-	text.innerText = notify.text;
+    if (notify.issue.is_vip == true) {
+        let notificationText = '\u2764' + notify.text
+    } else {
+        let notificationText = '\u1F527' + notify.text
+    }
+	text.innerText = notificationText;
 	let time = document.createElement('small');
 	time.className = "text-muted";
 	time.innerText = (new Intl.DateTimeFormat("ru", options).format(new Date(notify.time)));
