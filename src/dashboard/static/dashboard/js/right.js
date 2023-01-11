@@ -63,13 +63,14 @@ function createNotify(notify, notifyParent) {
 
 	let text = document.createElement('p');
     text.className = "text-massage";
-	let name_hendler = document.createElement('b');
+	let emoji = document.createElement('span');
     if (notify.issue.is_vip == true) {
-        let notificationText = '\u2764' + ' ' + notify.text;
+        emoji.innerText = '\u2764';
     } else {
-        let notificationText = '\u1F527' + ' ' + notify.text;
+        emoji.innerText = '\u1F527';
     }
 	text.innerText = notificationText;
+    text.appendChild(emoji)
 	let time = document.createElement('small');
 	time.className = "text-muted";
 	time.innerText = (new Intl.DateTimeFormat("ru", options).format(new Date(notify.time)));
