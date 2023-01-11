@@ -160,7 +160,7 @@ function changeAnlyticsValue(data) {
 };
 function createNotification(){
     let updatesCollectionElem = document.querySelector('#raw-notifications');
-    let updatesCollection = JSON.parse(updatesCollection.textContent);
+    let updatesCollection = JSON.parse(updatesCollectionElem.textContent);
     updatesCollection.forEach(function(notification){
         createNotify(notification.fields, document.querySelector('.updates'))
     });
