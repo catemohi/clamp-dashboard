@@ -1,6 +1,9 @@
 // changet heme
 const themeToggler = document.querySelector(".theme-toggler");
 const menuBtn = document.querySelector(".menu-btn");
+const options = {year: 'numeric', month: 'numeric', day: 'numeric',
+hour: 'numeric', minute: 'numeric', second: 'numeric',
+timezone: 'Moscow', hour12: false};
 
 themeToggler.addEventListener('click', () => {
     document.body.classList.toggle('dark-theme-var');
@@ -66,7 +69,8 @@ function createNotify(notify, notifyParent) {
 	text.innerText = notify.text;
 	let time = document.createElement('small');
 	time.className = "text-muted";
-	time.innerText = notify.time;
+	time.innerText = (new Intl.DateTimeFormat("ru", options).format(new Date(notify.time)));
+    
 
 	message.appendChild(text);
 	message.appendChild(time);
