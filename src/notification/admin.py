@@ -20,9 +20,9 @@ class RetrunToWorkNotificationSettingAdmin(admin.ModelAdmin):
 
 class NotificationMessageAdmin(admin.ModelAdmin):
 
-    list_display = ('datetime', 'text')
-    list_display_links = ('datetime', 'text')
-    search_fields = ('datetime', 'text')
+    list_display = ('time', 'subtype', 'text')
+    list_display_links = ('time', 'subtype', 'text')
+    search_fields = ('time', 'subtype', 'text')
 
 
 admin.site.register(StepNotificationSetting, StepNotificationSettingAdmin)
