@@ -1,6 +1,7 @@
 from typing import Mapping, Literal, Union, Any
 from enum import Enum
 from datetime import datetime
+from json import dumps
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
@@ -112,7 +113,7 @@ def send_notification(issue: Mapping, *args, **kwargs):
 
     NotificationMessage(text=result[1]["text"],
                         datetime=result[1]["time"],
-                        issue=result[1]["issue"]).save()
+                        issue=dumps(result[1]["issue"])).save()
 
     result[1]["time"] = result[1]["time"].isoformat()
     async_to_sync(CHANNEL_LAYER.group_send)(*result)
