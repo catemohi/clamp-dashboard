@@ -65,12 +65,12 @@ function createNotify(notify, notifyParent) {
     text.className = "text-massage";
 	let emoji = document.createElement('span');
     if (notify.issue.is_vip == true) {
-        emoji.innerText = '\u2764';
+        emoji.innerText = '❤️';
     } else {
-        emoji.innerText = '\u1F527';
+        emoji.innerText = '⚙️';
     }
-	text.innerText = notificationText;
-    text.appendChild(emoji)
+	text.innerText = notify.text;
+    text.insertBefore(emoji, text.firstElementChild)
 	let time = document.createElement('small');
 	time.className = "text-muted";
 	time.innerText = (new Intl.DateTimeFormat("ru", options).format(new Date(notify.time)));
