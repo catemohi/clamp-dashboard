@@ -63,10 +63,11 @@ class NotificationMessage(models.Model):
     """
     Модель сообщения
     """
-    text = models.TextField(verbose_name='Текст сообщения')
-    datetime = models.DateTimeField(
+    text = models.TextField(verbose_name='Текст уведомления')
+    subtype = models.CharField(max_length=50, verbose_name='Тип уведомления')
+    time = models.DateTimeField(
         auto_now=False, null=True, auto_now_add=False,
-        verbose_name='Время события',
+        verbose_name='Время уведомления',
         )
     issue = models.TextField(verbose_name='JSON обращения')
 

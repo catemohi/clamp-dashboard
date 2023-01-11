@@ -41,7 +41,7 @@ def dashboard(request):
     # Запрос данных для контекста
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
-    notifications = get_notification(slice=50)
+    notifications = get_notification(slice=50, json_type=True)
     issues_count = issues_on_group()
 
     context.update(day_dict)
@@ -55,7 +55,7 @@ def table(request):
     context = {}
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
-    notifications = get_notification(slice=50)
+    notifications = get_notification(slice=50, json_type=True)
     issues_count = issues_on_group()
 
     context.update(day_dict)
@@ -69,7 +69,7 @@ def reports(request):
     context = {}
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
-    notifications = get_notification(slice=50)
+    notifications = get_notification(slice=50, json_type=True)
     issues_count = issues_on_group()
 
     context.update(day_dict)
@@ -100,7 +100,7 @@ def table_counter_json_data(request):
 
 def log(request):
     context = {}
-    notifications = get_notification(slice=50)
+    notifications = get_notification(slice=50, json_type=True)
     context.update({'notifications': notifications})
     context.update(theme_check(request.COOKIES))
     return render(request, 'dashboard/log.html', context)

@@ -22,17 +22,9 @@
   <div class="recent-updates">
     <h2>Последние события</h2>
     <div class="updates">
-      {% for notification in notifications %}
       <div class="update">
-        <div class="profile-photo">
-          <img src="{% static 'dashboard/img/profile/bot-profile.png' %}" alt="profile photo">
-        </div>
-        <div class="massage">
-          <p class="text-massage">{{ notification.issue }}</p>
-          <small class="text-muted">{{ notification.datetime }}</small>
-        </div>
+        {{ notifications }}
       </div>
-      {% endfor %}
     </div>
   </div>
   <!-- END OF RECENT UPDATES -->
