@@ -58,7 +58,7 @@ def send_notification(issue: str, *args, **kwargs):
     """
 
     time = datetime.now()
-    issue = loads[issue][0]['fields']
+    issue = loads(issue)[0]['fields']
 
     if kwargs.get('type') == IssueNotification.CHANGED:
         message = create_update_message(issue, kwargs['changed'])
