@@ -18,7 +18,7 @@ class TroubleTicket(models.Model):
         verbose_name='Идентификатор обращения',
         )
     url_issue = models.CharField(
-        default=settings.NAUMEN_URL['open2'] + '?uuid=' + uuid , max_length=150,
+        default="#" , max_length=150,
         verbose_name='Ссылка на обращение',
         )
     number = models.CharField(
@@ -54,7 +54,7 @@ class TroubleTicket(models.Model):
         null=True, verbose_name='Услуги',
         )
     url_service = models.CharField(
-        default=settings.NAUMEN_URL['open2'] + '?uuid=' + uuid_service , max_length=150,
+        default="#", max_length=150,
         verbose_name='Ссылка на контрагента',
         )
     uuid_contragent = models.CharField(
@@ -64,7 +64,7 @@ class TroubleTicket(models.Model):
         max_length=100, null=True, verbose_name='Контрагент',
         )
     url_contragent = models.CharField(
-        default=settings.NAUMEN_URL['open2'] + '?uuid=' + uuid_contragent , max_length=150,
+        default="#", max_length=150,
         verbose_name='Ссылка на контрагента',
         )
     return_to_work_time = models.DateTimeField(
@@ -84,6 +84,14 @@ class TroubleTicket(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+    def create_url(self):
+        """
+        Метод для создания ссылок в модели.
+        """
+        self.url_issue = settings.NAUMEN_URL['open2'] + '?uuid=' + self.uuid
+        self.url_contragent = settings.NAUMEN_URL['open2'] + '?uuid=' + self.uuid_contragent
+        self.url_service = settings.NAUMEN_URL['open2'] + '?uuid=' + self.uuid_service
 
     class Meta:
         ordering = ('last_edit_time',)
