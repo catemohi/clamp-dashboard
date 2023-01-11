@@ -1,7 +1,7 @@
 from typing import Mapping, Literal, Union, Any
 from enum import Enum
 from datetime import datetime
-from json import dumps
+from json import dumps, loads
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
@@ -53,11 +53,12 @@ def create_update_message(issue: Mapping, changed: Mapping) -> str:
     return message
 
 
-def send_notification(issue: Mapping, *args, **kwargs):
+def send_notification(issue: str, *args, **kwargs):
     """Уведомление о новом обращении.
     """
 
     time = datetime.now()
+    issue = loads[issue][0]['fields']
 
     if kwargs.get('type') == IssueNotification.CHANGED:
         message = create_update_message(issue, kwargs['changed'])

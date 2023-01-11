@@ -85,14 +85,6 @@ class TroubleTicket(models.Model):
     def __str__(self):
         return f'{self.name}'
 
-    def create_url(self):
-        """
-        Метод для создания ссылок в модели.
-        """
-        self.url_issue = settings.NAUMEN_URL['open2'] + '?uuid=' + self.uuid
-        self.url_contragent = settings.NAUMEN_URL['open2'] + '?uuid=' + self.uuid_contragent
-        self.url_service = settings.NAUMEN_URL['open2'] + '?uuid=' + self.uuid_service
-
     class Meta:
         ordering = ('last_edit_time',)
         verbose_name = 'Обращение'

@@ -371,8 +371,10 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
                             {"alarm_deadline": False,
                              "alarm_return_to_work": False,
                              **_converter_timestring_to_timeobj_for_obj(issue),
+                             'url_issue': settings.NAUMEN_URL['open2'] + '?uuid=' + issue.get('uuid'),
+                             'url_contragent': settings.NAUMEN_URL['open2'] + '?uuid=' + issue.get('uuid_contragent'),
+                             'url_service': settings.NAUMEN_URL['open2'] + '?uuid=' + issue.get('uuid_service'),
                              }, is_created=False)
-        issue_obj.create_url()
         send_notification(serializers.serialize('json', [issue_obj]), **{"type": IssueNotification.NEW})
     except:
         raise NaumenServiceError
