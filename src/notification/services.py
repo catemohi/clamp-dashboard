@@ -112,7 +112,8 @@ def send_notification(issue: Mapping, *args, **kwargs):
              "text": message, "time": time})
 
     NotificationMessage(text=result[1]["text"],
-                        datetime=result[1]["time"],
+                        time=result[1]["time"],
+                        subtype=result[1]["subtype"],
                         issue=dumps(result[1]["issue"])).save()
 
     result[1]["time"] = result[1]["time"].isoformat()
