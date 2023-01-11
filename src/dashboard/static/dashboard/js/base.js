@@ -2,9 +2,6 @@ const DASHBOARD = '/dashboard/';
 const TABLE = '/table/';
 const REPORTS = '/reports/';
 const NOTIFICATION_BOX = document.querySelector('.right .recent-updates .updates');
-const options = {year: 'numeric', month: 'numeric', day: 'numeric',
-hour: 'numeric', minute: 'numeric', second: 'numeric',
-timezone: 'Moscow', hour12: false};
 
 function reportDataUpdate(inputData){
 	switch(window.location.pathname) {

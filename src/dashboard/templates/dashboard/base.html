@@ -24,6 +24,11 @@
       const minSuccessMTTR = {{ ratings.average_mttr_tech_support }}
       const minSuccessFLR = {{ ratings.flr_level }}
     </script>
+    <script>
+      const options = {year: 'numeric', month: 'numeric', day: 'numeric',
+                       hour: 'numeric', minute: 'numeric', second: 'numeric',
+                       timezone: 'Moscow', hour12: false};
+    </script>
     <div class="container" id="body-container">
       {% include 'dashboard/includes/navigation.html' %}
       {% block content %}
