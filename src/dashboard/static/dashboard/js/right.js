@@ -156,15 +156,15 @@ function changeAnlyticsValue(data) {
     analyticsFlr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.flr.rating_to_nominal + '%'
     analyticsFlr.querySelector(".rating_to_comparison *").textContent = data.dashboard_data.analytics.flr.rating_to_comparison + '%'
     changeAnalytics();
-}
+};
 function createNotification(){
-    let updatesCollection = document.querySelector('.update');
+    let updatesCollection = document.querySelector('#raw-notifications');
     updatesCollection = JSON.parse(updatesCollection.textContent);
     updatesCollection.forEach(function(notification){
         createNotify(notification.fields, document.querySelector('.updates'))
     });
     updatesCollection.remove();
-}
+};
 
 changeAnalytics();
 createNotification();
