@@ -6,6 +6,9 @@ from json import dumps, loads
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.core import serializers
+from django.conf import settings
+
+from pytz import timezone
 
 from .models import NotificationMessage
 
@@ -37,10 +40,17 @@ def create_update_message(issue: Mapping, changed: Mapping) -> str:
         str: текст уведомления
     """
     message = ''
+
     if changed.get('return_to_work_time', False):
+        issue_return_to_work_time = datetime.strptime(
+                                                issue['return_to_work_time'],
+                                                '%Y-%m-%dT%H:%M:%SZ')
+        issue_return_to_work_time = issue_return_to_work_time\
+        .astimezone(timezone(settings.TIME_ZONE))
+        issue_return_to_work_time = issue_return_to_work_time.strftime("%d.%m.%Y, %H:%M:%S")
         message = (f'Время решения обращения номер '
                    f'{issue.get("number")} изменено на '
-                   f'{issue.get("return_to_work_time")}')
+                   f'{issue_return_to_work_time}')
 
     if changed.get('step', False):
         message = (f'Обращение номер {issue.get("number")} '
@@ -91,10 +101,16 @@ def send_notification(issue: str, *args, **kwargs):
             )
 
     elif kwargs.get('type') == IssueNotification.RETURNED:
+        issue_return_to_work_time = datetime.strptime(
+                                                issue['return_to_work_time'],
+                                                '%Y-%m-%dT%H:%M:%SZ')
+        issue_return_to_work_time = issue_return_to_work_time\
+        .astimezone(timezone(settings.TIME_ZONE))
+        issue_return_to_work_time = issue_return_to_work_time.strftime("%d.%m.%Y, %H:%M:%S")
         group = (lambda issue: 'VIP линии' if issue['vip_contragent']
                  else 'первой линии')(issue)
-        message = (f'ПРЕДУПРЕЖДЕНИЕ! В {issue.get("return_to_work_time")} '
-                   f'на {group} c отложенного шага {issue.get("step")}'
+        message = (f'ПРЕДУПРЕЖДЕНИЕ! В {issue_return_to_work_time} '
+                   f'на {group} c отложенного шага {issue.get("step")} '
                    f'вернется обращение номер {issue.get("number")}')
         result = (
             "clamp",
