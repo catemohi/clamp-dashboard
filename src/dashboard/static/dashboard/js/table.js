@@ -1,7 +1,4 @@
 $(document).ready(function () {
-    const options = {year: 'numeric', month: 'numeric', day: 'numeric',
-                     hour: 'numeric', minute: 'numeric', second: 'numeric',
-                     timezone: 'Moscow', hour12: false};
 
     $('#trouble-table thead tr')
         .clone(true)

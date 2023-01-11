@@ -6,7 +6,7 @@ const cardWeeklySlVip = document.querySelector(".weekly-sl-vip");
 const cardMonthlySlVip = document.querySelector(".monthly-sl-vip");
 const cardDailyFlr = document.querySelector(".daily-flr");
 const cardDailyMttr = document.querySelector(".daily-mttr");
-const options = {year: 'numeric', month: 'numeric', day: 'numeric',
+const options_dash = {year: 'numeric', month: 'numeric', day: 'numeric',
                  timezone: 'Moscow'};
 
 function month_name(dt){
@@ -89,7 +89,7 @@ function changeProgresTabsValue(data) {
     // first line
     counterDailySlFirstLine = cardDailySl.querySelector(".number *");
     date = cardDailySl.querySelector(".middle h1");
-    date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options);
+    date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
     counterDailySlFirstLine.textContent = data.dashboard_data.sl.first_line.dayly_sl;
     counterWeeklySlFirstLine = cardWeeklySl.querySelector(".number *");
     date = cardWeeklySl.querySelector(".middle h1");
@@ -103,7 +103,7 @@ function changeProgresTabsValue(data) {
     // vip line
     counterDailySlVipLine = cardDailySlVip.querySelector(".number *");
     date = cardDailySlVip.querySelector(".middle h1");
-    date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options);    
+    date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);    
     counterDailySlVipLine.textContent = data.dashboard_data.sl.vip_line.dayly_sl;
     counterWeeklySlVipLine = cardWeeklySlVip.querySelector(".number *");
     date = cardWeeklySlVip.querySelector(".middle h1");
@@ -116,12 +116,12 @@ function changeProgresTabsValue(data) {
     // mttr
     counterDailyMttr = cardDailyMttr.querySelector(".number *");
     date = cardDailyMttr.querySelector(".middle h1");
-    date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options);
+    date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
     counterDailyMttr.textContent = data.dashboard_data.mttr.average_mttr_tech_support;
     // flr
     counterDailyFlr = cardDailyFlr.querySelector(".number *");
     date = cardDailyFlr.querySelector(".middle h1");
-    date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options);
+    date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
     counterDailyFlr.textContent = data.dashboard_data.flr.level;
     changeCardProgress();
 }

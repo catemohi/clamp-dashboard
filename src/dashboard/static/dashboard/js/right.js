@@ -1,9 +1,6 @@
 // changet heme
 const themeToggler = document.querySelector(".theme-toggler");
 const menuBtn = document.querySelector(".menu-btn");
-const options = {year: 'numeric', month: 'numeric', day: 'numeric',
-hour: 'numeric', minute: 'numeric', second: 'numeric',
-timezone: 'Moscow', hour12: false};
 
 themeToggler.addEventListener('click', () => {
     document.body.classList.toggle('dark-theme-var');
