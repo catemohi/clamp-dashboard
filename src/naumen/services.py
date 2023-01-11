@@ -9,6 +9,7 @@ from django.core import serializers
 from django.db import models
 from django.utils.timezone import make_aware
 from django.db.models import QuerySet
+from django.forms.models import model_to_dict
 
 from naumen_api.naumen_api.config.config import CONFIG
 from naumen_api.naumen_api.naumen_api import Client
@@ -361,7 +362,7 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
         issue_obj = change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
                             {**_converter_timestring_to_timeobj_for_obj(issue),
                              })
-        send_notification(issue_obj.__dict__,
+        send_notification(model_to_dict(issue_obj),
                          **{"type": IssueNotification.CHANGED,
                          "changed": changed_dict})
 
@@ -372,7 +373,7 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
                              **_converter_timestring_to_timeobj_for_obj(issue),
                              }, is_created=False)
         issue_obj.create_url()
-        send_notification(issue_obj.__dict__, **{"type": IssueNotification.NEW})
+        send_notification(model_to_dict(issue_obj), **{"type": IssueNotification.NEW})
     except:
         raise NaumenServiceError
 
@@ -728,7 +729,7 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
     if pushing is True and not issue['alarm_return_to_work']:
         issue_obj = change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
                             {"alarm_return_to_work": True})
-        send_notification(issue_obj.__dict__, type=IssueNotification.RETURNED)
+        send_notification(model_to_dict(issue_obj), type=IssueNotification.RETURNED)
 
 
 
@@ -759,7 +760,7 @@ def check_issue_deadline(issue: Mapping, *args, **kwargs) -> None:
     if pushing is True and not issue['alarm_deadline']:
         issue_obj = change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
                                         {"alarm_deadline": True})
-        send_notification(issue_obj.__dict__, type=IssueNotification.BURNED)
+        send_notification(model_to_dict(issue_obj), type=IssueNotification.BURNED)
 
 
 def get_report_to_period(
