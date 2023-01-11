@@ -45,6 +45,7 @@ function fadeIn(el, speed) {
 }
 
 function createNotify(notify, notifyParent) {
+    console.log(notify)
 	// Creating a new block
 	let update_item = document.createElement('div');
 	update_item.className = "update";
@@ -159,12 +160,10 @@ function changeAnlyticsValue(data) {
 function createNotification(){
     let updatesCollection = document.querySelector('.update');
     updatesCollection = JSON.parse(updatesCollection.textContent);
-    console.log(updatesCollection);
-    // updatesCollection.forEach(function (update) {
-    //     let updateRawMassage = update.querySelector(".text-massage");
-    //     updateRawMassage = JSON.parse(updateRawMassage.textContent);
-    //     console.log(updateRawMassage);
-    // });
+    updatesCollection.forEach(function(notification){
+        createNotify(notification.fields, document.querySelector('.updates'))
+    });
+    updatesCollection.remove();
 }
 
 changeAnalytics();
