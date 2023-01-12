@@ -14,7 +14,7 @@ class Issue(models.Model):
         verbose_name='Идентификатор обращения',
         )
     url_issue = models.CharField(
-        default="#" , max_length=150,
+        default="#", max_length=150,
         verbose_name='Ссылка на обращение',
         )
     number = models.CharField(
