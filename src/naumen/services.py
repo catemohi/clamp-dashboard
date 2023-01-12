@@ -312,9 +312,10 @@ def create_or_update_group_mttr_report_model(report: dict) -> None:
 
     obj.date = report['date']
     obj.total_number_trouble_ticket = report['total_issues']
-    obj.average_mttr = timedelta(minutes=round(report['average_mttr'], 0))
+    obj.average_mttr = timedelta(
+        minutes=round(float(report['average_mttr']), 0))
     obj.average_mttr_tech_support = timedelta(
-        minutes=round(report['average_mttr_tech_support'], 0))
+        minutes=round(float(report['average_mttr_tech_support']), 0))
     obj.save()
 
 
