@@ -735,7 +735,9 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
     issue_return_to_work_time = issue_return_to_work_time\
         .astimezone(timezone(settings.TIME_ZONE))
 
-    time_difference = (issue_return_to_work_time - datetime.now()).seconds
+    time_difference = (issue_return_to_work_time -
+                       datetime.now().astimezone(timezone(settings.TIME_ZONE))
+                       ).seconds
     pushing = 0 < time_difference < timer.alarm_time
 
     if pushing is True and not issue['alarm_return_to_work']:

@@ -50,11 +50,11 @@ function startWebSocket() {
 		}
 		else if(message.type === "notification"){
 			if (message.subtype === 'new') {
-				playAudio(notificationAudio)
+				playAudio(notificationAudio);
 			} else if (message.subtype === 'burned' || message.subtype === 'returned') {
-				playAudio(alarmAudio)
+				playAudio(alarmAudio);
 			} else if (message.subtype === 'updated' && message.issue.step === groupStep) {
-				playAudio(notificationAudio)
+				playAudio(notificationAudio);
 			} else {
 				// pass
 			}
