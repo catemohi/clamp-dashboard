@@ -739,10 +739,13 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
 
     issue['return_to_work_time'] = issue_return_to_work_time\
         .strftime('%d.%m.%Y, %H:%M:%S')
-
+    print('Issue time: ', issue_return_to_work_time)
+    print('NOW time: ', datetime.now().astimezone(timezone(settings.TIME_ZONE)))
     time_difference = (issue_return_to_work_time -
                        datetime.now().astimezone(timezone(settings.TIME_ZONE))
                        ).seconds
+    print('TIME DIFFERENCE: ',time_difference),
+    print('ALARM TIME: ', timer.alarm_time)
     pushing = 0 < time_difference < timer.alarm_time
 
     if pushing is True and not issue['alarm_return_to_work']:
