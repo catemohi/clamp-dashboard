@@ -37,8 +37,7 @@ $(function() {
 function counterUpdate() {
     let firstLineCounter = document.querySelector('.task-status-on-the-group-count');
     let vipLineCounter = document.querySelector('.task-status-on-the-vip-count');
-    console.log(firstLineCounter.textContent);
-    console.log(vipLineCounter.textContent)
+    
     if (firstLineCounter.textContent >= 1) {
         firstLineCounter.style.display = 'block';
         fadeIn(firstLineCounter, 100);
