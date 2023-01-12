@@ -22,7 +22,7 @@ from pytz import timezone
 
 from .exceptions import NaumenBadRequestError, NaumenConnectionError
 from .exceptions import NaumenServiceError
-from .models import FlrReport, TroubleTicket
+from .models import FlrReport, Issue
 from .models import MeanTimeToResponseReport, ServiceLevelReport
 
 
@@ -341,8 +341,7 @@ def create_or_update_group_flr_report_model(report: dict) -> None:
     obj.save()
 
 
-# TODO переименовать trouble_ticket_model d issue_model
-def create_or_update_trouble_ticket_model(issue: dict) -> None:
+def create_or_update_issue_model(issue: dict) -> None:
 
     """Создание или обновление обьекта обращения.
 
@@ -359,7 +358,7 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
              }
 
     try:
-        obj = TroubleTicket.objects.get(uuid=issue['uuid'])
+        obj = Issue.objects.get(uuid=issue['uuid'])
         status, changed_dict = checking_issues_changes(obj, issue)
         if obj.alarm_deadline and status:
             obj.alarm_deadline = False
@@ -367,17 +366,16 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
         if obj.alarm_return_to_work and status:
             obj.alarm_return_to_work = False
             obj.save()
-        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
-                            {**_converter_timestring_to_timeobj_for_obj(
-                                issue)})
+        change_model_fields(Issue, {'uuid': issue.get('uuid')},
+                            _converter_timestring_to_timeobj_for_obj(issue))
 
         if status:
             send_notification(
                 issue,
                 **{"type": IssueNotification.CHANGED, "changed": changed_dict})
 
-    except TroubleTicket.DoesNotExist:
-        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+    except Issue.DoesNotExist:
+        change_model_fields(Issue, {'uuid': issue.get('uuid')},
                             {"alarm_deadline": False,
                              "alarm_return_to_work": False,
                              **_converter_timestring_to_timeobj_for_obj(
@@ -389,7 +387,7 @@ def create_or_update_trouble_ticket_model(issue: dict) -> None:
         raise NaumenServiceError
 
 
-def delete_trouble_ticket_model(issue: dict) -> bool:
+def delete_issue_model(issue: dict) -> bool:
 
     """Удаление обьекта обращения.
 
@@ -400,8 +398,8 @@ def delete_trouble_ticket_model(issue: dict) -> bool:
         bool: результат попытки удаления обьекта.
     """
     try:
-        obj = TroubleTicket.objects.get(uuid=issue.get('uuid'))
-    except TroubleTicket.DoesNotExist:
+        obj = Issue.objects.get(uuid=issue.get('uuid'))
+    except Issue.DoesNotExist:
         raise NaumenServiceError('Не удалось удалить обьект обращение с UUID: '
                                  '%s' % issue.get('uuid'))
 
@@ -550,8 +548,8 @@ def crud_issue(*args, **kwargs) -> None:
 
     try:
         if kwargs.get('is_delete', False):
-            delete_trouble_ticket_model(kwargs.get("issue").get('uuid'))
-        create_or_update_trouble_ticket_model(kwargs.get("issue"))
+            delete_issue_model(kwargs.get("issue").get('uuid'))
+        create_or_update_issue_model(kwargs.get("issue"))
     except NaumenServiceError as err:
         LOGGER.exception(err)
 
@@ -647,7 +645,7 @@ def get_issues_from_db(*args, **kwargs):
     """
     issues = [{'uuid': issue.get('pk'),
                **issue.get("fields")}
-              for issue in loads(get_json_for_model(TroubleTicket, **kwargs))]
+              for issue in loads(get_json_for_model(Issue, **kwargs))]
     return issues
 
 
@@ -674,7 +672,7 @@ def issues_list_synchronization(*args, **kwargs):
     return (crud_issues, deleted_issues)
 
 
-def checking_issues_changes(old_issue: TroubleTicket,
+def checking_issues_changes(old_issue: Issue,
                             new_issue: Mapping) -> Tuple[bool, dict]:
     """Функиция для проверки изменений в обращении.
 
@@ -713,7 +711,7 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
     """Проверка таймера возврата в работу.
 
     Args:
-        issue (TroubleTicket): обращение которое необходимо проверить
+        issue (Issue): обращение которое необходимо проверить
     """
 
     issue_step = issue['step']
@@ -740,7 +738,7 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
     pushing = 0 < time_difference < timer.alarm_time
 
     if pushing is True and not issue['alarm_return_to_work']:
-        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+        change_model_fields(Issue, {'uuid': issue.get('uuid')},
                             {"alarm_return_to_work": True})
         send_notification(issue, type=IssueNotification.RETURNED)
 
@@ -749,7 +747,7 @@ def check_issue_deadline(issue: Mapping, *args, **kwargs) -> None:
     """Проверка времени отработки на шаге и таймера возврата в работу.
 
     Args:
-        issue (TroubleTicket): обращение которое необходимо проверить
+        issue (Issue): обращение которое необходимо проверить
     """
 
     issue_step = issue['step']
@@ -770,7 +768,7 @@ def check_issue_deadline(issue: Mapping, *args, **kwargs) -> None:
     pushing = deadline.alarm_time >= time_difference > 0
 
     if pushing is True and not issue['alarm_deadline']:
-        change_model_fields(TroubleTicket, {'uuid': issue.get('uuid')},
+        change_model_fields(Issue, {'uuid': issue.get('uuid')},
                             {"alarm_deadline": True})
         send_notification(issue, type=IssueNotification.BURNED)
 

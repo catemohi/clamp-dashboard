@@ -1,13 +1,9 @@
 from datetime import timedelta
 
 from django.db import models
-from django.conf import settings
 
 
-# Create your models here.
-
-
-class TroubleTicket(models.Model):
+class Issue(models.Model):
 
     """
     Модель обращения

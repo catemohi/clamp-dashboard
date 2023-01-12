@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import FlrReport, MeanTimeToResponseReport, ServiceLevelReport
-from .models import TroubleTicket
+from .models import Issue
 # Register your models here.
 
 
@@ -40,7 +40,7 @@ class FlrReportAdmin(admin.ModelAdmin):
                      'number_primary_trouble_tickets')
 
 
-class TroubleTicketAdmin(admin.ModelAdmin):
+class IssueAdmin(admin.ModelAdmin):
 
     list_display = ('number', 'name', 'last_edit_time', 'issue_type',
                     'name_contragent', 'vip_contragent', 'name_service',
@@ -50,7 +50,7 @@ class TroubleTicketAdmin(admin.ModelAdmin):
                      'last_edit_time', 'step_time')
 
 
-admin.site.register(TroubleTicket, TroubleTicketAdmin)
+admin.site.register(Issue, IssueAdmin)
 admin.site.register(ServiceLevelReport, ServiceLevelReportAdmin)
 admin.site.register(MeanTimeToResponseReport, MeanTimeToResponseReportAdmin)
 admin.site.register(FlrReport, FlrReportAdmin)

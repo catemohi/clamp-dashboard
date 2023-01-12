@@ -4,8 +4,8 @@ from logging import getLogger
 from .services import crud_service_level, parse_issue_card
 from .services import crud_mttr, crud_flr, download_issues
 from .services import issues_list_synchronization
-from .services import delete_trouble_ticket_model
-from .services import create_or_update_trouble_ticket_model
+from .services import delete_issue_model
+from .services import create_or_update_issue_model
 from .services import get_issues_from_db
 from .services import check_issue_return_timers, check_issue_deadline
 from .exceptions import NaumenServiceError
@@ -43,10 +43,10 @@ def crud_issue(*args, **kwargs):
     issue = kwargs.get('issue')
     try:
         if kwargs.get('is_delete'):
-            delete_trouble_ticket_model(issue)
+            delete_issue_model(issue)
         else:
             issue = parse_issue_card(issue)
-            create_or_update_trouble_ticket_model(issue)
+            create_or_update_issue_model(issue)
     except NaumenServiceError as err:
         LOGGER.exception(err)
 
