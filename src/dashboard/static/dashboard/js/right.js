@@ -71,7 +71,7 @@ function createNotify(notify, notifyParent) {
     } else if (notify.issue.vip_contragent === true) {
         emoji.innerText = '❤️';
     } else {
-        emoji.innerText = '⚙️';
+        // pass
     };
     
 	text.innerHTML = '<a href="' + notify.issue.url_issue + '">'+ notify.text + '</a>';
