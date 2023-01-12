@@ -112,8 +112,8 @@ def send_notification(issue: str, *args, **kwargs):
             {"type": "notification", "subtype": "burned", "issue": issue,
              "text": message, "time": time})
 
-    print(text=result[1]["text"], time=result[1]["time"],
-          subtype=result[1]["subtype"], issue=result[1]["issue"])
+    print(result[1]["text"], result[1]["time"], result[1]["subtype"],
+          result[1]["issue"])
 
     NotificationMessage(text=result[1]["text"],
                         time=result[1]["time"],
