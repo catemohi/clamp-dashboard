@@ -23,9 +23,9 @@ $(document).ready(function () {
         ],
         "order": [[6, 'asc'], [10, 'asc']],
         'rowCallback': function(row, data, index){
-            if(data.step_time > 540 && data.step == 'передано в работу (напр тех под В2В)'){
+            if(data.step_time > 540 && data.step === groupStep){
                 $(row).css('background-color', '#ff7B7B');
-            } else if (data.step_time > 1140 && data.step == 'принято в работу') {
+            } else if (data.step_time > 1140 && data.step === workerStep) {
                 $(row).css('background-color', '#ff7B7B');
             }
             if ($(row).children('.step-time')) {
@@ -38,8 +38,6 @@ $(document).ready(function () {
             };
             $(row).children('.name').text('');
             $(row).children('.name').append('<a href=' + data.url_issue + '>'+ data.name +'</a>');
-            // $(row).children('.name-service').append('<a href=' + data.url_service + '>'+ data.name +'</a>');
-            // $(row).children('.name-contragent').append('<a href=' + data.url_contragent + '>'+ data.name +'</a>');
             $(row).children('.return-work-time').text(new Intl.DateTimeFormat("ru", options).format(new Date(data.return_to_work_time)));
             
 

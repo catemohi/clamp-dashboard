@@ -3,6 +3,11 @@ const TABLE = '/table/';
 const REPORTS = '/reports/';
 const NOTIFICATION_BOX = document.querySelector('.right .recent-updates .updates');
 
+function playAudio(audioFile){
+	audioFile.play();
+	audioFile.currentTime = 0;
+};
+
 function reportDataUpdate(inputData){
 	switch(window.location.pathname) {
 		case DASHBOARD:
@@ -44,6 +49,15 @@ function startWebSocket() {
 			reportDataUpdate(message);
 		}
 		else if(message.type === "notification"){
+			if (message.subtype === 'new') {
+				playAudio(notificationAudio)
+			} else if (message.subtype === 'burned' || message.subtype === 'returned') {
+				playAudio(alarmAudio)
+			} else if (message.subtype === 'updated' && message.issue.step === groupStep) {
+				playAudio(notificationAudio)
+			} else {
+				// pass
+			}
 			createNotify(message, NOTIFICATION_BOX);
 		}
 		else if(message.type === "count"){
@@ -59,4 +73,6 @@ function startWebSocket() {
 	setTimeout(function() {startWebSocket()}, 5000);
 	};
 };
+
+
 startWebSocket()

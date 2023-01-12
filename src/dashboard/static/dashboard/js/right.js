@@ -46,7 +46,6 @@ function fadeIn(el, speed) {
 
 function createNotify(notify, notifyParent) {
     let notificationText
-    console.log(notify)
 	// Creating a new block
 	let update_item = document.createElement('div');
 	update_item.className = "update";
@@ -66,7 +65,7 @@ function createNotify(notify, notifyParent) {
 	let emoji = document.createElement('span');
     let text = document.createElement('span');
 
-    if (notify.subtype === 'burned') {
+    if (notify.subtype === 'burned' || notify.subtype === 'returned') {
         emoji.innerText = '🧨';
     } else if (notify.issue.vip_contragent === true) {
         emoji.innerText = '❤️';
