@@ -734,8 +734,9 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
     issue_return_to_work_time = datetime.strptime(
                                             issue['return_to_work_time'],
                                             '%Y-%m-%dT%H:%M:%SZ')
-    issue_return_to_work_time = issue_return_to_work_time\
-        .astimezone(timezone(settings.TIME_ZONE))
+    issue_return_to_work_time = (
+        issue_return_to_work_time + timedelta(hours=3)).astimezone(
+            timezone(settings.TIME_ZONE))
 
     issue['return_to_work_time'] = issue_return_to_work_time\
         .strftime('%d.%m.%Y, %H:%M:%S')
@@ -745,6 +746,12 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
 
     time_difference = int(round(time_difference.total_seconds(), 0))
     pushing = 0 < time_difference < timer.alarm_time
+
+    LOGGER.info('Обращение {num}; Время возврата в работу {return_t}; '.format(
+         num=issue['number'], return_t=issue_return_to_work_time) +
+                 f'До возврата с отложенного шага {time_difference} секунд' +
+                 'Состояния флага предпреждения: {}'.format(
+                     issue['alarm_return_to_work']))
 
     if pushing is True and not issue['alarm_return_to_work']:
         change_model_fields(Issue, {'uuid': issue.get('uuid')},
