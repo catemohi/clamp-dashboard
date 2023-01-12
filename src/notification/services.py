@@ -1,7 +1,7 @@
 from typing import Mapping, Literal, Union, Any
 from enum import Enum
 from datetime import datetime
-from json import dumps, loads
+from json import dumps
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
