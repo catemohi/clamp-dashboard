@@ -42,7 +42,6 @@ def dashboard(request):
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
     notifications = get_notification(slice=50, json_type=True)
-    print(notifications)
     issues_count = issues_on_group()
 
     context.update(day_dict)
