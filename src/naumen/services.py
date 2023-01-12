@@ -737,6 +737,9 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
     issue_return_to_work_time = issue_return_to_work_time\
         .astimezone(timezone(settings.TIME_ZONE))
 
+    issue['return_to_work_time'] = issue_return_to_work_time\
+        .strftime('%d.%m.%Y, %H:%M:%S')
+
     time_difference = (issue_return_to_work_time -
                        datetime.now().astimezone(timezone(settings.TIME_ZONE))
                        ).seconds
