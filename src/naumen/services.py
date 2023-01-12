@@ -366,15 +366,17 @@ def create_or_update_issue_model(issue: dict) -> None:
         if obj.alarm_return_to_work and status:
             obj.alarm_return_to_work = False
             obj.save()
-        change_model_fields(Issue, {'uuid': issue.get('uuid')},
-                            _converter_timestring_to_timeobj_for_obj(issue))
 
         if status:
             send_notification(
                 issue,
                 **{"type": IssueNotification.CHANGED, "changed": changed_dict})
 
+        change_model_fields(Issue, {'uuid': issue.get('uuid')},
+                            _converter_timestring_to_timeobj_for_obj(issue))
+
     except Issue.DoesNotExist:
+        send_notification(issue, **{"type": IssueNotification.NEW})
         change_model_fields(Issue, {'uuid': issue.get('uuid')},
                             {"alarm_deadline": False,
                              "alarm_return_to_work": False,
@@ -382,7 +384,6 @@ def create_or_update_issue_model(issue: dict) -> None:
                                  issue)},
                             is_created=False)
 
-        send_notification(issue, **{"type": IssueNotification.NEW})
     except:
         raise NaumenServiceError
 
