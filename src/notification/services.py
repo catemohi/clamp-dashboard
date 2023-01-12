@@ -113,7 +113,7 @@ def send_notification(issue: str, *args, **kwargs):
              "text": message, "time": time})
 
     print(text=result[1]["text"], time=result[1]["time"],
-          subtype=result[1]["subtype"], issue=dumps(result[1]["issue"]))
+          subtype=result[1]["subtype"], issue=result[1]["issue"])
 
     NotificationMessage(text=result[1]["text"],
                         time=result[1]["time"],
