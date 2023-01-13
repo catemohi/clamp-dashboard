@@ -6,7 +6,7 @@ from naumen.services import get_issues_from_db
 from notification.services import get_notification
 
 from .services import get_day_dates_and_data, json_encoding, get_load_ratings
-from .services import issues_on_group
+from .services import issues_on_group, get_load_naumen_settings
 
 
 def theme_check(cookies):
@@ -39,6 +39,7 @@ def index(request):
 def dashboard(request):
     context = {}
     # Запрос данных для контекста
+    names = get_load_naumen_settings()
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
     notifications = get_notification(slice=50, json_type=True)
@@ -47,12 +48,14 @@ def dashboard(request):
     context.update(day_dict)
     context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications, "ratings": ratings})
-    context.update(issues_count)
+    context.update({**issues_count, 'names': names})
     return render(request, 'dashboard/dashboard.html', context=context)
 
 
 def table(request):
     context = {}
+    # Запрос данных для контекста
+    names = get_load_naumen_settings()
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
     notifications = get_notification(slice=50, json_type=True)
@@ -61,13 +64,15 @@ def table(request):
     context.update(day_dict)
     context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications, "ratings": ratings})
-    context.update(issues_count)
+    context.update({**issues_count, 'names': names})
     return render(request, 'dashboard/table.html', context=context)
 
 
 def reports(request):
     context = {}
+    # Запрос данных для контекста
     ratings = get_load_ratings()
+    names = get_load_naumen_settings()
     day_dict = get_day_dates_and_data()
     notifications = get_notification(slice=50, json_type=True)
     issues_count = issues_on_group()
@@ -75,7 +80,7 @@ def reports(request):
     context.update(day_dict)
     context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications, "ratings": ratings})
-    context.update(issues_count)
+    context.update({**issues_count, 'names': names})
     return render(request, 'dashboard/reports.html', context=context)
 
 

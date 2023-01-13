@@ -7,6 +7,8 @@ from django.db import models
 from naumen.services import add_months, get_report_to_period
 from naumen.services import get_issues_from_db
 
+from .models import RatingSetting, NaumenSetting
+
 
 class Dates(NamedTuple):
     """Класс для хранения коллекции дат.
@@ -146,19 +148,16 @@ def _get_group_name(required_group: Literal['first_line_group_name',
     Returns:
         str: название группы или пустую строку
     """
-    # TODO обращение к таблице с хранением имен групп
-    FIRST_LINE_GROUP = 'Группа поддержки и управления сетью  (Напр ТП В2В)'
-    VIP_LINE_GROUP = 'Группа поддержки VIP - клиентов (Напр ТП В2В)'
-    GENERAL_GROUP = 'Итог'
+    obj, created = NaumenSetting.objects.get_or_create(is_active=True)
 
     if required_group == 'first_line_group_name':
-        return FIRST_LINE_GROUP
+        return obj.first_group_name
 
     if required_group == 'vip_line_group_name':
-        return VIP_LINE_GROUP
+        return obj.vip_group_name
 
     if required_group == 'general_group_name':
-        return GENERAL_GROUP
+        return obj.general_group_name
 
     return ''
 
@@ -170,9 +169,9 @@ def _get_group_step_name() -> str:
     Returns:
         str: название шага группы
     """
-    # TODO обращение к таблице с хранением имен шага групп
+    obj, created = NaumenSetting.objects.get_or_create(is_active=True)
 
-    return 'передано в работу (напр тех под В2В)'
+    return obj.step_name_on_group
 
 
 def get_date_collections(datestring: str) -> Dates:
@@ -399,18 +398,22 @@ def get_load_ratings() -> Union[models.QuerySet, List[models.Model]]:
         Union[models.QuerySet, List[models.Model]]:
             номинальные значения нагрузки
     """
-    # TODO запрос к таблице показателей
-    # Пока сделаем подменную структуру данных
-    class LoadRatings(NamedTuple):
-        service_level: int
-        average_mttr_tech_support: int
-        flr_level: int
-        num_issues_first_line: int
-        num_issues_vip_line: int
-        num_issues_general: int
-        num_issues_closed: int
-        num_primary_issues: int
-    return LoadRatings(80, 50, 50, 80, 40, 120, 70, 40)
+    obj, created = RatingSetting.objects.get_or_create(is_active=True)
+
+    return obj
+
+
+def get_load_naumen_settings() -> Union[models.QuerySet, List[models.Model]]:
+    """
+    Функция получения наименований групп и шагов.
+
+    Returns:
+        Union[models.QuerySet, List[models.Model]]:
+            наименования групп и шагов.
+    """
+    obj, created = NaumenSetting.objects.get_or_create(is_active=True)
+
+    return obj
 
 
 def _compare_num(first: int, second: int) -> Union[float, None]:
