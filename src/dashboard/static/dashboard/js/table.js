@@ -108,7 +108,7 @@ $(document).ready(function () {
             table.column(3).visible(false);
             table.column(4).visible(true);
             table.column(5).visible(true);
-            table.column(4).visible(true);
+            table.column(4).visible(false);
             table.column(5).visible(true);
             table.column(6).visible(false);
             table.column(7).visible(true);
