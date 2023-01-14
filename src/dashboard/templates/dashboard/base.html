@@ -26,8 +26,8 @@
       const minSuccessSL = {{ ratings.service_level }};
       const minSuccessMTTR = {{ ratings.mttr_level }};
       const minSuccessFLR = {{ ratings.flr_level }};
-      const groupStep = {{ names.step_name_on_group }};
-      const workerStep = {{ names.step_name_on_worker }};
+      const groupStep = '{{ names.step_name_on_group }}';
+      const workerStep = '{{ names.step_name_on_worker }}';
       const notificationAudio = new Audio("{% static 'dashboard/audio/notification.wav' %}");
       const alarmAudio = new Audio("{% static 'dashboard/audio/alarm.wav' %}");
     </script>
