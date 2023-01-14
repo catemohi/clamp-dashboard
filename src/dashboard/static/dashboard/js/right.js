@@ -131,7 +131,28 @@ function changeAnalytics() {
                 daylySL.classList.add("danger");
             }
         }
-
+        let daylyMTTR = module.querySelector(".dayly_mttr *")
+        if (daylyMTTR != null) {
+            let valueMTTR= parsingInt(daylyMTTR.textContent);
+			// maxSuccessMTTR прописана в контексте base.html и тянется с БД
+            if (valueMTTR <= maxSuccessMTTR) {
+                daylyMTTR.classList.add("success");
+            }
+            else {
+                daylyMTTR.classList.add("danger");
+            }
+        }
+        let daylyFLR = module.querySelector(".dayly_flr *")
+        if (daylyFLR != null) {
+            let valueFLR= parsingInt(daylyFLR.textContent);
+			// maxSuccessFLR прописана в контексте base.html и тянется с БД
+            if (valueFLR <= maxSuccessFLR) {
+                daylyFLR.classList.add("success");
+            }
+            else {
+                daylyFLR.classList.add("danger");
+            }
+        }
         let numWorkedAfterDeadline = module.querySelector(".num_worked_after_deadline *")
         if (numWorkedAfterDeadline != null) {
             let valueWorkedAfterDeadline= +numWorkedAfterDeadline.textContent;
