@@ -49,7 +49,7 @@ class NaumenSetting(models.Model):
             models.constraints.UniqueConstraint(
                 fields=['is_active'],
                 condition=models.constraints.Q(is_active=True),
-                name='Активные настройки')
+                name='Активная коллекция настроек для парсинга Naumen')
         ]
 
 
@@ -108,5 +108,5 @@ class RatingSetting(models.Model):
             models.constraints.UniqueConstraint(
                 fields=['is_active'],
                 condition=models.constraints.Q(is_active=True),
-                name='Активные настройки')
+                name='Активная коллекция настроек аналитики')
         ]
