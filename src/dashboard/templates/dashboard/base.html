@@ -22,12 +22,12 @@
       const options = {year: 'numeric', month: 'numeric', day: 'numeric',
                        hour: 'numeric', minute: 'numeric', second: 'numeric',
                        timezone: 'Moscow', hour12: false};
-      const img_link = "{% static 'dashboard/img/profile/bot-profile.png' %}"
-      const minSuccessSL = {{ ratings.service_level }}
-      const minSuccessMTTR = {{ ratings.mttr_level }}
-      const minSuccessFLR = {{ ratings.flr_level }}
-      const groupStep = {{ names.step_name_on_group }}
-      const workerStep = {{ names.step_name_on_worker }}
+      const img_link = "{% static 'dashboard/img/profile/bot-profile.png' %}";
+      const minSuccessSL = {{ ratings.service_level }};
+      const minSuccessMTTR = {{ ratings.mttr_level }};
+      const minSuccessFLR = {{ ratings.flr_level }};
+      const groupStep = {{ names.step_name_on_group }};
+      const workerStep = {{ names.step_name_on_worker }};
       const notificationAudio = new Audio("{% static 'dashboard/audio/notification.wav' %}");
       const alarmAudio = new Audio("{% static 'dashboard/audio/alarm.wav' %}");
     </script>
