@@ -50,9 +50,9 @@ function setProgress(percent, progressCircle) {
 
 }
 
-function setCardProgress(card, unit) {
+function setCardProgress(card, typeReport, unit) {
     let counter = card.querySelector(".number *");
-    let value = +counter.textContent
+    let value = +counter.textContent;
     let progressCircle = card.querySelector(".circle");
 
     let radius = progressCircle.r.baseVal.value;
@@ -60,7 +60,7 @@ function setCardProgress(card, unit) {
     let offset = circumference - value / 100 * circumference;
     progressCircle.style.strokeDashoffset = offset;
 
-    counter.textContent = 0
+    counter.textContent = 0;
     let a = -1;
     let run = setInterval(frames, 10);
     function frames() {
@@ -70,17 +70,48 @@ function setCardProgress(card, unit) {
         counter.textContent = a + unit;
         a = a + 1;
     }
+    switch(typeReport) {
+
+      case 'sl':
+        if (value < minSuccessSL) {
+          card.querySelector(".number").classList.add("danger");
+        } else {
+          card.querySelector(".number").classList.remove("danger");
+        };
+        break;
+      
+      case 'mttr':
+        if (value > maxSuccessMTTR) {
+            card.querySelector(".number").classList.add("danger");
+        } else {
+            card.querySelector(".number").classList.remove("danger");
+        };
+        break;
+      
+      case 'flr':
+        if (value < minSuccessFLR) {
+          card.querySelector(".number").classList.add("danger");
+        } else {
+          card.querySelector(".number").classList.remove("danger");
+        };
+        break;
+      
+      default:
+        // pass
+        break;
+
+      };
 }
 
 function changeCardProgress() {
-    setCardProgress(cardDailySl, '%')
-    setCardProgress(cardWeeklySl, '%')
-    setCardProgress(cardMonthlySl, '%')
-    setCardProgress(cardDailySlVip, '%')
-    setCardProgress(cardWeeklySlVip, '%')
-    setCardProgress(cardMonthlySlVip, '%')
-    setCardProgress(cardDailyFlr, '%')
-    setCardProgress(cardDailyMttr, ' м.')    
+    setCardProgress(cardDailySl, 'sl', '%');
+    setCardProgress(cardWeeklySl, 'sl', '%');
+    setCardProgress(cardMonthlySl, 'sl', '%');
+    setCardProgress(cardDailySlVip, 'sl', '%');
+    setCardProgress(cardWeeklySlVip, 'sl', '%');
+    setCardProgress(cardMonthlySlVip, 'sl', '%');
+    setCardProgress(cardDailyFlr, 'flr', '%');
+    setCardProgress(cardDailyMttr, 'mttr', ' м.');
 }
 
 function changeProgresTabsValue(data) {
@@ -133,8 +164,8 @@ function getDashboardData() {
         return
     }
     $.post('/json/dashboard', { date: current_date, csrfmiddlewaretoken: window.CSRF_TOKEN, }, function (data) {
-        changeProgresTabsValue(data)
-        changeAnlyticsValue(data)
+        changeProgresTabsValue(data);
+        changeAnlyticsValue(data);
     });
 }
 
@@ -146,4 +177,3 @@ $("#form-date").submit(function(event) {
     event.preventDefault();
     getDashboardData();
 });
-
