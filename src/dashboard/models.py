@@ -90,7 +90,7 @@ class RatingSetting(models.Model):
         verbose_name='Норма количества закрытых обращений (кол.)',
         default=75,
         )
-    num_issues_general = models.IntegerField(
+    num_primary_issues = models.IntegerField(
         verbose_name='Норма количества первичных обращений (кол.)',
         default=60,
         )
