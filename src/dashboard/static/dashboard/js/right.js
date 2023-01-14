@@ -145,8 +145,8 @@ function changeAnalytics() {
         let daylyFLR = module.querySelector(".dayly_flr *")
         if (daylyFLR != null) {
             let valueFLR= parsingInt(daylyFLR.textContent);
-			// maxSuccessFLR прописана в контексте base.html и тянется с БД
-            if (valueFLR <= maxSuccessFLR) {
+			// minSuccessFLR прописана в контексте base.html и тянется с БД
+            if (valueFLR >= minSuccessFLR) {
                 daylyFLR.classList.add("success");
             }
             else {
