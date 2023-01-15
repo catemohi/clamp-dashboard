@@ -178,6 +178,7 @@ function changeAnlyticsValue(data) {
     });
 
     let analyticsMttr = document.querySelector(".mttr");
+    console.log(data);
     console.log(data.dashboard_data.mttr.dayly_mttr);
     console.log(analyticsMttr.querySelector(".dayly_mttr *"));
     analyticsMttr.querySelector(".dayly_mttr *").textContent = data.dashboard_data.mttr.dayly_mttr + 'мин.'
