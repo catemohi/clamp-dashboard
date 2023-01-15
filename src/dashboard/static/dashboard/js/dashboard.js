@@ -133,6 +133,7 @@ function getDashboardData() {
         return
     }
     $.post('/json/dashboard', { date: current_date, csrfmiddlewaretoken: window.CSRF_TOKEN, }, function (data) {
+        console.log(data)
         changeProgresTabsValue(data)
         changeAnlyticsValue(data)
     });
