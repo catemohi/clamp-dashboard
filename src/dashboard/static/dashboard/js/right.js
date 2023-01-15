@@ -178,13 +178,13 @@ function changeAnlyticsValue(data) {
     });
 
     let analyticsMttr = document.querySelector(".mttr");
-    analyticsMttr.querySelector(".average_mttr_tech_support *").textContent = data.dashboard_data.mttr.average_mttr_tech_support + 'мин.'
+    analyticsMttr.querySelector(".dayly_mttr *").textContent = data.dashboard_data.mttr.dayly_mttr + 'мин.'
     analyticsMttr.querySelector(".num_issues *").textContent = data.dashboard_data.mttr.num_issues
     analyticsMttr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.mttr.rating_to_nominal + '%'
     analyticsMttr.querySelector(".rating_to_comparison *").textContent = data.dashboard_data.analytics.mttr.rating_to_comparison + '%'
 
     let analyticsFlr = document.querySelector(".flr");
-    analyticsFlr.querySelector(".level *").textContent = data.dashboard_data.flr.level + '%'
+    analyticsFlr.querySelector(".dayly_flr *").textContent = data.dashboard_data.flr.level + '%'
     analyticsFlr.querySelector(".num_primary_issues *").textContent = data.dashboard_data.flr.num_primary_issues
     analyticsFlr.querySelector(".num_issues_closed_independently *").textContent = data.dashboard_data.flr.num_issues_closed_independently    
     analyticsFlr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.flr.rating_to_nominal + '%'
