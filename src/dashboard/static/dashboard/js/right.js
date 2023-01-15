@@ -178,6 +178,8 @@ function changeAnlyticsValue(data) {
     });
 
     let analyticsMttr = document.querySelector(".mttr");
+    console.log(data.dashboard_data.mttr.dayly_mttr);
+    console.log(analyticsMttr.querySelector(".dayly_mttr *"));
     analyticsMttr.querySelector(".dayly_mttr *").textContent = data.dashboard_data.mttr.dayly_mttr + 'мин.'
     analyticsMttr.querySelector(".num_issues *").textContent = data.dashboard_data.mttr.num_issues
     analyticsMttr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.mttr.rating_to_nominal + '%'
