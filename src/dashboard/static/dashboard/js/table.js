@@ -37,12 +37,10 @@ $(document).ready(function () {
             $(row).children('.return-work-time').text(new Intl.DateTimeFormat("ru", options).format(new Date(data.return_to_work_time)));
             returnedNotificationSettings.forEach(element => {
                 if (element.step === data.step) {
-                    console.log('Проверяем: ', data)
-                    console.log(Math.floor(new Date(data.return_to_work_time).valueOf() / 1000));
-                    console.log(Math.floor(Date.now() / 1000));
-                    console.log(Math.floor((new Date(data.return_to_work_time).valueOf() - Date.now())  / 1000));
-                    if (Math.floor((new Date(data.return_to_work_time).valueOf() - Date.now())  / 1000) < element.alarm_time){
-                        $(row).css('background-color', '#ff7B7B');
+                    let returnedUnixTime = new Date(data.return_to_work_time).valueOf();
+                    let timedeltaReturned = Math.floor(( returnedUnixTime - Date.now())  / 1000);
+                    if (timedeltaReturned < element.alarm_time || returnedUnixTime < Date.now()){
+                        $(row).css('background-color', 'var(--color-warning)');
                     } else {
                         $(row).css('background-color', 'transparent');
                     }
@@ -52,7 +50,7 @@ $(document).ready(function () {
                 if (element.step === data.step) {
                     let timedelta = element.step_time - element.alarm_time;
                     if (data.step_time > timedelta){
-                        $(row).css('background-color', '#ff7B7B');
+                        $(row).css('background-color', 'var(--color-danger)');
                     } else {
                         $(row).css('background-color', 'transparent');
                     }
