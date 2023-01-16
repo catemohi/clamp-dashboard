@@ -65,7 +65,7 @@ app.conf.beat_schedule = {
         'one_off': True,
     },
     'Создание моделей настроек уведомлений о возврате в работу обрашений': {
-        'task': 'notification.tasks.create_burned_notification_models',
+        'task': 'notification.tasks.create_returned_notification_models',
         'schedule': timedelta(seconds=30),
         'one_off': True,
     },

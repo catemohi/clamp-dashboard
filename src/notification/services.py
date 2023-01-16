@@ -212,12 +212,12 @@ def create_default_returned_notification_setting():
 def get_burned_notification_setting():
     """Функция для получения настроек уведомлений о лимитах обработки
     """
-    settings = StepNotificationSetting.objects.all()
+    settings = [entry for entry in StepNotificationSetting.objects.values()]
     return settings
 
 
 def get_returned_notification_setting():
     """Функция для получения настроек уведомлений о лимитах обработки
     """
-    settings = RetrunToWorkNotificationSetting.objects.all()
+    settings = [entry for entry in RetrunToWorkNotificationSetting.objects.values()]
     return settings
