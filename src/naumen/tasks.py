@@ -38,7 +38,7 @@ def update_flr_level():
     return True
 
 
-@shared_task
+@shared_task(ignore_result=True)
 def crud_issue(*args, **kwargs):
     issue = kwargs.get('issue')
     try:
@@ -67,7 +67,7 @@ def update_issues(*args, **kwargs):
     return True
 
 
-@shared_task
+@shared_task(ignore_result=True)
 def check_issue_deadline_and_timer(issue: dict, *args, **kwargs):
     """Задача проверки времени отработки и таймера возврата в работу обращения
 
@@ -78,7 +78,7 @@ def check_issue_deadline_and_timer(issue: dict, *args, **kwargs):
     check_issue_return_timers(issue, *args, **kwargs)
 
 
-@shared_task
+@shared_task(ignore_result=True)
 def check_issues_deadline_and_timer(*args, **kwargs):
     """Задача для проверки времени отработки и таймера возврата в работу
     обращений

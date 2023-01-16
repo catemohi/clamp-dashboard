@@ -7,8 +7,8 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.core import serializers
 
-from .models import NotificationMessage
-
+from .models import NotificationMessage, StepNotificationSetting
+from .models import RetrunToWorkNotificationSetting
 
 CHANNEL_LAYER = get_channel_layer()
 
@@ -153,3 +153,54 @@ def send_count(sended_data: dict[Literal['first_line', 'vip_line'], Any]):
     """
     result = ("clamp", {"type": "count", **sended_data})
     async_to_sync(CHANNEL_LAYER.group_send)(*result)
+
+
+def _get_or_create_notification_model(
+    notification_model: Union[
+        StepNotificationSetting, RetrunToWorkNotificationSetting],
+        model_kwarg: Mapping = {}) -> None:
+    """
+    Функция для создания обьектов настроек уведомлений.
+
+    Args:
+        model_kwarg (Mapping, optional): именнованные аргументы модели.
+        По умолчанию {}.
+    """
+    notification_model.objects.get_or_create(**model_kwarg)
+
+
+def create_default_burned_notification_setting():
+    """
+    Функция создания моделей настроек уведомлений о лимитах обработки
+    """
+    default_settings = (
+        {'name': 'Уведомление о лимите обработки на группе ТП',
+         'step': 'передано в работу (напр тех под В2В)',
+         'step_time': 900,
+         'alarm_time': 300},
+        {'name': 'Уведомление о лимите обработки на сотруднике',
+         'step': 'принято в работу',
+         'step_time': 1800,
+         'alarm_time': 300},
+    )
+    [_get_or_create_notification_model(StepNotificationSetting, setting)
+     for setting in default_settings]
+
+
+def create_default_returned_notification_setting():
+    """
+    Функция создания моделей настроек уведомлений о возврате в работу
+    """
+    default_settings = (
+        {'name': 'Уведомление о возврате переадресации(снятие)',
+         'step': 'Запланирована дата обработки (снятие переадр)',
+         'alarm_time': 300},
+        {'name': 'Уведомление о возврате переадресации(установка)',
+         'step': 'Запланирована дата обработки (установка переадр)',
+         'alarm_time': 300},
+        {'name': 'Уведомление о возврате с шага обратной связи',
+         'step': 'ожидание обратной связи от клиента',
+         'alarm_time': 300},
+    )
+    [_get_or_create_notification_model(
+     RetrunToWorkNotificationSetting, setting) for setting in default_settings]

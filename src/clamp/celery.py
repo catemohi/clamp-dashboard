@@ -25,36 +25,50 @@ app.autodiscover_tasks()
 # Создание переодических задач по умолчанию
 app.conf.beat_schedule = {
     'Обновление аналитики и прогресса': {
-        'task': 'dashboard.tasks.front_params_update',  # instead 'show'
+        'task': 'dashboard.tasks.front_params_update',
         'schedule': timedelta(minutes=15),
+        'ignore_result': True,
     },
     'Проверка кол-ва задач на группе': {
-        'task': 'dashboard.tasks.front_issues_count',  # instead 'show'
+        'task': 'dashboard.tasks.front_issues_count',
         'schedule': timedelta(seconds=30),
+        'ignore_result': True,
     },
     'Обновление отчета SL': {
-        'task': 'naumen.tasks.update_service_level',  # instead 'show'
+        'task': 'naumen.tasks.update_service_level',
         'schedule': timedelta(minutes=10),
     },
     'Обновление отчета MTTR': {
-        'task': 'naumen.tasks.update_mttr_level',  # instead 'show'
+        'task': 'naumen.tasks.update_mttr_level',
         'schedule': timedelta(hours=1),
     },
     'Обновление отчета FLR': {
-        'task': 'naumen.tasks.update_flr_level',  # instead 'show'
+        'task': 'naumen.tasks.update_flr_level',
         'schedule': timedelta(hours=6),
     },
     'Обновление первой линии': {
-        'task': 'naumen.tasks.update_issues',  # instead 'show'
-        'schedule': timedelta(minutes=1),
+        'task': 'naumen.tasks.update_issues',
+        'schedule': timedelta(minutes=2),
     },
     'Обновление VIP линии': {
-        'task': 'naumen.tasks.update_issues',  # instead 'show'
-        'schedule': timedelta(minutes=2),
+        'task': 'naumen.tasks.update_issues',
+        'schedule': timedelta(minutes=3),
         'kwargs': {'is_vip': True},
     },
     'Проверка лимитов обрашений': {
-        'task': 'naumen.tasks.check_issues_deadline_and_timer',  # instead 'show'
+        'task': 'naumen.tasks.check_issues_deadline_and_timer',
         'schedule': timedelta(seconds=30),
+        'ignore_result': True,
+        'one_off': True,
+    },
+    'Создание моделей настроек уведомлений о лимите обработки обрашений': {
+        'task': 'notification.tasks.create_burned_notification_models',
+        'schedule': timedelta(seconds=30),
+        'one_off': True,
+    },
+    'Создание моделей настроек уведомлений о возврате в работу обрашений': {
+        'task': 'notification.tasks.create_burned_notification_models',
+        'schedule': timedelta(seconds=30),
+        'one_off': True,
     },
 }
