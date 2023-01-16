@@ -204,3 +204,17 @@ def create_default_returned_notification_setting():
     )
     [_get_or_create_notification_model(
      RetrunToWorkNotificationSetting, setting) for setting in default_settings]
+
+
+def get_burned_notification_setting():
+    """Функция для получения настроек уведомлений о лимитах обработки
+    """
+    settings = StepNotificationSetting.objects.all()
+    return serializers.serialize('json', settings)
+
+
+def get_returned_notification_setting():
+    """Функция для получения настроек уведомлений о лимитах обработки
+    """
+    settings = RetrunToWorkNotificationSetting.objects.all()
+    return serializers.serialize('json', settings)

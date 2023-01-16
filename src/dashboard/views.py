@@ -4,6 +4,8 @@ from django.urls import reverse_lazy
 
 from naumen.services import get_issues_from_db
 from notification.services import get_notification
+from notification.services import get_burned_notification_setting
+from notification.services import get_returned_notification_setting
 
 from .services import get_day_dates_and_data, json_encoding, get_load_ratings
 from .services import issues_on_group, get_load_naumen_settings
@@ -39,13 +41,17 @@ def index(request):
 def dashboard(request):
     context = {}
     # Запрос данных для контекста
+    returned_notification_settings = get_returned_notification_setting()
+    burned_notification_settings = get_burned_notification_setting()
     names = get_load_naumen_settings()
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
     notifications = get_notification(slice=50, json_type=True)
     issues_count = issues_on_group()
 
-    context.update(day_dict)
+    context.update(day_dict)    
+    context.update({'returned_notification_settings': returned_notification_settings})
+    context.update({'burned_notification_settings': burned_notification_settings})
     context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications, "ratings": ratings})
     context.update({**issues_count, 'names': names})
@@ -55,6 +61,8 @@ def dashboard(request):
 def table(request):
     context = {}
     # Запрос данных для контекста
+    returned_notification_settings = get_returned_notification_setting()
+    burned_notification_settings = get_burned_notification_setting()
     names = get_load_naumen_settings()
     ratings = get_load_ratings()
     day_dict = get_day_dates_and_data()
@@ -62,6 +70,8 @@ def table(request):
     issues_count = issues_on_group()
 
     context.update(day_dict)
+    context.update({'returned_notification_settings': returned_notification_settings})
+    context.update({'burned_notification_settings': burned_notification_settings})
     context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications, "ratings": ratings})
     context.update({**issues_count, 'names': names})
@@ -71,6 +81,8 @@ def table(request):
 def reports(request):
     context = {}
     # Запрос данных для контекста
+    returned_notification_settings = get_returned_notification_setting()
+    burned_notification_settings = get_burned_notification_setting()
     ratings = get_load_ratings()
     names = get_load_naumen_settings()
     day_dict = get_day_dates_and_data()
@@ -78,6 +90,8 @@ def reports(request):
     issues_count = issues_on_group()
 
     context.update(day_dict)
+    context.update({'returned_notification_settings': returned_notification_settings})
+    context.update({'burned_notification_settings': burned_notification_settings})
     context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications, "ratings": ratings})
     context.update({**issues_count, 'names': names})
