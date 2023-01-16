@@ -38,10 +38,10 @@ $(document).ready(function () {
             returnedNotificationSettings.forEach(element => {
                 if (element.step === data.step) {
                     console.log('Проверяем: ', data)
-                    console.log(new Date(data.return_to_work_time).valueOf());
-                    console.log(Date.now());
-                    console.log(new Date(data.return_to_work_time).valueOf() - Date.now());
-                    if (data.step_time < element.alarm_time){
+                    console.log(Math.floor(new Date(data.return_to_work_time).valueOf() / 1000));
+                    console.log(Math.floor(Date.now() / 1000));
+                    console.log(Math.floor((new Date(data.return_to_work_time).valueOf() - Date.now())  / 1000));
+                    if (Math.floor((new Date(data.return_to_work_time).valueOf() - Date.now())  / 1000) < element.alarm_time){
                         $(row).css('background-color', '#ff7B7B');
                     } else {
                         $(row).css('background-color', 'transparent');
