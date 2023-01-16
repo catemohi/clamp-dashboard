@@ -15,7 +15,7 @@
   </head>
   <body class="{{ body_class }}">
     <p id='raw-burned-notification-settings' style="display: none;">{{ returned_notification_settings }}</p>
-    <p id='raw-returned-notification-settings' style="display: none;">{{ burned_notification_settings }}</p>
+    <p class="raw-returned-notification-settings" style="display: none;">{{ burned_notification_settings }}</p>
     <script type="text/javascript">window.CSRF_TOKEN = "{{ csrf_token }}";</script> 
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -44,8 +44,10 @@
     <script src="{% static 'dashboard/js/base.js' %}"></script>
     <script>
       window.onload = function() {
+        console.log(document.querySelector("#raw-burned-notification-settings"))
+        console.log(document.querySelector(".raw-returned-notification-settings"))
         returnedNotificationSettings = JSON.parse(document.querySelector("#raw-burned-notification-settings").textContent);
-        burnedNotificationSettings = JSON.parse(document.querySelector("#raw-returned-notification-setting").textContent);
+        burnedNotificationSettings = JSON.parse(document.querySelector(".raw-returned-notification-settings").textContent);
       };
     </script>
   </body>
