@@ -213,11 +213,11 @@ def get_burned_notification_setting():
     """Функция для получения настроек уведомлений о лимитах обработки
     """
     settings = StepNotificationSetting.objects.all()
-    return serializers.serialize('json', settings)
+    return settings
 
 
 def get_returned_notification_setting():
     """Функция для получения настроек уведомлений о лимитах обработки
     """
     settings = RetrunToWorkNotificationSetting.objects.all()
-    return serializers.serialize('json', settings)
+    return settings
