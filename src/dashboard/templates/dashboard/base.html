@@ -46,8 +46,9 @@
       window.onload = function() {
         returnedNotificationSettings = JSON.parse(document.querySelector("#raw-burned-notification-settings").textContent);
         burnedNotificationSettings = JSON.parse(document.querySelector("#raw-returned-notification-settings").textContent);
-        console.log(returnedNotificationSettings);
-        console.log(burnedNotificationSettings);
+        document.querySelector("#raw-returned-notification-settings").remove();
+        document.querySelector("#raw-burned-notification-settings").remove();
+
       };
     </script>
   </body>
