@@ -36,7 +36,12 @@ $(document).ready(function () {
             $(row).children('.name').append('<a href=' + data.url_issue + '>'+ data.name +'</a>');
             $(row).children('.return-work-time').text(new Intl.DateTimeFormat("ru", options).format(new Date(data.return_to_work_time)));
             returnedNotificationSettings.forEach(element => {
+                console.log('Проверка: ', element);
+                console.log('Element step', element.step);
+                console.log('Data step', data.step);
                 if (element.step === data.step) {
+                    console.log(data.step_time);
+                    console.log(element.alarm_time);
                     if (data.step_time < element.alarm_time){
                         $(row).css('background-color', '#ff7B7B');
                     } else {
@@ -45,7 +50,12 @@ $(document).ready(function () {
                 };
             });
             burnedNotificationSettings.forEach(element => {
+                console.log('Проверка: ', element);
+                console.log('Element step', element.step);
+                console.log('Data step', data.step);
                 if (element.step === data.step) {
+                    console.log(data.step_time);
+                    console.log(element.step_time - element.alarm_time);
                     if (data.step_time > element.step_time - element.alarm_time){
                         $(row).css('background-color', '#ff7B7B');
                     } else {
