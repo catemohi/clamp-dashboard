@@ -2,6 +2,8 @@ const DASHBOARD = '/dashboard/';
 const TABLE = '/table/';
 const REPORTS = '/reports/';
 const NOTIFICATION_BOX = document.querySelector('.right .recent-updates .updates');
+returnedNotificationSettings = JSON.parse(document.querySelector("#raw-burned-notification-settings").textContent);
+burnedNotificationSettings = JSON.parse(document.querySelector("#raw-returned-notification-setting").textContent);
 
 function playAudio(audioFile){
 	audioFile.play();

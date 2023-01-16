@@ -28,14 +28,12 @@
       const minSuccessSL = {{ ratings.service_level }};
       const maxSuccessMTTR = {{ ratings.mttr_level }};
       const minSuccessFLR = {{ ratings.flr_level }};
-      const returnedNotificationSettings = JSON.parse(document.querySelector("#raw-burned-notification-settings").textContent);
-      const burnedNotificationSettings = JSON.parse(document.querySelector("#raw-returned-notification-setting").textContent);
+      const returnedNotificationSettings = [];
+      const burnedNotificationSettings = [];
       const groupStep = '{{ names.step_name_on_group }}';
       const workerStep = '{{ names.step_name_on_worker }}';
       const notificationAudio = new Audio("{% static 'dashboard/audio/notification.wav' %}");
       const alarmAudio = new Audio("{% static 'dashboard/audio/alarm.wav' %}");
-      document.querySelector("#raw-burned-notification-settings").remove()
-      document.querySelector("#raw-returned-notification-setting").remove()
     </script>
     <div class="container" id="body-container">
       {% include 'dashboard/includes/navigation.html' %}
