@@ -166,7 +166,10 @@ def _get_or_create_notification_model(
         model_kwarg (Mapping, optional): именнованные аргументы модели.
         По умолчанию {}.
     """
-    notification_model.objects.get_or_create(**model_kwarg)
+    print(model_kwarg)
+    obj, created = notification_model.objects.get_or_create(**model_kwarg)
+    print(obj)
+    print(created)
 
 
 def create_default_burned_notification_setting():

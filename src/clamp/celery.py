@@ -58,7 +58,6 @@ app.conf.beat_schedule = {
         'task': 'naumen.tasks.check_issues_deadline_and_timer',
         'schedule': timedelta(seconds=30),
         'ignore_result': True,
-        'one_off': True,
     },
     'Создание моделей настроек уведомлений о лимите обработки обрашений': {
         'task': 'notification.tasks.create_burned_notification_models',
