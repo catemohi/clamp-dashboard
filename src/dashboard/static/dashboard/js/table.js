@@ -38,8 +38,8 @@ $(document).ready(function () {
             returnedNotificationSettings.forEach(element => {
                 if (element.step === data.step) {
                     console.log(new Date(data.return_to_work_time));
-                    console.log(new Date.now());
-                    console.log(new Date(data.return_to_work_time) - new Date.now());
+                    console.log(Date.now());
+                    console.log(new Date(data.return_to_work_time) - Date.now());
                     if (data.step_time < element.alarm_time){
                         $(row).css('background-color', '#ff7B7B');
                     } else {
