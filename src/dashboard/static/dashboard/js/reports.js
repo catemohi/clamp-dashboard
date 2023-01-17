@@ -92,10 +92,10 @@ function reloadDatatable( desiredDate, comparisonDate ) {
       let table = $('#trouble-table').DataTable({
         data: dataSet,
         columns: [
-          { title: 'Пункт' },
-          { title: 'Наименование' },
-          { title: 'Интересующий день' },
-          { title: 'Сравнивнение' },
+          { "title": "Пункт", "className": "column-index" },
+          { "title": "Наименование", "className": "column-name" },
+          { "title": "Интересующий день", "className": "desired-date" },
+          { "title": "Сравнивнение", "className": "comparison-date" },
         ],
         autoWidth: false,
         bDestroy: true,
@@ -105,6 +105,18 @@ function reloadDatatable( desiredDate, comparisonDate ) {
         buttons: [
           'csv', 'excel', 'pdf'
         ],
+        rowCallback: function(row, data, index) {
+          console.log(data)
+          if (data[1].toLowerCase().indexOf('нагрузка') != -1) {
+            $("td:eq(2)",row).addClass("analitic")
+          } else if (data[1].toLowerCase().indexOf('service') != -1) {
+            $("td:eq(2)",row).addClass("service-level")
+          } else if (data[1].toLowerCase().indexOf('mttr') != -1) {
+            $("td:eq(2)",row).addClass("mttr-level")
+          } else if (data[1].toLowerCase().indexOf('flr') != -1) {
+            $("td:eq(2)",row).addClass("flr-level")
+          }
+        },
       });
       table.column(0).visible(false);
   });
