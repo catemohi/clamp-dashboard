@@ -3,7 +3,7 @@ from django.urls import path, include
 
 from .views import index, dashboard_json_data
 from .views import dashboard, table, reports
-from .views import table_json_data
+from .views import table_json_data, report_json_data
 
 urlpatterns = [
     path('', index, name='index'),
@@ -12,7 +12,5 @@ urlpatterns = [
     path('reports/', reports, name='reports'),
     path('json/dashboard', dashboard_json_data, name='json/dashboard'),
     path('json/table', table_json_data, name='json/table'),
-    # path('json/counter', table_counter_json_data, name='json/counter'),
-    # path('log/', log, name='log'),
-    # path('json/reports', report_json_data, name='json/reports'),
+    path('json/reports', report_json_data, name='json/reports'),
 ]

@@ -49,9 +49,11 @@ def dashboard(request):
     notifications = get_notification(slice=50, json_type=True)
     issues_count = issues_on_group()
 
-    context.update(day_dict)    
-    context.update({'returned_notification_settings': returned_notification_settings})
-    context.update({'burned_notification_settings': burned_notification_settings})
+    context.update(day_dict)
+    context.update(
+        {'returned_notification_settings': returned_notification_settings})
+    context.update(
+        {'burned_notification_settings': burned_notification_settings})
     context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications, "ratings": ratings})
     context.update({**issues_count, 'names': names})
@@ -70,8 +72,10 @@ def table(request):
     issues_count = issues_on_group()
 
     context.update(day_dict)
-    context.update({'returned_notification_settings': returned_notification_settings})
-    context.update({'burned_notification_settings': burned_notification_settings})
+    context.update(
+        {'returned_notification_settings': returned_notification_settings})
+    context.update(
+        {'burned_notification_settings': burned_notification_settings})
     context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications, "ratings": ratings})
     context.update({**issues_count, 'names': names})
@@ -90,8 +94,10 @@ def reports(request):
     issues_count = issues_on_group()
 
     context.update(day_dict)
-    context.update({'returned_notification_settings': returned_notification_settings})
-    context.update({'burned_notification_settings': burned_notification_settings})
+    context.update(
+        {'returned_notification_settings': returned_notification_settings})
+    context.update(
+        {'burned_notification_settings': burned_notification_settings})
     context.update(theme_check(request.COOKIES))
     context.update({'notifications': notifications, "ratings": ratings})
     context.update({**issues_count, 'names': names})
@@ -106,7 +112,7 @@ def dashboard_json_data(request):
     return JsonResponse(day_dict)
 
 
-def reports_json_data(request):
+def report_json_data(request):
     data = request.POST
     day_dict = get_day_report(data['desired_date'], data['comparison_date'])
     day_dict['desired_date'] = json_encoding(day_dict['desired_date'])
