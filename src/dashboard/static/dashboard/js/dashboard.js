@@ -95,7 +95,7 @@ function setCardProgress(card, typeReport, unit) {
       // pass
       break;
   };
-}
+};
 
 function changeCardProgress() {
   setCardProgress(cardDailySl, 'sl', '%');
@@ -106,7 +106,7 @@ function changeCardProgress() {
   setCardProgress(cardMonthlySlVip, 'sl', '%');
   setCardProgress(cardDailyFlr, 'flr', '%');
   setCardProgress(cardDailyMttr, 'mttr', ' м.');
-}
+};
 
 function changeProgresTabsValue(data) {
   let current_date = document.getElementById('date');
@@ -149,7 +149,7 @@ function changeProgresTabsValue(data) {
   date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
   counterDailyFlr.textContent = data.dashboard_data.flr.level;
   changeCardProgress();
-}
+};
 
 function getDashboardData() {
   let current_date = document.getElementById('date').value;
@@ -161,7 +161,7 @@ function getDashboardData() {
     changeProgresTabsValue(data);
     changeAnlyticsValue(data);
   });
-}
+};
 
 $(document).ready(function(){
   changeCardProgress();
