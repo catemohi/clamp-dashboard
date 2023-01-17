@@ -93,7 +93,7 @@ def send_notification(issue: str, *args, **kwargs):
     elif kwargs.get('type') == IssueNotification.RETURNED:
         group = (lambda issue: 'VIP линии' if issue['vip_contragent']
                  else 'первой линии')(issue)
-        message = (f'ПРЕДУПРЕЖДЕНИЕ! В {issue.get("return_to_work_time")} '
+        message = (f'{issue.get("return_to_work_time")} '
                    f'на {group} c отложенного шага {issue.get("step")} '
                    f'вернется обращение номер {issue.get("number")}')
         result = (

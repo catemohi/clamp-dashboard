@@ -19,6 +19,8 @@ class Dates(NamedTuple):
         - число начала недели
         - число конца недели
         - требуемая дата
+        - следующий день
+        - прошлый день
 
     """
     calends_this_month: date
@@ -720,6 +722,28 @@ def get_day_dates_and_data(datestring: Literal['%Y-%m-%d'] = None) -> dict[
     before_day_data = get_dashboard_data(dates.before_day.isoformat())
     dashboard_data = analytics(dashboard_data, before_day_data)
     return {'dates': dates, 'dashboard_data': dashboard_data}
+
+
+def get_day_report(desired_date: Literal['%Y-%m-%d'],
+                   comparison_date: Literal['%Y-%m-%d']) -> dict[
+        Literal['desired_date', 'comparison_date'], Any]:
+    """
+    Функция для получения дневного отчета для view вкалдки reports.
+
+    Возвращает:
+        Данные за день и аналитику относительно выбранного дня
+        и номинальных значений нагрузки.
+    """
+
+    desired_dates = get_date_collections(desired_date)
+    comparison_dates = get_date_collections(comparison_date)
+    desired_date_data = get_dashboard_data(
+        desired_dates.chosen_date.isoformat())
+    comparison_date_data = get_dashboard_data(
+        comparison_dates.chosen_date.isoformat())
+    desired_date_data = analytics(desired_date_data, comparison_date_data)
+    return {'desired_date': desired_date_data,
+            'comparison_date': comparison_date_data}
 
 
 def issues_on_group():

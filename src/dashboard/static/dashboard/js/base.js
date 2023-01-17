@@ -49,9 +49,9 @@ function startWebSocket() {
 			reportDataUpdate(message);
 		}
 		else if(message.type === "notification"){
-			if (message.subtype === 'new') {
+			if (message.subtype === 'new' || message.subtype === 'returned') {
 				playAudio(notificationAudio);
-			} else if (message.subtype === 'burned' || message.subtype === 'returned') {
+			} else if (message.subtype === 'burned') {
 				playAudio(alarmAudio);
 			} else if (message.subtype === 'updated' && message.issue.step === groupStep) {
 				playAudio(notificationAudio);

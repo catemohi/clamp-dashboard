@@ -65,8 +65,10 @@ function createNotify(notify, notifyParent) {
 	let emoji = document.createElement('span');
     let text = document.createElement('span');
 
-    if (notify.subtype === 'burned' || notify.subtype === 'returned') {
+    if (notify.subtype === 'burned') {
         emoji.innerText = '🧨';
+    } else if (notify.subtype === 'returned') {
+        emoji.innerText = '✉️'; 
     } else if (notify.issue.vip_contragent === true) {
         emoji.innerText = '❤️';
     } else {

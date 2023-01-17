@@ -6,7 +6,7 @@ from naumen.services import get_issues_from_db
 from notification.services import get_notification
 
 from .services import get_day_dates_and_data, json_encoding, get_load_ratings
-from .services import issues_on_group, get_load_naumen_settings
+from .services import issues_on_group, get_load_naumen_settings, get_day_report
 
 
 def theme_check(cookies):
@@ -89,7 +89,14 @@ def dashboard_json_data(request):
     day_dict = get_day_dates_and_data(data['date'])
     day_dict['dashboard_data'] = json_encoding(day_dict['dashboard_data'])
     day_dict['dates'] = json_encoding(day_dict['dates'])
+    return JsonResponse(day_dict)
 
+
+def reports_json_data(request):
+    data = request.POST
+    day_dict = get_day_report(data['desired_date'], data['comparison_date'])
+    day_dict['desired_date'] = json_encoding(day_dict['desired_date'])
+    day_dict['comparison_date'] = json_encoding(day_dict['comparison_date'])
     return JsonResponse(day_dict)
 
 
@@ -98,17 +105,17 @@ def table_json_data(request):
     return JsonResponse({'data': content})
 
 
-def table_counter_json_data(request):
-    content = len(get_issues_from_db())
-    return JsonResponse({'data': content})
+# def table_counter_json_data(request):
+#     content = len(get_issues_from_db())
+#     return JsonResponse({'data': content})
 
 
-def log(request):
-    context = {}
-    notifications = get_notification(slice=50, json_type=True)
-    context.update({'notifications': notifications})
-    context.update(theme_check(request.COOKIES))
-    return render(request, 'dashboard/log.html', context)
+# def log(request):
+#     context = {}
+#     notifications = get_notification(slice=50, json_type=True)
+#     context.update({'notifications': notifications})
+#     context.update(theme_check(request.COOKIES))
+#     return render(request, 'dashboard/log.html', context)
 
 
 # def report_json_data(request):
