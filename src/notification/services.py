@@ -166,7 +166,10 @@ def _get_or_create_notification_model(
         model_kwarg (Mapping, optional): именнованные аргументы модели.
         По умолчанию {}.
     """
-    notification_model.objects.get_or_create(**model_kwarg)
+    print(model_kwarg)
+    obj, created = notification_model.objects.get_or_create(**model_kwarg)
+    print(obj)
+    print(created)
 
 
 def create_default_burned_notification_setting():
@@ -204,3 +207,17 @@ def create_default_returned_notification_setting():
     )
     [_get_or_create_notification_model(
      RetrunToWorkNotificationSetting, setting) for setting in default_settings]
+
+
+def get_burned_notification_setting():
+    """Функция для получения настроек уведомлений о лимитах обработки
+    """
+    settings = [entry for entry in StepNotificationSetting.objects.values()]
+    return dumps(settings)
+
+
+def get_returned_notification_setting():
+    """Функция для получения настроек уведомлений о лимитах обработки
+    """
+    settings = [entry for entry in RetrunToWorkNotificationSetting.objects.values()]
+    return dumps(settings)

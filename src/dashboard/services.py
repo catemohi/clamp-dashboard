@@ -7,6 +7,7 @@ from django.db import models
 from naumen.services import add_months, get_report_to_period
 from naumen.services import get_issues_from_db
 
+
 from .models import RatingSetting, NaumenSetting
 
 

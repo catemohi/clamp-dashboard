@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 import os
-from json import dumps
 from datetime import timedelta
 
 from celery import Celery
@@ -59,7 +58,6 @@ app.conf.beat_schedule = {
         'task': 'naumen.tasks.check_issues_deadline_and_timer',
         'schedule': timedelta(seconds=30),
         'ignore_result': True,
-        'one_off': True,
     },
     'Создание моделей настроек уведомлений о лимите обработки обрашений': {
         'task': 'notification.tasks.create_burned_notification_models',
@@ -67,7 +65,7 @@ app.conf.beat_schedule = {
         'one_off': True,
     },
     'Создание моделей настроек уведомлений о возврате в работу обрашений': {
-        'task': 'notification.tasks.create_burned_notification_models',
+        'task': 'notification.tasks.create_returned_notification_models',
         'schedule': timedelta(seconds=30),
         'one_off': True,
     },
