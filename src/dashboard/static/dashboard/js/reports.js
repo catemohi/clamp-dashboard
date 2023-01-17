@@ -98,6 +98,7 @@ function reloadDatatable( desiredDate, comparisonDate ) {
           { title: 'Сравнивнение' },
         ],
         autoWidth: false,
+        bDestroy: true,
         bAutoWidth: false,
         bPaginate: false,
         dom: 'Bfrtip',
