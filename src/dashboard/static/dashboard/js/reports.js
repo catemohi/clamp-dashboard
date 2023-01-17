@@ -9,7 +9,6 @@ function reloadDatatable( desiredDate, comparisonDate ) {
                                             comparison_date: comparisonDate,
                                             csrfmiddlewaretoken: window.CSRF_TOKEN } );
   responce.done(function ( data ) {
-    console.log(data)
     let dataSet = [
       [ 1, 'Дата', new Date(desiredDate).toLocaleString("ru", options), new Date(comparisonDate).toLocaleString("ru", options) ],
       [ 2, 'Количество обращений за день на первую линию',
@@ -106,7 +105,6 @@ function reloadDatatable( desiredDate, comparisonDate ) {
           'csv', 'excel', 'pdf'
         ],
         rowCallback: function( row, data, index ) {
-          console.log(data)
           if ( data[1].toLowerCase().indexOf( 'нагрузка' ) != -1 ) {
             if ( data[2] <= 0 ) {
               $( "td:eq(2)", row ).addClass( "success" );
