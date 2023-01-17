@@ -111,13 +111,15 @@ function reloadDatatable( desiredDate, comparisonDate ) {
             if ( data[2] <= 0 ) {
               $( "td:eq(2)", row ).addClass( "success" );
               $( "td:eq(2)", row ).removeClass( "danger" );
-              data[2] = 'маньше на ' + data[2] + '%';
+              
+              data[2] = 'маньше на ' + Math.abs(data[2]) + '%';
             } else {
               $( "td:eq(2)", row ).addClass( "danger" );
               $( "td:eq(2)", row ).removeClass( "success" );
-              data[2] = 'больше на ' + data[2] + '%';
+              data[2] = 'больше на ' + Math.abs(data[2]) + '%';
             };
             $( "td:eq(2)", row ).addClass( "analitic" );
+            $( "td:eq(2)", row ).text(data[2]);
 
           } else if ( data[1].toLowerCase().indexOf( 'service' ) != -1) {
             if ( data[2] >= minSuccessSL ) {
@@ -126,9 +128,20 @@ function reloadDatatable( desiredDate, comparisonDate ) {
             } else {
               $( "td:eq(2)", row ).addClass( "danger" );
               $( "td:eq(2)", row ).removeClass( "success" );
-            data[2] = data[2] + '%';
             };
+            data[2] = data[2] + '%';
+            if ( data[3] >= minSuccessSL ) {
+              $( "td:eq(3)", row ).addClass( "success" );
+              $( "td:eq(3)", row ).removeClass( "danger" );
+            } else {
+              $( "td:eq(3)", row ).addClass( "danger" );
+              $( "td:eq(3)", row ).removeClass( "success" );
+            };
+            data[3] = data[3] + '%';
+            $( "td:eq(2)", row ).text(data[2]);
+            $( "td:eq(3)", row ).text(data[3]);
             $( "td:eq(2)", row ).addClass( "service-level" );
+            $( "td:eq(3)", row ).addClass( "service-level" );
           } else if ( data[1].toLowerCase().indexOf( 'mttr' ) != -1 ) {
             $( "td:eq(2)", row ).addClass( "mttr-level" );
             if ( data[2] <= maxSuccessMTTR ) {
@@ -138,9 +151,20 @@ function reloadDatatable( desiredDate, comparisonDate ) {
               $( "td:eq(2)", row ).addClass( "danger" );
               $( "td:eq(2)", row ).removeClass( "success" );
             };
-            data[2] = data[2] + 'минут';
+            if ( data[3] <= maxSuccessMTTR ) {
+              $( "td:eq(3)", row ).addClass( "success" );
+              $( "td:eq(3)", row ).removeClass( "danger" );
+            } else {
+              $( "td:eq(3)", row ).addClass( "danger" );
+              $( "td:eq(3)", row ).removeClass( "success" );
+            };
+            data[3] = data[3] + ' минут';
+            data[2] = data[2] + ' минут';
+            $( "td:eq(2)", row ).text(data[2]);
+            $( "td:eq(3)", row ).text(data[3]);
           } else if ( data[1].toLowerCase().indexOf( 'flr' ) != -1 ) {
             $( "td:eq(2)", row ).addClass( "flr-level" );
+            $( "td:eq(3)", row ).addClass( "flr-level" );
             if ( data[2] >= minSuccessFLR ) {
               $( "td:eq(2)", row ).addClass( "success" );
               $( "td:eq(2)", row ).removeClass( "danger" );
@@ -148,7 +172,17 @@ function reloadDatatable( desiredDate, comparisonDate ) {
               $( "td:eq(2)", row ).addClass( "danger" );
               $( "td:eq(2)", row ).removeClass( "success" );
             };
+            if ( data[3] >= minSuccessFLR ) {
+              $( "td:eq(3)", row ).addClass( "success" );
+              $( "td:eq(3)", row ).removeClass( "danger" );
+            } else {
+              $( "td:eq(3)", row ).addClass( "danger" );
+              $( "td:eq(3)", row ).removeClass( "success" );
+            };
             data[2] = data[2] + '%';
+            data[3] = data[3] + '%';
+            $( "td:eq(2)", row ).text(data[2]);
+            $( "td:eq(3)", row ).text(data[3]);
           };
         },
       });
@@ -160,71 +194,31 @@ $("#desired-date").submit(function(event) {
   event.preventDefault();
   let dateCollection = getDateReports();
   reloadDatatable(dateCollection[0], dateCollection[1]);
+  if (new Date(dateCollection[0]) > new Date(Date.now())) {
+    alert("Выбрана недопустимая дата!");
+    return
+  }
+  if (new Date(dateCollection[1]) > new Date(Date.now())) {
+    alert("Выбрана недопустимая дата!");
+    return
+  }
 });
 
 $("#comparison-date").submit(function(event) {
   event.preventDefault();
   let dateCollection = getDateReports();
   reloadDatatable(dateCollection[0], dateCollection[1]);
+  if (new Date(dateCollection[0]) > new Date(Date.now())) {
+    alert("Выбрана недопустимая дата!");
+    return
+  }
+  if (new Date(dateCollection[1]) > new Date(Date.now())) {
+    alert("Выбрана недопустимая дата!");
+    return
+  }
 });
 
 $(document).ready(function () {
   let dateCollection = getDateReports();
   reloadDatatable(dateCollection[0], dateCollection[1]);
 });
-// function getReport() {
-//     var desired_date = getDate(-1)
-//     var comparison_date = getDate(-2)
-//     console.log(desired_date, comparison_date)
-//     $.post('/json/reports', { desired_date: desired_date, comparison_date: comparison_date, csrfmiddlewaretoken: window.CSRF_TOKEN, }, function (data) {
-//         console.log(data);
-//     });
-// }
-// getReport()
-
-// function getDate(offset) {
-  //   var d = new Date();
-  //   var day = d.getDate() + offset
-  //   var month = d.getMonth() + 1 
-  //   var year = d.getFullYear()
-  //   if (day < 10) {
-  //       day = '' + 0 + day;
-  //   }
-  //   if (month < 10) {
-  //       month = '' + 0 + month;
-  //   }
-  //   var today_date = year + "-" + month + "-" + day;
-  //   return today_date
-  // };
-  
-  // $(document).ready(function () {
-//   var cookies = document.cookie.split(/[;] */).reduce(function(result, pairStr) {
-//       var arr = pairStr.split('=');
-//       if (arr.length === 2) { result[arr[0]] = arr[1]; }
-//       return result;
-//   }, {});
-//   var table = $('#trouble-table').DataTable({
-//       "ajax": {
-//           'type': 'POST',
-//           'url': '/json/reports',
-//           'data': function ( d ) {
-//               d.csrfmiddlewaretoken = cookies["csrftoken"],
-//               d.desired_date = document.getElementById('date-desired').value,
-//               d.comparison_date = document.getElementById('date-comparison').value
-//           },
-//       },
-      // dom: 'Bfrtip',
-      // buttons: [
-      //     'csv', 'excel', 'pdf'
-      // ],
-//       "columns": [
-//           {"data": "number"},
-//           {"data": "name"},
-//           {"data": "desired_date"},
-//           {"data": "comparison_date"},
-//       ],
-      // "autoWidth": false,
-      // "bAutoWidth": false,
-      // "bPaginate": false
-//   });
-//   table.column(0).visible(false);
