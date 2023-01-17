@@ -9,6 +9,7 @@ function reloadDatatable( desiredDate, comparisonDate ) {
                                             comparison_date: comparisonDate,
                                             csrfmiddlewaretoken: window.CSRF_TOKEN } );
   responce.done(function ( data ) {
+    console.log(data)
     let dataSet = [
       [ 1, 'Дата', desiredDate, comparisonDate ],
       [ 2, 'Количество обращений за день на первую линию',
@@ -123,7 +124,7 @@ $("#comparison-date").submit(function(event) {
 $(document).ready(function () {
   let dateCollection = getDateReports();
   reloadDatatable(dateCollection[0], dateCollection[1]);
-};
+});
 // function getReport() {
 //     var desired_date = getDate(-1)
 //     var comparison_date = getDate(-2)
