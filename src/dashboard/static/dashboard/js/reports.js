@@ -105,17 +105,51 @@ function reloadDatatable( desiredDate, comparisonDate ) {
         buttons: [
           'csv', 'excel', 'pdf'
         ],
-        rowCallback: function(row, data, index) {
+        rowCallback: function( row, data, index ) {
           console.log(data)
-          if (data[1].toLowerCase().indexOf('нагрузка') != -1) {
-            $("td:eq(2)",row).addClass("analitic")
-          } else if (data[1].toLowerCase().indexOf('service') != -1) {
-            $("td:eq(2)",row).addClass("service-level")
-          } else if (data[1].toLowerCase().indexOf('mttr') != -1) {
-            $("td:eq(2)",row).addClass("mttr-level")
-          } else if (data[1].toLowerCase().indexOf('flr') != -1) {
-            $("td:eq(2)",row).addClass("flr-level")
-          }
+          if ( data[1].toLowerCase().indexOf( 'нагрузка' ) != -1 ) {
+            if ( data[2] <= 0 ) {
+              $( "td:eq(2)", row ).addClass( "success" );
+              $( "td:eq(2)", row ).removeClass( "danger" );
+              data[2] = 'маньше на ' + data[2] + '%';
+            } else {
+              $( "td:eq(2)", row ).addClass( "danger" );
+              $( "td:eq(2)", row ).removeClass( "success" );
+              data[2] = 'больше на ' + data[2] + '%';
+            };
+            $( "td:eq(2)", row ).addClass( "analitic" );
+
+          } else if ( data[1].toLowerCase().indexOf( 'service' ) != -1) {
+            if ( data[2] >= minSuccessSL ) {
+              $( "td:eq(2)", row ).addClass( "success" );
+              $( "td:eq(2)", row ).removeClass( "danger" );
+            } else {
+              $( "td:eq(2)", row ).addClass( "danger" );
+              $( "td:eq(2)", row ).removeClass( "success" );
+            data[2] = data[2] + '%';
+            };
+            $( "td:eq(2)", row ).addClass( "service-level" );
+          } else if ( data[1].toLowerCase().indexOf( 'mttr' ) != -1 ) {
+            $( "td:eq(2)", row ).addClass( "mttr-level" );
+            if ( data[2] <= maxSuccessMTTR ) {
+              $( "td:eq(2)", row ).addClass( "success" );
+              $( "td:eq(2)", row ).removeClass( "danger" );
+            } else {
+              $( "td:eq(2)", row ).addClass( "danger" );
+              $( "td:eq(2)", row ).removeClass( "success" );
+            };
+            data[2] = data[2] + 'минут';
+          } else if ( data[1].toLowerCase().indexOf( 'flr' ) != -1 ) {
+            $( "td:eq(2)", row ).addClass( "flr-level" );
+            if ( data[2] >= minSuccessFLR ) {
+              $( "td:eq(2)", row ).addClass( "success" );
+              $( "td:eq(2)", row ).removeClass( "danger" );
+            } else {
+              $( "td:eq(2)", row ).addClass( "danger" );
+              $( "td:eq(2)", row ).removeClass( "success" );
+            };
+            data[2] = data[2] + '%';
+          };
         },
       });
       table.column(0).visible(false);
