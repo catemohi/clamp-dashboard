@@ -112,7 +112,7 @@ function reloadDatatable( desiredDate, comparisonDate ) {
               $( "td:eq(2)", row ).addClass( "success" );
               $( "td:eq(2)", row ).removeClass( "danger" );
               
-              data[2] = 'маньше на ' + Math.abs(data[2]) + '%';
+              data[2] = 'меньше на ' + Math.abs(data[2]) + '%';
             } else {
               $( "td:eq(2)", row ).addClass( "danger" );
               $( "td:eq(2)", row ).removeClass( "success" );
