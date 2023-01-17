@@ -11,7 +11,7 @@ function reloadDatatable( desiredDate, comparisonDate ) {
   responce.done(function ( data ) {
     console.log(data)
     let dataSet = [
-      [ 1, 'Дата', desiredDate, comparisonDate ],
+      [ 1, 'Дата', desiredDate.toLocaleString("ru", options), comparisonDate.toLocaleString("ru", options) ],
       [ 2, 'Количество обращений за день на первую линию',
         data.desired_date.sl.first_line.num_issues,
         data.comparison_date.sl.first_line.num_issues ],
