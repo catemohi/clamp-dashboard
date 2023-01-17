@@ -23,11 +23,7 @@ $(document).ready(function () {
         ],
         "order": [[6, 'asc'], [10, 'asc']],
         'rowCallback': function(row, data, index){
-            if(data.step_time > 540 && data.step === groupStep){
-                $(row).css('background-color', '#ff7B7B');
-            } else if (data.step_time > 1140 && data.step === workerStep) {
-                $(row).css('background-color', '#ff7B7B');
-            }
+
             if ($(row).children('.step-time')) {
                 var timestamp = data["step_time"];
                 var days = Math.floor(timestamp / 60 / 60 / 24);
@@ -39,6 +35,27 @@ $(document).ready(function () {
             $(row).children('.name').text('');
             $(row).children('.name').append('<a href=' + data.url_issue + '>'+ data.name +'</a>');
             $(row).children('.return-work-time').text(new Intl.DateTimeFormat("ru", options).format(new Date(data.return_to_work_time)));
+            returnedNotificationSettings.forEach(element => {
+                if (element.step === data.step) {
+                    let returnedUnixTime = new Date(data.return_to_work_time).valueOf();
+                    let timedeltaReturned = Math.floor(( returnedUnixTime - Date.now())  / 1000);
+                    if (timedeltaReturned < element.alarm_time || returnedUnixTime < Date.now()){
+                        $(row).css('background-color', 'var(--color-warning)');
+                    } else {
+                        $(row).css('background-color', 'transparent');
+                    }
+                };
+            });
+            burnedNotificationSettings.forEach(element => {
+                if (element.step === data.step) {
+                    let timedelta = element.step_time - element.alarm_time;
+                    if (data.step_time > timedelta){
+                        $(row).css('background-color', 'var(--color-danger)');
+                    } else {
+                        $(row).css('background-color', 'transparent');
+                    }
+                };
+            });
             
 
 

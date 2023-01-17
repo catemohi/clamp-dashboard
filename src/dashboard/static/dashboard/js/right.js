@@ -65,8 +65,10 @@ function createNotify(notify, notifyParent) {
 	let emoji = document.createElement('span');
     let text = document.createElement('span');
 
-    if (notify.subtype === 'burned' || notify.subtype === 'returned') {
+    if (notify.subtype === 'burned') {
         emoji.innerText = '🧨';
+    } else if (notify.subtype === 'returned') {
+        emoji.innerText = '✉️'; 
     } else if (notify.issue.vip_contragent === true) {
         emoji.innerText = '❤️';
     } else {
@@ -131,7 +133,28 @@ function changeAnalytics() {
                 daylySL.classList.add("danger");
             }
         }
-
+        let daylyMTTR = module.querySelector(".dayly_mttr *")
+        if (daylyMTTR != null) {
+            let valueMTTR= parsingInt(daylyMTTR.textContent);
+			// maxSuccessMTTR прописана в контексте base.html и тянется с БД
+            if (valueMTTR <= maxSuccessMTTR) {
+                daylyMTTR.classList.add("success");
+            }
+            else {
+                daylyMTTR.classList.add("danger");
+            }
+        }
+        let daylyFLR = module.querySelector(".dayly_flr *")
+        if (daylyFLR != null) {
+            let valueFLR= parsingInt(daylyFLR.textContent);
+			// minSuccessFLR прописана в контексте base.html и тянется с БД
+            if (valueFLR >= minSuccessFLR) {
+                daylyFLR.classList.add("success");
+            }
+            else {
+                daylyFLR.classList.add("danger");
+            }
+        }
         let numWorkedAfterDeadline = module.querySelector(".num_worked_after_deadline *")
         if (numWorkedAfterDeadline != null) {
             let valueWorkedAfterDeadline= +numWorkedAfterDeadline.textContent;
@@ -157,13 +180,13 @@ function changeAnlyticsValue(data) {
     });
 
     let analyticsMttr = document.querySelector(".mttr");
-    analyticsMttr.querySelector(".average_mttr_tech_support *").textContent = data.dashboard_data.mttr.average_mttr_tech_support + 'мин.'
+    analyticsMttr.querySelector(".dayly_mttr *").textContent = data.dashboard_data.mttr.average_mttr_tech_support + 'мин.'
     analyticsMttr.querySelector(".num_issues *").textContent = data.dashboard_data.mttr.num_issues
     analyticsMttr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.mttr.rating_to_nominal + '%'
     analyticsMttr.querySelector(".rating_to_comparison *").textContent = data.dashboard_data.analytics.mttr.rating_to_comparison + '%'
 
     let analyticsFlr = document.querySelector(".flr");
-    analyticsFlr.querySelector(".level *").textContent = data.dashboard_data.flr.level + '%'
+    analyticsFlr.querySelector(".dayly_flr *").textContent = data.dashboard_data.flr.level + '%'
     analyticsFlr.querySelector(".num_primary_issues *").textContent = data.dashboard_data.flr.num_primary_issues
     analyticsFlr.querySelector(".num_issues_closed_independently *").textContent = data.dashboard_data.flr.num_issues_closed_independently    
     analyticsFlr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.flr.rating_to_nominal + '%'

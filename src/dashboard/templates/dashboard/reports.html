@@ -7,14 +7,14 @@
     <div class="desired">
       <form id="desired-date">
         <span>Дата отчета: </span>
-        <input type="date" id="date-desired" data-date="" data-date-format="DD MMMM YYYY" value="2022-08-09">
+        <input type="date" id="date-desired" data-date="" data-date-format="DD MM YYYY" value="{{ dates.chosen_date|date:"Y-m-d" }}">
         <input type="submit" name="send" value="Выбрать">
       </form>
     </div>
     <div class="comparison">
       <form id="comparison-date">
         <span>Сравнивать с: </span>
-        <input type="date" id="date-comparison" data-date="" data-date-format="DD MMMM YYYY" value="2022-08-09">
+        <input type="date" id="date-comparison" data-date="" data-date-format="DD MM YYYY" value="{{ dates.before_day|date:"Y-m-d" }}">
         <input type="submit" name="send" value="Выбрать">
       </form>
     </div>
