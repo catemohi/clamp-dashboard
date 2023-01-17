@@ -1,3 +1,5 @@
+const options_report = {year: 'numeric', month: 'numeric', day: 'numeric',
+                 timezone: 'Moscow'};
 
 function getDateReports() {
   return [ document.getElementById('date-desired').value,
@@ -10,7 +12,7 @@ function reloadDatatable( desiredDate, comparisonDate ) {
                                             csrfmiddlewaretoken: window.CSRF_TOKEN } );
   responce.done(function ( data ) {
     let dataSet = [
-      [ 1, 'Дата', new Date(desiredDate).toLocaleString("ru", options), new Date(comparisonDate).toLocaleString("ru", options) ],
+      [ 1, 'Дата', new Date(desiredDate).toLocaleString("ru", options_report), new Date(comparisonDate).toLocaleString("ru", options_report) ],
       [ 2, 'Количество обращений за день на первую линию',
         data.desired_date.sl.first_line.num_issues,
         data.comparison_date.sl.first_line.num_issues ],
