@@ -10,16 +10,8 @@ themeToggler.addEventListener('click', () => {
     
     if (themeToggler.querySelector('span:nth-child(2)').classList.contains('active')) {
         document.cookie = "theme=dark; path=/;";
-        let calendarIcon = document.querySelectorAll('input[type="date"]');
-        calendarIcon.forEach(function(item) {
-            item.classList.remove('invert-color')
-        });
     } else {
         document.cookie = "theme=white; path=/;";
-        let calendarIcon = document.querySelectorAll('input[type="date"]');
-        calendarIcon.forEach(function(item) {
-            item.classList.add('invert-color')
-        });
     }
 
 })
