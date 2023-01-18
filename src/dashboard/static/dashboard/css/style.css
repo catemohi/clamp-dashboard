@@ -196,6 +196,10 @@ b {
   padding: 0 3px 0 0;
 };
 
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  cursor: pointer;
+};
+
 /* ASIDE */
 aside {
   height: 100vh;
@@ -350,17 +354,21 @@ main .input-date-reports {
 
 .desired{
   border-radius: 0.4rem 0 0 0.4rem;
+  color: #363949;
+  font-size: 1.2rem;
 }
 
 .comparison {
   border-radius: 0 0.4rem 0.4rem 0;
+  color: #363949;
+  font-size: 1.2rem;
 }
 
 .desired form input,
 .comparison form input{
   background: transparent;
   color: #363949;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 .dt-buttons {
   display: inline;
@@ -380,6 +388,7 @@ main .input-date-reports {
 main .input-date button {
   color: var(--color-dark);
   background: transparent;
+  font-size: 1.2rem;
 
 }
 .submit-date-calendar:hover {
@@ -389,7 +398,7 @@ main .input-date button {
 main .input-date input[type="date"] {
   background: transparent;
   color: #363949;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 main .insights {
