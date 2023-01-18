@@ -12,13 +12,13 @@ themeToggler.addEventListener('click', () => {
         document.cookie = "theme=dark; path=/;";
         let calendarIcon = document.querySelectorAll('input[type="date"]::-webkit-calendar-picker-indicator');
         calendarIcon.forEach(function(item) {
-            item.classList.toggle('.invert-color')
+            item.classList.toggle('invert-color')
         });
     } else {
         document.cookie = "theme=white; path=/;";
         let calendarIcon = document.querySelectorAll('input[type="date"]::-webkit-calendar-picker-indicator');
         calendarIcon.forEach(function(item) {
-            item.classList.toggle('.invert-color')
+            item.classList.toggle('invert-color')
         });
     }
 
