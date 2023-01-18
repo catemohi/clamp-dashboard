@@ -18,6 +18,7 @@
   --color-background: #f6f6f9;
   --color-dash-warning: #FFB0B0;
   --color-dash:#fff;
+  --color-black:#202528;  
 
   --card-border-radius: 2rem;
   --border-radius-1: 0.4rem;
@@ -32,6 +33,7 @@
 
 /* Dark theme */
 .dark-theme-var{
+  --color-black: #fff;  
   --color-success: #41f1b6;
   --color-warning: #ffbb55;
   --color-danger: #ff7B7B;
@@ -354,21 +356,21 @@ main .input-date-reports {
 
 .desired{
   border-radius: 0.4rem 0 0 0.4rem;
-  color: #363949;
-  font-size: 1.2rem;
+  color: var(--color-black);
+  font-size: 1rem;
 }
 
 .comparison {
   border-radius: 0 0.4rem 0.4rem 0;
-  color: #363949;
-  font-size: 1.2rem;
+  color: var(--color-black);
+  font-size: 1rem;
 }
 
 .desired form input,
 .comparison form input{
   background: transparent;
-  color: #363949;
-  font-size: 1.2rem;
+  color: var(--color-black);
+  font-size: 1rem;
 }
 .dt-buttons {
   display: inline;
@@ -397,7 +399,7 @@ main .input-date button {
 
 main .input-date input[type="date"] {
   background: transparent;
-  color: #363949;
+  color: var(--color-black);
   font-size: 1.2rem;
 }
 
