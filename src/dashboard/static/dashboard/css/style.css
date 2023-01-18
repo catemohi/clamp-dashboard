@@ -193,7 +193,7 @@ b {
 
 .emoji-span {
   display: inline-block;
-  padding: 0 5px 0 0;
+  padding: 0 3px 0 0;
 };
 
 /* ASIDE */
@@ -333,18 +333,21 @@ main .input-date{
   border-radius: var(--border-radius-1);
   margin-top: 1rem;
   padding: 0.5rem 1.6rem;
-  font-size: 0.88rem;
+  font-size: 1.2rem;
+  color: #363949;
 }
 
 main .input-date-reports {
   display: grid;
   grid-template-columns: repeat(2, 0.24fr);
+  
 }
 .desired, .comparison{
   margin-top: 1rem;
   padding: 0.5rem;
-  font-size: 0.88rem;
+  font-size: 1.2rem;
   background: var(--color-light);
+  color: #363949;
 }
 
 .desired{

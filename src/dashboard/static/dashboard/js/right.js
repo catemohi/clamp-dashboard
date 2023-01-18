@@ -71,15 +71,17 @@ function createNotify(notify, notifyParent) {
 	let textBox = document.createElement('p');
     textBox.className = "text-massage";
 	let emoji = document.createElement('span');
-    emoji.className = "emoji-span";
     let text = document.createElement('span');
 
     if (notify.subtype === 'burned') {
         emoji.innerText = '🧨';
+        emoji.className = "emoji-span";
     } else if (notify.subtype === 'returned') {
         emoji.innerText = '✉️'; 
+        emoji.className = "emoji-span";
     } else if (notify.issue.vip_contragent === true) {
         emoji.innerText = '❤️';
+        emoji.className = "emoji-span";
     } else {
         // pass
     };
