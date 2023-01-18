@@ -333,20 +333,18 @@ main .input-date{
   border-radius: var(--border-radius-1);
   margin-top: 1rem;
   padding: 0.5rem 1.6rem;
-  font-size: 1.5rem;
-  color: #363949;
+  font-size: 0.88rem;
 }
 
 main .input-date-reports {
   display: grid;
   grid-template-columns: repeat(2, 0.24fr);
-  color: #363949;
-  font-size: 1.5rem;
 }
 
 .desired, .comparison{
   margin-top: 1rem;
   padding: 0.5rem;
+  font-size: 0.88rem;
   background: var(--color-light);
 }
 
@@ -361,8 +359,8 @@ main .input-date-reports {
 .desired form input,
 .comparison form input{
   background: transparent;
-  font-size: 0.88rem;
-  color: var(--color-dark);
+  color: #363949;
+  font-size: 1.5rem;
 }
 .dt-buttons {
   display: inline;
@@ -390,7 +388,8 @@ main .input-date button {
 
 main .input-date input[type="date"] {
   background: transparent;
-  color: var(--color-dark);
+  color: #363949;
+  font-size: 1.5rem;
 }
 
 main .insights {
