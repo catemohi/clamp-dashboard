@@ -376,6 +376,9 @@ main .input-date button {
   background: transparent;
 
 }
+main .input-date .submit-date-calendar:hover {
+  cursor: pointer;
+}
 
 main .input-date input[type="date"] {
   background: transparent;

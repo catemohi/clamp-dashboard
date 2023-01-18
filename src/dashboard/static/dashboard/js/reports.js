@@ -193,7 +193,6 @@ function reloadDatatable( desiredDate, comparisonDate ) {
 $("#desired-date").submit(function(event) {
   event.preventDefault();
   let dateCollection = getDateReports();
-  reloadDatatable(dateCollection[0], dateCollection[1]);
   if (new Date(dateCollection[0]) > new Date(Date.now())) {
     alert("Выбрана недопустимая дата!");
     return
@@ -202,12 +201,14 @@ $("#desired-date").submit(function(event) {
     alert("Выбрана недопустимая дата!");
     return
   }
+  document.body.style.cursor = 'progress';
+  reloadDatatable(dateCollection[0], dateCollection[1]);
+  document.body.style.cursor = 'default';
 });
 
 $("#comparison-date").submit(function(event) {
   event.preventDefault();
   let dateCollection = getDateReports();
-  reloadDatatable(dateCollection[0], dateCollection[1]);
   if (new Date(dateCollection[0]) > new Date(Date.now())) {
     alert("Выбрана недопустимая дата!");
     return
@@ -216,9 +217,14 @@ $("#comparison-date").submit(function(event) {
     alert("Выбрана недопустимая дата!");
     return
   }
+  document.body.style.cursor = 'progress';
+  reloadDatatable(dateCollection[0], dateCollection[1]);
+  document.body.style.cursor = 'default';
 });
 
 $(document).ready(function () {
+  document.body.style.cursor = 'progress';
   let dateCollection = getDateReports();
   reloadDatatable(dateCollection[0], dateCollection[1]);
+  document.body.style.cursor = 'default';
 });

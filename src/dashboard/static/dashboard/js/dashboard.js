@@ -168,6 +168,8 @@ $(document).ready(function(){
 });
 
 $("#form-date").submit(function(event) {
+  document.body.style.cursor = 'progress';
   event.preventDefault();
   getDashboardData();
+  document.body.style.cursor = 'default';
 });
