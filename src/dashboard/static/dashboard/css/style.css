@@ -4,10 +4,10 @@
 /* Root var */
 :root {
   --color-primary: #75B7C9;
-  --color-danger: #ff7B7B;
+  --color-danger: #FF4747;
   --color-danger-vip: #885a89;
-  --color-success: #41f1b6;
-  --color-warning: #ffbb55;
+  --color-success: #1BEEA8;
+  --color-warning: #FFAD33;
   --color-white: #fff;
   --color-info-dark: #7d8da1;
   --color-info-light: #dce1eb;
@@ -32,6 +32,9 @@
 
 /* Dark theme */
 .dark-theme-var{
+  --color-success: #41f1b6;
+  --color-warning: #ffbb55;
+  --color-danger: #ff7B7B;
   --color-background: #181a1e;
   --color-primary: #3BF4FB;
   --color-white: #202528;
@@ -152,6 +155,10 @@ small {
   overflow: hidden;
 }
 
+.invert-color{
+  filter: invert(100%);
+};
+
 .text-muted{
   color: var(--color-info-dark);
 }
@@ -237,6 +244,9 @@ aside .sidebar li, aside .sidebar li a{
 }
 aside .sidebar li a {
   margin-left: 2rem;
+}
+aside .sidebar li:hover {
+  cursor: pointer;
 }
 
 aside .sidebar li a span {

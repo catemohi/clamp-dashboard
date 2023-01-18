@@ -10,8 +10,16 @@ themeToggler.addEventListener('click', () => {
     
     if (themeToggler.querySelector('span:nth-child(2)').classList.contains('active')) {
         document.cookie = "theme=dark; path=/;";
+        let calendarIcon = document.querySelectorAll('input[type="date"]::-webkit-calendar-picker-indicator');
+        calendarIcon.forEach(function(item) {
+            item.classList.toggle('.invert-color')
+        });
     } else {
         document.cookie = "theme=white; path=/;";
+        let calendarIcon = document.querySelectorAll('input[type="date"]::-webkit-calendar-picker-indicator');
+        calendarIcon.forEach(function(item) {
+            item.classList.toggle('.invert-color')
+        });
     }
 
 })

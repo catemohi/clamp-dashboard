@@ -6,8 +6,8 @@
     <form id="form-date" action="#" method="post">
       <div class="input-date">
         {% csrf_token %}
-        <input type="date" id="date" data-date="" data-date-format="DD MM YYYY" value="{{ dates.chosen_date|date:"Y-m-d" }}">
-        <button type="submit">Выбрать</button>
+        <input type="date" class='date-calendar' id="date" data-date="" data-date-format="DD MM YYYY" value="{{ dates.chosen_date|date:"Y-m-d" }}">
+        <button type="submit" class='date-calendar'>Применить</button>
       </div>
     </form>
     <div class="insights">
