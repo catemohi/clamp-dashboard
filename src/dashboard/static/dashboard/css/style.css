@@ -191,6 +191,11 @@ b {
   --color-dash:#FF7070;
 }
 
+.emoji-span {
+  display: inline-block;
+  padding: 0 5px 0 0;
+};
+
 /* ASIDE */
 aside {
   height: 100vh;

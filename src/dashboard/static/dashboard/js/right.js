@@ -10,13 +10,13 @@ themeToggler.addEventListener('click', () => {
     
     if (themeToggler.querySelector('span:nth-child(2)').classList.contains('active')) {
         document.cookie = "theme=dark; path=/;";
-        let calendarIcon = document.querySelectorAll('input[type="date"]::-webkit-calendar-picker-indicator');
+        let calendarIcon = document.querySelectorAll('input[type="date"]');
         calendarIcon.forEach(function(item) {
             item.classList.toggle('invert-color')
         });
     } else {
         document.cookie = "theme=white; path=/;";
-        let calendarIcon = document.querySelectorAll('input[type="date"]::-webkit-calendar-picker-indicator');
+        let calendarIcon = document.querySelectorAll('input[type="date"]');
         calendarIcon.forEach(function(item) {
             item.classList.toggle('invert-color')
         });
@@ -71,6 +71,7 @@ function createNotify(notify, notifyParent) {
 	let textBox = document.createElement('p');
     textBox.className = "text-massage";
 	let emoji = document.createElement('span');
+    emoji.className = "emoji-span";
     let text = document.createElement('span');
 
     if (notify.subtype === 'burned') {
