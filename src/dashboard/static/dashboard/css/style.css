@@ -369,9 +369,13 @@ main .input-date-reports {
 .desired form input,
 .comparison form input{
   background: transparent;
-  color: var(--color-black);
   font-size: 1rem;
 }
+.desired form input.submit-date-calendar,
+.comparison form input.submit-date-calendar{
+  color: var(--color-black);
+}
+
 .dt-buttons {
   display: inline;
 }
@@ -399,7 +403,6 @@ main .input-date button {
 
 main .input-date input[type="date"] {
   background: transparent;
-  color: var(--color-black);
   font-size: 1.2rem;
 }
 
