@@ -286,7 +286,38 @@ html,body {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
+@media (max-width: 1600px) {
+  html,body {
+    overflow: auto;
+  }
 
+  [class*=__container] {
+    overflow-x: hidden;
+    max-width: 1100px;
+  }
+  .form-auth__login-label {
+    font-size: 14px;
+  }
+
+  .form-auth__password-label {
+    font-size: 14px;
+  }
+
+  .login__auth {
+    row-gap: 50px;
+    padding: 0 15px;
+  }
+  .login__card {
+    padding: 40px 40px;
+    margin: 0 -15px;
+  }
+  .login {
+    padding: 70px 0;
+  }
+  .remember-me-checkbox:not(:last-child) {
+    margin: 0 0 80px 0;
+  }
+}
 
 @media (max-width: 1300px) {
   html,body {
@@ -297,16 +328,9 @@ html,body {
     overflow-x: hidden;
     max-width: 1000px;
   }
-  .form-auth__login-label {
-    font-size: 14px;
-  }
 
-  .form-auth__password-label {
-    font-size: 14px;
-  }
   .login__img {
     flex: 1 1 33.333%;
-    padding: 0 15px;
   }
   .login__auth {
     flex: 1 1 33.333%;
