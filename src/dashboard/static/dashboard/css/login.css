@@ -232,9 +232,9 @@ html,body {
   opacity: 0;
 }
 
-.remember-me-checkbox__input:focus + .remember-me-checkbox__label::before {
+/* .remember-me-checkbox__input:focus + .remember-me-checkbox__label::before {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-}
+} */
 .remember-me-checkbox__input:checked + .remember-me-checkbox__label::before {
   background-color: #9CCDDE;
   transform: scale(1.05);
