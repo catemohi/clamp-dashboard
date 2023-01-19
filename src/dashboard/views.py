@@ -56,7 +56,7 @@ def login_page(request):
     user = authenticate(request, username=username, password=password)
 
     if user is None:
-        login(request, username)
+        login(request, username, backend='django.contrib.auth.backends.ModelBackend')
         return redirect('dashboard')
 
     return render(request, 'dashboard/login.html', context=context)
