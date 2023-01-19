@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
+from django.contrib.auth import authenticate, login, logout
 
 from naumen.services import get_issues_from_db
 from notification.services import get_notification
@@ -33,12 +34,45 @@ def theme_check(cookies):
             'theme_toggler_white': 'active'}
 
 
-def index(request):
+def index_page(request):
     url = reverse_lazy('login')
     return redirect(url)
 
 
-def dashboard(request):
+def login_page(request):
+    """Функция обрабатывающая вход пользователей.
+
+    Args:
+        request (_type_): запрос
+    """
+    context = {}
+
+    if request.method != 'POST':
+        return render(request, 'dashboard/login.html', context=context)
+
+    data = request.POST
+    username = data.get('username')
+    password = data.get('password')
+    user = authenticate(request, username=username, password=password)
+
+    if user is None:
+        login(request, username)
+        return redirect('dashboard')
+
+    return render(request, 'dashboard/login.html', context=context)
+
+
+def logout_page(request):
+    """Функция обрабатывающая выход пользователей.
+
+    Args:
+        request (_type_): запрос
+    """
+    logout(request)
+    return redirect('login')
+
+
+def dashboard_page(request):
     context = {}
     # Запрос данных для контекста
     returned_notification_settings = get_returned_notification_setting()
@@ -60,7 +94,7 @@ def dashboard(request):
     return render(request, 'dashboard/dashboard.html', context=context)
 
 
-def table(request):
+def table_page(request):
     context = {}
     # Запрос данных для контекста
     returned_notification_settings = get_returned_notification_setting()
@@ -82,7 +116,7 @@ def table(request):
     return render(request, 'dashboard/table.html', context=context)
 
 
-def reports(request):
+def reports_page(request):
     context = {}
     # Запрос данных для контекста
     returned_notification_settings = get_returned_notification_setting()
@@ -104,7 +138,7 @@ def reports(request):
     return render(request, 'dashboard/reports.html', context=context)
 
 
-def dashboard_json_data(request):
+def dashboard_json(request):
     data = request.POST
     day_dict = get_day_dates_and_data(data['date'])
     day_dict['dashboard_data'] = json_encoding(day_dict['dashboard_data'])
@@ -112,7 +146,7 @@ def dashboard_json_data(request):
     return JsonResponse(day_dict)
 
 
-def report_json_data(request):
+def report_json(request):
     data = request.POST
     day_dict = get_day_report(data['desired_date'], data['comparison_date'])
     day_dict['desired_date'] = json_encoding(day_dict['desired_date'])
@@ -120,11 +154,6 @@ def report_json_data(request):
     return JsonResponse(day_dict)
 
 
-def table_json_data(request):
+def table_json(request):
     content = get_issues_from_db()
     return JsonResponse({'data': content})
-
-
-def login(request):
-    context = {}
-    return render(request, 'dashboard/login.html', context=context)

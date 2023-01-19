@@ -19,7 +19,8 @@
           </div>
           <div class="login__auth">
             <p class="login__greetings">Добро пожаловать в <span>Clamp</span></p>
-            <form action="" class="login__form form-auth">
+            <form action="" method="POST" class="login__form form-auth">
+              {% csrf_token %}
               <div class="form-auth__login-items items-login">
                 <img src="{% static 'dashboard/img/icons/email-icon.svg' %}" alt="" class="items-login__img">
                 <div class="items-login__body">

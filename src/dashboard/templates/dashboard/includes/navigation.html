@@ -16,7 +16,7 @@
       <li><a data_target="{% url 'reports' %}" href="{% url 'reports' %}"> <span class="material-icons-sharp">summarize</span><h3>Отчёты</h3></a></li>
       <!-- <li><a href="#"> <span class="material-icons-sharp">settings</span><h3>Настройки</h3></a</li>
       <li><a href="#"> <span class="material-icons-sharp">add</span><h3>Добавить пункт</h3></a></li> -->
-      <li><a href="#"> <span class="material-icons-sharp">logout</span><h3>Выход</h3></a></li>
+      <li><a href="{% url 'logout' %}"> <span class="material-icons-sharp">logout</span><h3>Выход</h3></a></li>
     </ul>
   </nav>
   <script src="{% static 'dashboard/js/nav.js' %}"></script>
