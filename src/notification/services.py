@@ -185,6 +185,10 @@ def create_default_burned_notification_setting():
          'step': 'принято в работу',
          'step_time': 1800,
          'alarm_time': 300},
+        {'name': 'Уведомление о лимите обработки на сотруднике 2',
+         'step': 'принято в обработку',
+         'step_time': 1800,
+         'alarm_time': 300},
     )
     [_get_or_create_notification_model(StepNotificationSetting, setting)
      for setting in default_settings]
@@ -203,6 +207,9 @@ def create_default_returned_notification_setting():
          'alarm_time': 300},
         {'name': 'Уведомление о возврате с шага обратной связи',
          'step': 'ожидание обратной связи от клиента',
+         'alarm_time': 300},
+        {'name': 'Уведомление о возврате с шага запланирована дата обработки',
+         'step': 'запланирована дата обработки',
          'alarm_time': 300},
     )
     [_get_or_create_notification_model(
