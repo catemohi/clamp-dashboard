@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clamp</title>
+  {% load static %}
+  <link rel="shortcut icon" href="{% static 'dashboard/img/logo.png' %}" type="image/png">
+  <link rel="stylesheet" href="./css/login.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div class="login">
+      <div class="login__container">
+        <div class="login__card">
+          <div class="login__img">
+            <img src="{% static 'dashboard/img/login-crab.webp' %}" alt="" class="login_pic">
+          </div>
+          <div class="login__auth">
+            <p class="login__greetings">Добро пожаловать в <span>Clamp</span></p>
+            <form action="" class="login__form form-auth">
+              <div class="form-auth__login-items items-login">
+                <img src="{% static 'dashboard/img/icons/email-icon.svg %}" alt="" class="items-login__img">
+                <div class="items-login__body">
+                  <label for="login" class="form-auth__login-label">Логин</label>
+                  <input name='login' value='' placeholder='corp/example' type="text" id="#login-input" class="form-auth__login-input">
+                </div>
+              </div>
+              <div class="form-auth__password-items items-password">
+                <img src="{% static 'dashboard/img/icons/password-icon.svg %}" alt="" class="items-password__img">
+                <div class="items-password__body">
+                  <label for="password" class="form-auth__password-label">Пароль</label>
+                  <input name='password' value='' placeholder='***********' type="password" id="#password-input" class="form-auth__password-input">
+                </div>
+              </div>
+              <div class="form-auth__checkbox remember-me-checkbox">
+                <input type="checkbox" name="remember-me" id="remember-me" class="remember-me-checkbox__input">
+                <label for="remember-me" class="remember-me-checkbox__label">Запомнить меня</label>
+              </div>
+              <button type="submit" class="form-auth__button">Войти</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

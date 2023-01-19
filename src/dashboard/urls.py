@@ -4,9 +4,11 @@ from django.urls import path, include
 from .views import index, dashboard_json_data
 from .views import dashboard, table, reports
 from .views import table_json_data, report_json_data
+from .views import login
 
 urlpatterns = [
     path('', index, name='index'),
+    path('login/', login, name='login'),
     path('dashboard/', dashboard, name='dashboard'),
     path('table/', table, name='table'),
     path('reports/', reports, name='reports'),

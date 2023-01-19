@@ -34,7 +34,7 @@ def theme_check(cookies):
 
 
 def index(request):
-    url = reverse_lazy('dashboard')
+    url = reverse_lazy('login')
     return redirect(url)
 
 
@@ -125,23 +125,6 @@ def table_json_data(request):
     return JsonResponse({'data': content})
 
 
-# def table_counter_json_data(request):
-#     content = len(get_issues_from_db())
-#     return JsonResponse({'data': content})
-
-
-# def log(request):
-#     context = {}
-#     notifications = get_notification(slice=50, json_type=True)
-#     context.update({'notifications': notifications})
-#     context.update(theme_check(request.COOKIES))
-#     return render(request, 'dashboard/log.html', context)
-
-
-# def report_json_data(request):
-#     data = request.POST
-#     print(data)
-#     desired_date = get_date_obj(data['desired_date'])
-#     comparison_date = get_date_obj(data['comparison_date'])
-#     content = get_day_params_and_analytics(desired_date, comparison_date)
-#     return JsonResponse({'data': content})
+def login(request):
+    context = {}
+    return render(request, 'dashboard/login.html', context=context)
