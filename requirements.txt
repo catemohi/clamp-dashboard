@@ -32,7 +32,6 @@ channels
 channels-redis
 django-redis-sessions
 daphne
-pillow
 python-ldap
 django-auth-ldap
 

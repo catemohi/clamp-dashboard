@@ -1,9 +1,11 @@
+import io
+from random import choice
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
-from django_thumbs.db.models import ImageWithThumbsField
 from django_auth_ldap.backend import populate_user, LDAPBackend
 
 
@@ -120,18 +122,19 @@ class RatingSetting(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    job_title = models.CharField(max_length=100, blank=True,
+    job_title = models.CharField(max_length=100, blank=True, null=True,
                                  verbose_name='Должность')
-    ext_number = models.CharField(max_length=30, blank=True,
+    ext_number = models.CharField(max_length=30, blank=True, null=True,
                                   verbose_name='Внутренний номер')
-    mobile_number = models.CharField(max_length=30, blank=True,
+    mobile_number = models.CharField(max_length=30, blank=True, null=True,
                                      verbose_name='Мобильный номер')
-    department = models.CharField(max_length=150, blank=True,
+    department = models.CharField(max_length=150, blank=True, null=True,
                                   verbose_name='Отдел')
-    company = models.CharField(max_length=150, blank=True,
+    company = models.CharField(max_length=150, blank=True, null=True,
                                verbose_name='Компания')
-    profile_picture = ImageWithThumbsField(upload_to="images/profile/",
-                                           verbose_name='Аватар')
+    profile_picture = models.ImageField(upload_to="images/profile/",
+                                        verbose_name='Аватар', blank=True,
+                                        null=True)
 
 
 @receiver(post_save, sender=User)
@@ -151,8 +154,6 @@ def save_user_or_update_profile_ldap(sender, user=None,
     user.save()
     temp_profile = None
     bucket = {}
-    print(ldap_user.attrs)
-    print(user)
     try:
         temp_profile = user.profile
     except:
@@ -163,11 +164,24 @@ def save_user_or_update_profile_ldap(sender, user=None,
     bucket['ext_number'] = ldap_user.attrs.get('telephoneNumber')
     bucket['department'] = ldap_user.attrs.get('department')
     bucket['company'] = ldap_user.attrs.get('company')
-    bucket['profile_picture'] = ldap_user.attrs.get('thumbnailPhoto')
+    bucket['profile_picture'] = ldap_user.attrs.get('thumbnailPhoto')[0]
 
     for key, value in bucket.items():
         if not value:
             continue
         setattr(user.profile, key, value[0])
+
+    try:
+        thumbnail = ldap_user.attrs.get('thumbnailPhoto')[0]
+        buffer = io.BytesIO()
+        buffer.write(thumbnail)
+        avatar_name = 'avatar-' + user.username + '.png'
+        image_file = InMemoryUploadedFile(buffer, None, avatar_name,
+                                          'image/png',
+                                          buffer.getbuffer().nbytes, None)
+        setattr(user.profile, 'profile_picture', image_file)
+
+    except Exception as e:
+        print('  %s: error: %s' % (user.username, str(e)))
 
     user.profile.save()
