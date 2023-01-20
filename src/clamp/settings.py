@@ -139,14 +139,7 @@ AUTH_LDAP_USER_ATTR_MAP = {
     "email": "mail"
 }
 
-AUTH_LDAP_PROFILE_ATTR_MAP = {
-    "job_title": "title",
-    "mobile_number": "mobile",
-    "ext_number": "telephoneNumber",
-    "department": "department",
-    "company": "company",
-    "profile_picture": "thumbnailPhoto",
-}
+AUTH_LDAP_PROFILE_ATTR_MAP = {}
 
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {
     "is_staff": environ.get('LDAP_SERVER_ADMIN'),

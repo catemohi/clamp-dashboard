@@ -146,9 +146,24 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 @receiver(populate_user, sender=LDAPBackend)
-def save_user_profile_ldap(sender, *args, **kwargs):
-    for i in args:
-        print(i)
-        print(type(i))
-    for k, v in kwargs.items():
-        print(k, v)
+def save_user_or_update_profile_ldap(sender, user=None,
+                                     ldap_user=None, **kwargs):
+    temp_profile = None
+    bucket = {}
+
+    try:
+        temp_profile = user.profile
+    except:
+        temp_profile = Profile.objects.create(user=user)
+
+    bucket['job_title'] = ldap_user.attrs.get('title')
+    bucket['mobile_number'] = ldap_user.attrs.get('mobile')
+    bucket['ext_number'] = ldap_user.attrs.get('telephoneNumber')
+    bucket['department'] = ldap_user.attrs.get('department')
+    bucket['company'] = ldap_user.attrs.get('company')
+    bucket['profile_picture'] = ldap_user.attrs.get('profile_picture')
+
+    for key, value in bucket.items():
+        if value:
+            setattr(user.profile, key, value[0].encode('utf-8'))
+    user.profile.save()
