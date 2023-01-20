@@ -1,4 +1,16 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django_thumbs.db.models import ImageWithThumbsField
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    job_title = models.CharField(max_length=100, blank=True)
+    ext_number = models.CharField(max_length=30, blank=True)
+    mobile_number = models.CharField(max_length=30, blank=True)
+    department = models.CharField(max_length=150, blank=True)
+    company = models.CharField(max_length=150, blank=True)
+    profile_picture = ImageWithThumbsField(upload_to="images/profile/")
 
 
 class NaumenSetting(models.Model):
