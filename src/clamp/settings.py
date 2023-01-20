@@ -117,15 +117,14 @@ AUTH_LDAP_SERVER_URI = environ.get('LDAP_SERVER_URI')
 
 AUTH_LDAP_BIND_DN = ('CN=' + environ.get('LDAP_SERVER_CN') + ',OU=' + 
                      ',OU='.join(environ.get('LDAP_SERVER_OU').split(',')) +
-                     ',DC=' + 
+                     ',DC=' +
                      ',DC='.join(environ.get('LDAP_SERVER_DC').split(','))
                      )
 AUTH_LDAP_BIND_PASSWORD = environ.get('NAUMEN_PASSWORD')
 
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
-    LDAPSearch('DC=' + ',DC='.join(environ.get('LDAP_SERVER_DC').split(','),
-               ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
-)
+    'DC=' + ',DC='.join(environ.get('LDAP_SERVER_DC').split(','),
+                        ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),)
 
 AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="CN")
 
