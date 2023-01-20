@@ -148,6 +148,7 @@ def save_user_profile(sender, instance, **kwargs):
 @receiver(populate_user, sender=LDAPBackend)
 def save_user_or_update_profile_ldap(sender, user=None,
                                      ldap_user=None, **kwargs):
+    user.save()
     temp_profile = None
     bucket = {}
     print(ldap_user)
@@ -156,7 +157,6 @@ def save_user_or_update_profile_ldap(sender, user=None,
         temp_profile = user.profile
     except:
         temp_profile = Profile.objects.create(user=user)
-    user.save()
 
     bucket['job_title'] = ldap_user.attrs.get('title')
     bucket['mobile_number'] = ldap_user.attrs.get('mobile')
