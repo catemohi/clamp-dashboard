@@ -32,3 +32,5 @@ channels
 channels-redis
 django-redis-sessions
 daphne
+ldap
+django-auth-ldap
