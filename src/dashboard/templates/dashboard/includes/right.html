@@ -11,7 +11,7 @@
     <div class="profile">
       <div class="info">
         <p>Добрый день, <b>{{request.user.first_name}}</b></p>
-        <small class="text-muted">{{request.user.job_title}}</small>
+        <small class="text-muted">{{request.user.profile.job_title}}</small>
       </div>
       <div class="profile-photo">
         {% if request.user.profile.profile_picture %}
