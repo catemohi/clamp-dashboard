@@ -9,9 +9,12 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import ldap
+
 from os import environ
 from pathlib import Path
 from json import load
+from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -109,7 +112,46 @@ CACHES = {
 }
 
 # LDAP
+AUTH_LDAP_AUTHORIZE_ALL_USERS = True
+AUTH_LDAP_PERMIT_EMPTY_PASSWORD = False
+AUTH_LDAP_SERVER_URI = environ.get('LDAP_SERVER_URI')
 
+AUTH_LDAP_BIND_DN = ('CN=' + environ.get('LDAP_SERVER_CN') + ',OU=' + 
+                     ',OU='.join(environ.get('LDAP_SERVER_OU').split(',')) +
+                     ',DC=' + 
+                     ',DC='.join(environ.get('LDAP_SERVER_DC').split(','))
+                     )
+AUTH_LDAP_BIND_PASSWORD = environ.get('NAUMEN_PASSWORD')
+
+AUTH_LDAP_USER_SEARCH = LDAPSearch(
+    LDAPSearch('DC=' + ',DC='.join(environ.get('LDAP_SERVER_DC').split(','),
+               ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+)
+
+AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="CN")
+
+AUTH_LDAP_USER_ATTR_MAP = {
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "mail"
+}
+
+AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+    "is_staff": environ.get('LDAP_SERVER_DC'),
+    "is_superuser": environ.get('LDAP_SERVER_ADMIN'),
+}
+
+AUTH_LDAP_ALWAYS_UPDATE_USER = True
+AUTH_LDAP_FIND_GROUP_PERMS = True
+AUTH_LDAP_CACHE_GROUPS = True
+AUTH_LDAP_GROUP_CACHE_TIMEOUT = 3600
+
+# Authentication backends
+
+AUTHENTICATION_BACKENDS = (
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
