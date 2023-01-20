@@ -150,11 +150,13 @@ def save_user_or_update_profile_ldap(sender, user=None,
                                      ldap_user=None, **kwargs):
     temp_profile = None
     bucket = {}
-
+    print(ldap_user)
+    print(user)
     try:
         temp_profile = user.profile
     except:
         temp_profile = Profile.objects.create(user=user)
+    user.save()
 
     bucket['job_title'] = ldap_user.attrs.get('title')
     bucket['mobile_number'] = ldap_user.attrs.get('mobile')
