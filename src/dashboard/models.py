@@ -2,7 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
 from django_thumbs.db.models import ImageWithThumbsField
+from django_auth_ldap.backend import populate_user, LDAPBackend
 
 
 class NaumenSetting(models.Model):
@@ -141,3 +143,12 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
+@receiver(populate_user, sender=LDAPBackend)
+def save_user_profile_ldap(sender, *args, **kwargs):
+    for i in args:
+        print(i)
+        print(type(i))
+    for k, v in kwargs.items():
+        print(k, v)
