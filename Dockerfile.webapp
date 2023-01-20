@@ -15,6 +15,7 @@ RUN git clone https://github.com/catemohi/naumen_api.git
 RUN python3 naumen_api/setup.py install
 RUN git clone https://github.com/millin/django-thumbs.git
 RUN cd django-thumbs
+RUN ls -la
 RUN python3 setup.py install
 RUN cd ..
 
