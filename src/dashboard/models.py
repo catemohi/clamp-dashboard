@@ -1,22 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django_thumbs.db.models import ImageWithThumbsField
-
-
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    job_title = models.CharField(max_length=100, blank=True,
-                                 verbose_name='Должность')
-    ext_number = models.CharField(max_length=30, blank=True,
-                                  verbose_name='Внутренний номер')
-    mobile_number = models.CharField(max_length=30, blank=True,
-                                     verbose_name='Мобильный номер')
-    department = models.CharField(max_length=150, blank=True,
-                                  verbose_name='Отдел')
-    company = models.CharField(max_length=150, blank=True,
-                               verbose_name='Компания')
-    profile_picture = ImageWithThumbsField(upload_to="images/profile/",
-                                           verbose_name='Аватар')
 
 
 class NaumenSetting(models.Model):
@@ -128,3 +114,30 @@ class RatingSetting(models.Model):
                 condition=models.constraints.Q(is_active=True),
                 name='Активная коллекция настроек аналитики')
         ]
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    job_title = models.CharField(max_length=100, blank=True,
+                                 verbose_name='Должность')
+    ext_number = models.CharField(max_length=30, blank=True,
+                                  verbose_name='Внутренний номер')
+    mobile_number = models.CharField(max_length=30, blank=True,
+                                     verbose_name='Мобильный номер')
+    department = models.CharField(max_length=150, blank=True,
+                                  verbose_name='Отдел')
+    company = models.CharField(max_length=150, blank=True,
+                               verbose_name='Компания')
+    profile_picture = ImageWithThumbsField(upload_to="images/profile/",
+                                           verbose_name='Аватар')
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
