@@ -140,7 +140,7 @@ AUTH_LDAP_USER_ATTR_MAP = {
 }
 
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-    "is_staff": LDAP_DOMAIN_COMPONENT,
+    "is_staff": environ.get('LDAP_SERVER_ADMIN'),
     "is_superuser": environ.get('LDAP_SERVER_ADMIN'),
 }
 
