@@ -111,20 +111,22 @@ CACHES = {
 }
 
 # LDAP
+LDAP_CUSTOMER_NAME = 'CN=' + environ.get('LDAP_SERVER_CN')
+LDAP_ORGANIZATIONAL_UNIT = 'OU=' + ',OU='.join(
+    environ.get('LDAP_SERVER_OU').split(','))
+LDAP_DOMAIN_COMPONENT = 'DC=' + ',DC='.join(
+    environ.get('LDAP_SERVER_DC').split(','))
+
 AUTH_LDAP_AUTHORIZE_ALL_USERS = True
 AUTH_LDAP_PERMIT_EMPTY_PASSWORD = False
 AUTH_LDAP_SERVER_URI = environ.get('LDAP_SERVER_URI')
 
-AUTH_LDAP_BIND_DN = ('CN=' + environ.get('LDAP_SERVER_CN') + ',OU=' + 
-                     ',OU='.join(environ.get('LDAP_SERVER_OU').split(',')) +
-                     ',DC=' +
-                     ',DC='.join(environ.get('LDAP_SERVER_DC').split(','))
-                     )
+AUTH_LDAP_BIND_DN = (f'{LDAP_CUSTOMER_NAME},' + f'{LDAP_ORGANIZATIONAL_UNIT},'
+                     + f'{LDAP_DOMAIN_COMPONENT}')
 AUTH_LDAP_BIND_PASSWORD = environ.get('NAUMEN_PASSWORD')
 
-AUTH_LDAP_USER_SEARCH = LDAPSearch(
-    'DC=' + ',DC='.join(environ.get('LDAP_SERVER_DC').split(','),
-                        ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),)
+AUTH_LDAP_USER_SEARCH = LDAPSearch(LDAP_DOMAIN_COMPONENT, ldap.SCOPE_SUBTREE,
+                                   "(sAMAccountName=%(user)s)")
 
 AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="CN")
 
@@ -135,7 +137,7 @@ AUTH_LDAP_USER_ATTR_MAP = {
 }
 
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-    "is_staff": environ.get('LDAP_SERVER_DC'),
+    "is_staff": LDAP_DOMAIN_COMPONENT,
     "is_superuser": environ.get('LDAP_SERVER_ADMIN'),
 }
 
