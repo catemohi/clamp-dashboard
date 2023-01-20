@@ -10,11 +10,15 @@
     </div>
     <div class="profile">
       <div class="info">
-        <p>Привет, <b>Никита</b></p>
-        <small class="text-muted">Admin</small>
+        <p>Добрый день, <b>{{request.user.first_name}}</b></p>
+        <small class="text-muted">{{request.user.job_title}}</small>
       </div>
       <div class="profile-photo">
-        <img src="{% static 'dashboard/img/profile/man-profile.png' %}" alt="profile photo">
+        {% if request.user.profile.profile_picture %}
+          <img src="{{ request.user.profile.profile_picture.url }}" height=100 width=100><br><br>
+        {% else %}
+          <img src="{% static 'dashboard/img/profile/user.png' %}" alt="profile photo">
+        {% endif %}
       </div>
     </div>
   </div>
