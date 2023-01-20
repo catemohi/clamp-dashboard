@@ -17,5 +17,3 @@ urlpatterns = [
     path('json/table', table_json, name='json/table'),
     path('json/reports', report_json, name='json/reports'),
     ]
-
-
