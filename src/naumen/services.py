@@ -11,8 +11,8 @@ from django.utils.timezone import make_aware
 from django.db.models import QuerySet
 
 
-from naumen_api.naumen_api.config.config import CONFIG
-from naumen_api.naumen_api.naumen_api import Client
+from naumen_api.config.config import CONFIG
+from naumen_api.naumen_api import Client
 
 from notification.models import StepNotificationSetting
 from notification.models import RetrunToWorkNotificationSetting
