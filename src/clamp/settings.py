@@ -128,6 +128,9 @@ AUTH_LDAP_BIND_PASSWORD = environ.get('NAUMEN_PASSWORD')
 AUTH_LDAP_USER_SEARCH = LDAPSearch(LDAP_DOMAIN_COMPONENT, ldap.SCOPE_SUBTREE,
                                    "(sAMAccountName=%(user)s)")
 
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch(LDAP_DOMAIN_COMPONENT,
+                                    ldap.SCOPE_SUBTREE, "(objectClass=group)"
+                                    )
 AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="CN")
 
 AUTH_LDAP_USER_ATTR_MAP = {
