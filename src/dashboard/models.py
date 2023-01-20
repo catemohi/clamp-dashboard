@@ -151,7 +151,7 @@ def save_user_or_update_profile_ldap(sender, user=None,
     user.save()
     temp_profile = None
     bucket = {}
-    print(ldap_user)
+    print(ldap_user.attrs)
     print(user)
     try:
         temp_profile = user.profile
@@ -163,13 +163,11 @@ def save_user_or_update_profile_ldap(sender, user=None,
     bucket['ext_number'] = ldap_user.attrs.get('telephoneNumber')
     bucket['department'] = ldap_user.attrs.get('department')
     bucket['company'] = ldap_user.attrs.get('company')
+    bucket['profile_picture'] = ldap_user.attrs.get('thumbnailPhoto')
 
     for key, value in bucket.items():
         if not value:
             continue
-        setattr(user.profile, key, value[0].decode('utf-8'))
-
-    setattr(user.profile, 'profile_picture',
-            ldap_user.attrs.get('profile_picture')[0])
+        setattr(user.profile, key, value[0])
 
     user.profile.save()
