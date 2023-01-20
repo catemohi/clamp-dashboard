@@ -11,13 +11,10 @@ RUN pip install -U pip
 COPY ./requirements.txt ./
 RUN pip install -r requirements.txt
 
-RUN git clone https://github.com/catemohi/naumen_api.git
-RUN python3 naumen_api/setup.py install
-RUN git clone https://github.com/millin/django-thumbs.git
-RUN cd django-thumbs
-RUN ls -la
-RUN python3 setup.py install
-RUN cd ..
+RUN git clone https://github.com/catemohi/naumen_api.git && \ 
+cd naumen_api && python3 setup.py install
+RUN git clone https://github.com/millin/django-thumbs.git && \ 
+cd django-thumbs && python3 setup.py install
 
 COPY ./src .
 COPY .venv/config.json .
