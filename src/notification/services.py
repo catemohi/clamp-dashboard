@@ -209,7 +209,7 @@ def create_default_returned_notification_setting():
          'step': 'ожидание обратной связи от клиента',
          'alarm_time': 300},
         {'name': 'Уведомление о возврате с шага запланирована дата обработки',
-         'step': 'запланирована дата обработки',
+         'step': 'Запланирована дата обработки',
          'alarm_time': 300},
     )
     [_get_or_create_notification_model(
