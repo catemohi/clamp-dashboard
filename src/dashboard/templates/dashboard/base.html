@@ -10,16 +10,16 @@
     <!-- STYLESHEET -->
     <link rel="shortcut icon" href="{% static 'dashboard/img/logo.png' %}" type="image/png">
     <link rel="stylesheet" href="{% static 'dashboard/css/iconfont.css' %}">    
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="{% static 'dashboard/css/dataTables.bootstrap5.min.css' %}">
     <link rel="stylesheet" href="{% static 'dashboard/css/style.css' %}">
   </head>
   <body class="{{ body_class }}">
     <p id='raw-burned-notification-settings' style="display: none;">{{ burned_notification_settings }}</p>
     <p id="raw-returned-notification-settings" style="display: none;">{{ returned_notification_settings }}</p>
+    <script src="{% static 'dashboard/js/jquery-latest.js' %}"></script>
+    <script src="{% static 'dashboard/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'dashboard/js/dataTables.bootstrap5.min.js' %}"></script>    
     <script type="text/javascript">window.CSRF_TOKEN = "{{ csrf_token }}";</script> 
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
     <script>
       const options = {year: 'numeric', month: 'numeric', day: 'numeric',
                        hour: 'numeric', minute: 'numeric', second: 'numeric',
