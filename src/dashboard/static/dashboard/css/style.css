@@ -783,6 +783,10 @@ main .monitoring h3 {
 
 /* MEDIA QUERIES */
 @media screen and (max-width: 1200px) {
+  aside {
+    display: block;
+  }
+
   .container {
     width: 94%;
     grid-template-columns: 7rem auto 30rem;
