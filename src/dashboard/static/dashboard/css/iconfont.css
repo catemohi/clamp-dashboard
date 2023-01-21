@@ -1,0 +1,68 @@
+@font-face {
+  font-family: 'icon-font';
+  src:
+    url('../fonts/icon-font.ttf?43rk4q') format('truetype'),
+    url('../fonts/icon-font.woff?43rk4q') format('woff'),
+    url('../fonts/icon-font.svg?43rk4q#icon-font') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="_icon-"], [class*=" _icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icon-font' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+._icon-email:before {
+  content: "\e900";
+}
+._icon-password:before {
+  content: "\e901";
+}
+._icon-menu:before {
+  content: "\e90d";
+}
+._icon-close:before {
+  content: "\e90c";
+}
+._icon-dark_mode:before {
+  content: "\e90a";
+}
+._icon-light_mode:before {
+  content: "\e90b";
+}
+._icon-dashboard:before {
+  content: "\e902";
+}
+._icon-favorite_border:before {
+  content: "\e903";
+}
+._icon-key:before {
+  content: "\e904";
+}
+._icon-logout:before {
+  content: "\e905";
+}
+._icon-person:before {
+  content: "\e906";
+}
+._icon-report_problem:before {
+  content: "\e907";
+}
+._icon-signal_cellular_alt:before {
+  content: "\e908";
+}
+._icon-summarize:before {
+  content: "\e909";
+}

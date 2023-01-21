@@ -6,17 +6,15 @@
       <h2>CLAMP</h2>
     </div>
     <div class="close" id="close-btn">
-    <span class="material-icons-sharp">close</span>
+      <span class="_icon-close material-icons-sharp"></span>
     </div>
   </div>
   <nav id="sidebar" class="sidebar">
     <ul>
-      <li><a data_target="{% url 'dashboard' %}" href="{% url 'dashboard' %}"> <span class="material-icons-sharp">dashboard</span><h3>Главное</h3></a></li>
-      <li><a data_target="{% url 'table' %}" href="{% url 'table' %}"> <span class="material-icons-sharp">report_problem</span><h3>Проблемы</h3></a><div class="task-count"><span class="task-status-on-the-group-count">{{ first_line_counter }}</span><span class="task-status-on-the-vip-count">{{ vip_line_counter }}</span></div></li>
-      <li><a data_target="{% url 'reports' %}" href="{% url 'reports' %}"> <span class="material-icons-sharp">summarize</span><h3>Отчёты</h3></a></li>
-      <!-- <li><a href="#"> <span class="material-icons-sharp">settings</span><h3>Настройки</h3></a</li>
-      <li><a href="#"> <span class="material-icons-sharp">add</span><h3>Добавить пункт</h3></a></li> -->
-      <li><a href="{% url 'logout' %}"> <span class="material-icons-sharp">logout</span><h3>Выход</h3></a></li>
+      <li><a data_target="{% url 'dashboard' %}" href="{% url 'dashboard' %}"> <span class="material-icons-sharp _icon-dashboard"></span><h3>Главное</h3></a></li>
+      <li><a data_target="{% url 'table' %}" href="{% url 'table' %}"> <span class="material-icons-sharp _icon-report_problem"></span><h3>Проблемы</h3></a><div class="task-count"><span class="task-status-on-the-group-count">{{ first_line_counter }}</span><span class="task-status-on-the-vip-count">{{ vip_line_counter }}</span></div></li>
+      <li><a data_target="{% url 'reports' %}" href="{% url 'reports' %}"> <span class="material-icons-sharp _icon-summarize"></span><h3>Отчёты</h3></a></li>
+      <li><a href="{% url 'logout' %}"> <span class="material-icons-sharp _icon-logout"></span><h3>Выход</h3></a></li>
     </ul>
   </nav>
   <script src="{% static 'dashboard/js/nav.js' %}"></script>
