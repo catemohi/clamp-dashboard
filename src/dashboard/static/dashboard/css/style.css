@@ -1,6 +1,46 @@
 /* Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap&subset=cyrillic-ext');
-
+@font-face {
+  font-family:'Montserrat' ;
+  src: url('../fonts/Montserrat-Light.woff2') format('woff2');
+  font-style: normal ;
+  font-weight: 300;
+}
+@font-face {
+  font-family:'Montserrat' ;
+  src: url('../fonts/Montserrat-Regular.woff2') format('woff2');
+  font-style: normal ;
+  font-weight: 400;
+}
+@font-face {
+  font-family:'Montserrat' ;
+  src: url('../fonts/Montserrat-Medium.woff2') format('woff2');
+  font-style: normal ;
+  font-weight: 500;
+}
+@font-face {
+  font-family:'Montserrat' ;
+  src: url('../fonts/Montserrat-SemiBold.woff2') format('woff2');
+  font-style: normal ;
+  font-weight: 600;
+}
+@font-face {
+  font-family:'Montserrat' ;
+  src: url('../fonts/Montserrat-Bold.woff2') format('woff2');
+  font-style: normal ;
+  font-weight: 700;
+}
+@font-face {
+  font-family:'Montserrat' ;
+  src: url('../fonts/Montserrat-ExtraBold.woff2') format('woff2');
+  font-style: normal ;
+  font-weight: 900;
+}
+@font-face {
+  font-family:'Montserrat' ;
+  src: url('../fonts/Montserrat-Black.woff2') format('woff2');
+  font-style: normal ;
+  font-weight: 900;
+}
 /* Root var */
 :root {
   --color-primary: #75B7C9;
@@ -108,7 +148,7 @@ html {
 body {
   width: 100vw;
   height: 100vh;
-  font-family: Poppins, sans-serif;
+  font-family: Montserrat, Arial, sans-serif;
   font-size: 0.88rem;
   background: var(--color-background);
   overflow-x: hidden;

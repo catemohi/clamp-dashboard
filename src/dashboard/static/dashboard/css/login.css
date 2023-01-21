@@ -1,7 +1,12 @@
 /* ПОДКЛЮЧЕНИЕ ШРИФТОВ */
 /* Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap&subset=cyrillic-ext');
-/* @font-face {
+@font-face {
+  font-family:'Montserrat' ;
+  src: url('../fonts/Montserrat-Light.woff2') format('woff2');
+  font-style: normal ;
+  font-weight: 300;
+}
+@font-face {
   font-family:'Montserrat' ;
   src: url('../fonts/Montserrat-Regular.woff2') format('woff2');
   font-style: normal ;
@@ -27,10 +32,16 @@
 }
 @font-face {
   font-family:'Montserrat' ;
+  src: url('../fonts/Montserrat-ExtraBold.woff2') format('woff2');
+  font-style: normal ;
+  font-weight: 900;
+}
+@font-face {
+  font-family:'Montserrat' ;
   src: url('../fonts/Montserrat-Black.woff2') format('woff2');
   font-style: normal ;
   font-weight: 900;
-} */
+}
 /* ОБНУЛЕНИЕ СТИЛЕЙ */
 *,*::before,*::after{
   margin: 0;
@@ -54,7 +65,7 @@ img {
 html,body {
   width: 100%;
   line-height: 1;
-  font-family: 'Poppins', sans-serif;
+  font-family: Montserrat, Arial, sans-serif;
   font-size: 16px;
   background: #f6f6f9;
 
