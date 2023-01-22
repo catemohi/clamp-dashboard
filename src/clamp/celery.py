@@ -14,10 +14,12 @@ app = Celery("clamp")
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.timezone = 'Europe/Moscow'
 app.conf.task_routes = {
-    'naumen.tasks.*': {'queue': 'naumen_crud'},
-    'naumen.tasks.crud_issue': {'queue': 'celery'},
     'naumen.tasks.check_issue_deadline_and_timer': {'queue': 'celery'},
     'naumen.tasks.check_issues_deadline_and_timer': {'queue': 'celery'},
+    'notification.tasks.*': {'queue': 'celery'},
+    'dashboard.tasks.*': {'queue': 'celery'},
+    'naumen.tasks.crud_issue': {'queue': 'celery'},
+    'naumen.tasks.*': {'queue': 'naumen_crud'},
     }
 # загрузка tasks.py в приложение django
 app.autodiscover_tasks()
@@ -58,5 +60,15 @@ app.conf.beat_schedule = {
         'task': 'naumen.tasks.update_issues',
         'schedule': timedelta(minutes=3),
         'kwargs': {'is_vip': True},
+    },
+    'Создание моделей настроек уведомлений о лимите обработки обращений': {
+        'task': 'notification.tasks.create_burned_notification_models',
+        'schedule': timedelta(seconds=30),
+        'one_off': True,
+    },
+    'Создание моделей настроек уведомлений о возврате в работу обращений': {
+        'task': 'notification.tasks.create_returned_notification_models',
+        'schedule': timedelta(seconds=30),
+        'one_off': True,
     },
 }
