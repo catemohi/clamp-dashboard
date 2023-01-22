@@ -16,8 +16,6 @@ app.conf.timezone = 'Europe/Moscow'
 app.conf.task_routes = {
     'naumen.tasks.check_issue_deadline_and_timer': {'queue': 'celery'},
     'naumen.tasks.check_issues_deadline_and_timer': {'queue': 'celery'},
-    'notification.tasks.*': {'queue': 'celery'},
-    'dashboard.tasks.*': {'queue': 'celery'},
     'naumen.tasks.crud_issue': {'queue': 'celery'},
     'naumen.tasks.*': {'queue': 'naumen_crud'},
     }
