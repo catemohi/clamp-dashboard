@@ -126,7 +126,7 @@ html,body {
 .login__greetings {
   max-width: 400px;
   font-weight: 500;
-  font-size: 36px;
+  font-size: 34px;
   line-height: 1.35;
   color: #2F2F2F;
 }
@@ -328,6 +328,8 @@ html,body {
   .remember-me-checkbox:not(:last-child) {
     margin: 0 0 80px 0;
   }
+  .login__greetings {
+    font-size: 32px;  
 }
 
 @media (max-width: 1300px) {
