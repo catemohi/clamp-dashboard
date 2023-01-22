@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 from naumen.services import get_issues_from_db
 from notification.services import get_notification
@@ -34,11 +35,6 @@ def theme_check(cookies):
             'theme_toggler_white': 'active'}
 
 
-def index_page(request):
-    url = reverse_lazy('login')
-    return redirect(url)
-
-
 def login_page(request):
     """Функция обрабатывающая вход пользователей.
 
@@ -46,6 +42,9 @@ def login_page(request):
         request (_type_): запрос
     """
     context = {}
+
+    if request.user.is_authenticated:
+        return redirect(reverse_lazy('dashboard'))
 
     if request.method != 'POST':
         return render(request, 'dashboard/login.html', context=context)
@@ -73,6 +72,12 @@ def logout_page(request):
     return redirect('login')
 
 
+@login_required(login_url=reverse_lazy('login'))
+def index_page(request):
+    return redirect(reverse_lazy('dashboard'))
+
+
+@login_required(login_url=reverse_lazy('login'))
 def dashboard_page(request):
     context = {}
     # Запрос данных для контекста
@@ -95,6 +100,7 @@ def dashboard_page(request):
     return render(request, 'dashboard/dashboard.html', context=context)
 
 
+@login_required(login_url=reverse_lazy('login'))
 def table_page(request):
     context = {}
     # Запрос данных для контекста
@@ -117,6 +123,7 @@ def table_page(request):
     return render(request, 'dashboard/table.html', context=context)
 
 
+@login_required(login_url=reverse_lazy('login'))
 def reports_page(request):
     context = {}
     # Запрос данных для контекста
@@ -139,6 +146,7 @@ def reports_page(request):
     return render(request, 'dashboard/reports.html', context=context)
 
 
+@login_required(login_url=reverse_lazy('login'))
 def dashboard_json(request):
     data = request.POST
     day_dict = get_day_dates_and_data(data['date'])
@@ -147,6 +155,7 @@ def dashboard_json(request):
     return JsonResponse(day_dict)
 
 
+@login_required(login_url=reverse_lazy('login'))
 def report_json(request):
     data = request.POST
     day_dict = get_day_report(data['desired_date'], data['comparison_date'])
@@ -155,6 +164,7 @@ def report_json(request):
     return JsonResponse(day_dict)
 
 
+@login_required(login_url=reverse_lazy('login'))
 def table_json(request):
     content = get_issues_from_db()
     return JsonResponse({'data': content})
