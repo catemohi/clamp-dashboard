@@ -59,14 +59,4 @@ app.conf.beat_schedule = {
         'schedule': timedelta(minutes=3),
         'kwargs': {'is_vip': True},
     },
-    'Создание моделей настроек уведомлений о лимите обработки обращений': {
-        'task': 'notification.tasks.create_burned_notification_models',
-        'schedule': timedelta(seconds=30),
-        'one_off': True,
-    },
-    'Создание моделей настроек уведомлений о возврате в работу обращений': {
-        'task': 'notification.tasks.create_returned_notification_models',
-        'schedule': timedelta(seconds=30),
-        'one_off': True,
-    },
 }
