@@ -33,6 +33,11 @@ app.conf.beat_schedule = {
         'schedule': timedelta(seconds=30),
         'ignore_result': True,
     },
+    'Проверка лимитов обращений': {
+        'task': 'naumen.tasks.check_issues_deadline_and_timer',
+        'schedule': timedelta(seconds=30),
+        'ignore_result': True,
+    },
     'Обновление отчета SL': {
         'task': 'naumen.tasks.update_service_level',
         'schedule': timedelta(minutes=10),
@@ -54,17 +59,12 @@ app.conf.beat_schedule = {
         'schedule': timedelta(minutes=3),
         'kwargs': {'is_vip': True},
     },
-    'Проверка лимитов обрашений': {
-        'task': 'naumen.tasks.check_issues_deadline_and_timer',
-        'schedule': timedelta(seconds=30),
-        'ignore_result': True,
-    },
-    'Создание моделей настроек уведомлений о лимите обработки обрашений': {
+    'Создание моделей настроек уведомлений о лимите обработки обращений': {
         'task': 'notification.tasks.create_burned_notification_models',
         'schedule': timedelta(seconds=30),
         'one_off': True,
     },
-    'Создание моделей настроек уведомлений о возврате в работу обрашений': {
+    'Создание моделей настроек уведомлений о возврате в работу обращений': {
         'task': 'notification.tasks.create_returned_notification_models',
         'schedule': timedelta(seconds=30),
         'one_off': True,
