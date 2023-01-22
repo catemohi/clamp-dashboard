@@ -14,9 +14,9 @@ app = Celery("clamp")
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.timezone = 'Europe/Moscow'
 app.conf.task_routes = {
-    'naumen.tasks.check_issue_deadline_and_timer': {'queue': 'celery'},
-    'naumen.tasks.check_issues_deadline_and_timer': {'queue': 'celery'},
-    'naumen.tasks.crud_issue': {'queue': 'celery'},
+    'naumen.tasks.check_issue_deadline_and_timer': {'queue': 'main'},
+    'naumen.tasks.check_issues_deadline_and_timer': {'queue': 'main'},
+    'naumen.tasks.crud_issue': {'queue': 'main'},
     'naumen.tasks.*': {'queue': 'naumen_crud'},
     }
 # загрузка tasks.py в приложение django
