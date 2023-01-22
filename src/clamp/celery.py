@@ -28,17 +28,14 @@ app.conf.beat_schedule = {
     'Обновление аналитики и прогресса': {
         'task': 'dashboard.tasks.front_params_update',
         'schedule': timedelta(minutes=15),
-        'ignore_result': True,
     },
     'Проверка кол-ва задач на группе': {
         'task': 'dashboard.tasks.front_issues_count',
         'schedule': timedelta(seconds=30),
-        'ignore_result': True,
     },
     'Проверка лимитов обращений': {
         'task': 'naumen.tasks.check_issues_deadline_and_timer',
         'schedule': timedelta(seconds=30),
-        'ignore_result': True,
     },
     'Обновление отчета SL': {
         'task': 'naumen.tasks.update_service_level',

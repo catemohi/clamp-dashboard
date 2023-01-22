@@ -7,7 +7,7 @@ from .services import create_default_returned_notification_setting
 LOGGER = getLogger(__name__)
 
 
-@shared_task
+@shared_task(name='notification.create_burned_notification_models')
 def create_burned_notification_models():
     """Функция создания моделей условий создания уведомлений о привышении
     лимита времени отработки обращения
@@ -15,7 +15,7 @@ def create_burned_notification_models():
     create_default_burned_notification_setting()
 
 
-@shared_task
+@shared_task(name='notification.create_returned_notification_models')
 def create_returned_notification_models():
     """Функция создания моделей условий создания уведомлений о возвращении
     обращения на шаг ТП

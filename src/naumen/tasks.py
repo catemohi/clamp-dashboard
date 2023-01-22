@@ -14,7 +14,7 @@ from .exceptions import NaumenServiceError
 LOGGER = getLogger(__name__)
 
 
-@shared_task
+@shared_task(name='naumen.update_service_level')
 def update_service_level():
     """Функция обновления уровня SL
     """
@@ -22,7 +22,7 @@ def update_service_level():
     return True
 
 
-@shared_task
+@shared_task(name='naumen.update_mttr_level')
 def update_mttr_level():
     """Функция обновления уровня MTTR
     """
@@ -30,7 +30,7 @@ def update_mttr_level():
     return True
 
 
-@shared_task
+@shared_task(name='naumen.update_flr_level')
 def update_flr_level():
     """Функция обновления уровня FLR
     """
@@ -38,7 +38,7 @@ def update_flr_level():
     return True
 
 
-@shared_task(ignore_result=True)
+@shared_task(name='naumen.crud_issue', ignore_result=True)
 def crud_issue(*args, **kwargs):
     issue = kwargs.get('issue')
     try:
@@ -51,7 +51,7 @@ def crud_issue(*args, **kwargs):
         LOGGER.exception(err)
 
 
-@shared_task
+@shared_task(name='naumen.update_issues')
 def update_issues(*args, **kwargs):
     """Задача для обновления обращений в базе данных
     """
@@ -67,7 +67,7 @@ def update_issues(*args, **kwargs):
     return True
 
 
-@shared_task(ignore_result=True)
+@shared_task(name='naumen.check_issue_deadline_and_timer', ignore_result=True)
 def check_issue_deadline_and_timer(issue: dict, *args, **kwargs):
     """Задача проверки времени отработки и таймера возврата в работу обращения
 
@@ -78,7 +78,7 @@ def check_issue_deadline_and_timer(issue: dict, *args, **kwargs):
     check_issue_return_timers(issue, *args, **kwargs)
 
 
-@shared_task(ignore_result=True)
+@shared_task(name='naumen.check_issues_deadline_and_timer', ignore_result=True)
 def check_issues_deadline_and_timer(*args, **kwargs):
     """Задача для проверки времени отработки и таймера возврата в работу
     обращений
