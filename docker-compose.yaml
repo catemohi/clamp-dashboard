@@ -12,14 +12,12 @@ services:
     expose:
       - 5432
   redis:
-    user: "${UID}:${GID}"
     container_name: dashboard_redis    
     image: redis
     depends_on:
       - db
     restart: always
   webapp:
-    user: "${UID}:${GID}"
     container_name: dashboard_webapp
     depends_on:
       - db
@@ -35,7 +33,6 @@ services:
     expose:
       - 8000
   celery_worker:
-    user: "${UID}:${GID}"
     container_name: celery_worker
     restart: always
     depends_on:
@@ -49,7 +46,6 @@ services:
       dockerfile: Dockerfile.celery_worker
       context: .
   celery_beat:
-    user: "${UID}:${GID}"
     container_name: celery_beat
     depends_on:
       - webapp
@@ -63,7 +59,6 @@ services:
       dockerfile: Dockerfile.celery_beat
       context: .
   nginx:
-    user: "${UID}:${GID}"
     container_name: dashboard_nginx
     build: ./nginx
     volumes:
