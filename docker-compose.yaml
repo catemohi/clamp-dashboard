@@ -13,12 +13,12 @@ services:
   redis:
     container_name: dashboard_redis    
     image: redis
-    depend_on:
+    depends_on:
       - db
     restart: always
   webapp:
     container_name: dashboard_webapp
-    depend_on:
+    depends_on:
       - db
     restart: always
     volumes:
@@ -34,7 +34,7 @@ services:
   celery_worker:
     container_name: celery_worker
     restart: always
-    depend_on:
+    depends_on:
       - webapp    
     volumes:
       - .static:/static
@@ -46,7 +46,7 @@ services:
       context: .
   celery_beat:
     container_name: celery_beat
-    depend_on:
+    depends_on:
       - webapp
     restart: always
     volumes:
