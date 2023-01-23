@@ -11,6 +11,8 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from django_auth_ldap.backend import populate_user, LDAPBackend
 
+PROFILE_IMAGE_PATH = "images/profile/"
+
 
 class NaumenSetting(models.Model):
 
@@ -135,7 +137,7 @@ class Profile(models.Model):
                                   verbose_name='Отдел')
     company = models.CharField(max_length=150, blank=True, null=True,
                                verbose_name='Компания')
-    profile_picture = models.ImageField(upload_to="images/profile/",
+    profile_picture = models.ImageField(upload_to=PROFILE_IMAGE_PATH,
                                         verbose_name='Аватар', blank=True,
                                         null=True)
 
@@ -179,10 +181,10 @@ def save_user_or_update_profile_ldap(sender, user=None,
         buffer = io.BytesIO()
         buffer.write(thumbnail)
         avatar_name = 'avatar-' + user.username + '.png'
-        if isfile(settings.MEDIA_URL + avatar_name):
-            print(f'Print FILE {settings.MEDIA_URL + avatar_name} exist!')
+        if isfile(settings.MEDIA_URL + PROFILE_IMAGE_PATH + avatar_name):
+            print(f'Print FILE {settings.MEDIA_URL + PROFILE_IMAGE_PATH + avatar_name} exist!')
         else:
-            print(f'Print FILE {settings.MEDIA_URL + avatar_name} NOT exist!')
+            print(f'Print FILE {settings.MEDIA_URL + PROFILE_IMAGE_PATH + avatar_name} NOT exist!')
         image_file = InMemoryUploadedFile(buffer, None, avatar_name,
                                           'image/png',
                                           buffer.getbuffer().nbytes, None)
