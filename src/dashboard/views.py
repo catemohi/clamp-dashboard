@@ -9,6 +9,7 @@ from notification.services import get_notification
 from notification.services import get_burned_notification_setting
 from notification.services import get_returned_notification_setting
 
+from .models import Profile
 from .services import get_day_dates_and_data, json_encoding, get_load_ratings
 from .services import issues_on_group, get_load_naumen_settings, get_day_report
 
@@ -55,6 +56,7 @@ def login_page(request):
     user = authenticate(request, username=username, password=password)
 
     if user is not None:
+        Profile.objects.get_or_create(user=user)
         login(request, user,
               backend='django.contrib.auth.backends.ModelBackend')
         return redirect('dashboard')
