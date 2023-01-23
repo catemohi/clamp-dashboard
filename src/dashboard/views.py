@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from naumen.services import get_issues_from_db
 from notification.services import get_notification
@@ -60,6 +61,8 @@ def login_page(request):
         login(request, user,
               backend='django.contrib.auth.backends.ModelBackend')
         return redirect('dashboard')
+
+    messages.error(request, 'Неправильный логин/пароль')
 
     return render(request, 'dashboard/login.html', context=context)
 

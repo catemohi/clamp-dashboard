@@ -744,10 +744,10 @@ main .monitoring h3 {
     width: 5.6rem;
   }
 
-  aside .sidebar li:last-child {
+  /* aside .sidebar li:last-child {
     position: relative;
     margin-top: 1.8rem;
-  }
+  } */
 
   main .insights {
     grid-template-columns: repeat(2, 2fr);
@@ -819,10 +819,10 @@ main .monitoring h3 {
     width: 5.6rem;
   }
 
-  aside .sidebar li:last-child {
+  /* aside .sidebar li:last-child {
     position: relative;
     margin-top: 1.8rem;
-  }
+  } */
 
   main .insights {
     grid-template-columns: 1fr;
