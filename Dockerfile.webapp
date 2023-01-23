@@ -18,5 +18,5 @@ COPY ./src .
 COPY .venv/config.json .
 
 COPY ./entrypoint.sh ./
-RUN chmod 744 entrypoint.sh
+RUN chmod 777 entrypoint.sh
 ENTRYPOINT [ "./entrypoint.sh"]

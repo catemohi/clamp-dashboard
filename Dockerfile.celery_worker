@@ -19,6 +19,6 @@ cd naumen_api && python3 setup.py install
 COPY ./src .
 COPY .venv/config.json .
 COPY ./worker.entrypoint.sh ./
-RUN chmod 744 worker.entrypoint.sh
+RUN chmod 777 worker.entrypoint.sh
 ENTRYPOINT [ "./worker.entrypoint.sh"]
 
