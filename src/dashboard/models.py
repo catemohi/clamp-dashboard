@@ -169,7 +169,6 @@ def save_user_or_update_profile_ldap(sender, user=None,
     bucket['ext_number'] = ldap_user.attrs.get('telephoneNumber')
     bucket['department'] = ldap_user.attrs.get('department')
     bucket['company'] = ldap_user.attrs.get('company')
-    bucket['profile_picture'] = ldap_user.attrs.get('thumbnailPhoto')[0]
 
     for key, value in bucket.items():
         if not value:
