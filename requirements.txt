@@ -28,8 +28,8 @@ beautifulsoup4==4.11.1
 gunicorn
 uvicorn
 psycopg2-binary
-channels
-channels-redis
+channels==3.0.5
+channels-redis==3.4.1
 django-redis-sessions
 daphne
 pillow
