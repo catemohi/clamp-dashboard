@@ -14,12 +14,16 @@ services:
       - 5432
 
   redis:
-    container_name: dashboard_redis
+    container_name: dashboard_redis    
     image: redis
+    depend_on:
+      - db
     restart: always
 
   webapp:
     container_name: dashboard_webapp
+    depend_on:
+      - db
     restart: always
     volumes:
       - .static:/static
@@ -44,6 +48,8 @@ services:
 
   celery_beat:
     container_name: celery_beat
+    depend_on:
+      - webapp
     restart: always
     volumes:
       - .static:/static
