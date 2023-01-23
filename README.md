@@ -1,41 +1,32 @@
-dashboard-tpkk-spb
+CLAMP DASHBOARD
 ===================
 
-В разработке:
--------------
+Что это?
+--------
+Clamp это пет-проект написанный на фреймворке Django и развернутый с помощью docker в корпоративном сегменте локальной сети.
 
-План разработки:
+Для чего это?
+---------
+Данный проект создан для упращения работы отдела технической поддержки.
 
-* ~Установить и настроить gunicorn и nginx:~
+Что он делает?
+---------
+Clamp выполняет следующие функции:
+- cледит за задачами переданными на шаг технической поддержки;
+- уведомляет о новых задачах переданных на шаг технической поддержки;
+- уведомляет о возвращении обращений с отложенных шагов; 
+- уведомляет о привышении лимитов отработки задач (SLA);
+- выводит информацию по необходимым бизнесу отчётам для оценки качества работы отдела 
 
-  Материалы:
-  - [Deploying Django with Docker Compose, Gunicorn and Nginx](https://www.youtube.com/watch?v=vJAfq6Ku4cI)
-  - [Как настроить приложение ASGI Django с Postgres, Nginx и Uvicorn в Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-asgi-django-app-with-postgres-nginx-and-uvicorn-on-ubuntu-20-04)
-  - [DevOps для начинающих. Docker -compose, docker, php, nginx](https://www.youtube.com/watch?v=chqEQM3gwcc)
-  
-* ~Установить daphni для обработки websocket~
-
-  Материалы:
-
-* ~Установить Redis~
-
-  Материалы:
-
-* Установить Celery и Celery Beat
-
-  Материалы:
-  
-  - [Дружим Django и Celery, Celery Result, Celery Beat](https://www.youtube.com/watch?v=jac2LQN6aYs&t=377s)
-  - [Celery + Django + Docker = Cat Downloader - Demo-проект, демонстрирующий принципы работы Celery](https://www.youtube.com/watch?v=EUZJcy_dfCs&t=919s)
-  - [Celerybeat + Django + Docker = Cat Downloader с задачами по расписанию.](https://www.youtube.com/watch?v=cojaefzhChI&t=366s)
-  - [Celerybeat + Django + Docker = Cat Downloader с задачами по расписанию.](https://www.youtube.com/watch?v=cojaefzhChI&t=366s)
-  
-* ~Установить Django-channels~
-
-  Материалы:
-
-* ~Установить postgreSQL~
-
-  Материалы:
-  
-  - [Докеризация Django с помощью Postgres, Gunicorn и Nginx](https://django.fun/ru/articles/tutorials/dokerizaciya-django-s-pomoshyu-postgres-gunicorn-i-nginx/)
+Технологиии используемые в пет-проекте
+---------
+- Django
+- Celery
+- Daphne
+- Gunicorn
+- Django channels
+- LDAP
+- Redis
+- PostgeSQL
+- Docker
+- Nginx
