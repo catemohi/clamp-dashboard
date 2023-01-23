@@ -1,5 +1,6 @@
 CLAMP DASHBOARD
 ===================
+![clamp-logo](https://user-images.githubusercontent.com/78559060/214064975-84aff2d9-b343-40b8-8714-c57a4876f7aa.png)
 
 Что это?
 --------
