@@ -182,15 +182,14 @@ def save_user_or_update_profile_ldap(sender, user=None,
         avatar_file_path = (settings.MEDIA_URL + PROFILE_IMAGE_PATH +
                             avatar_name)
         if isfile(avatar_file_path):
-            with open(avatar_file_path, 'wb') as file:
-                file.write(thumbnail)
-        else:
-            buffer = io.BytesIO()
-            buffer.write(thumbnail)
-            image_file = InMemoryUploadedFile(buffer, None, avatar_name,
-                                              'image/png',
-                                              buffer.getbuffer().nbytes, None)
-            setattr(user.profile, 'profile_picture', image_file)
+            user.profile.profile_picture.delete(save=True)
+
+        buffer = io.BytesIO()
+        buffer.write(thumbnail)
+        image_file = InMemoryUploadedFile(buffer, None, avatar_name,
+                                          'image/png',
+                                          buffer.getbuffer().nbytes, None)
+        setattr(user.profile, 'profile_picture', image_file)
 
     except Exception as e:
         print('  %s: error: %s' % (user.username, str(e)))
