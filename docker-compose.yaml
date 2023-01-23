@@ -38,6 +38,8 @@ services:
   celery_worker:
     container_name: celery_worker
     restart: always
+    depend_on:
+      - webapp    
     volumes:
       - .static:/static
     env_file:
