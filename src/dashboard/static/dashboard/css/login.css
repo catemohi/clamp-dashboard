@@ -299,10 +299,9 @@ html,body {
 
 .login__message{
   display: flex;
-  margin: 0 0 0 18px;
   flex-direction: row;
   justify-content: center;
-  margin: -50px 0 0 0;
+  margin: -70px 0 0 18px;
 }
 
 .item__message{
@@ -365,7 +364,14 @@ html,body {
     margin: 0 0 80px 0;
   }
   .login__greetings {
-    font-size: 32px;  
+    font-size: 32px;
+  }
+  .login__message{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: -40px 0 0 18px;
+  }
 }
 
 @media (max-width: 1300px) {
@@ -422,6 +428,21 @@ html,body {
   }
   .remember-me-checkbox:not(:last-child) {
     margin: 0 0 80px 0;
+  }
+  .login__message{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: -40px 0 0 0px;
+  }
+  .form-auth__password-help{
+    font-size: 10px;
+    font-weight: 400;
+  }
+  
+  .form-auth__login-help{
+    font-size: 10px;
+    font-weight: 400;
   }
 }
 
