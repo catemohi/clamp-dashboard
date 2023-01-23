@@ -26,6 +26,8 @@ from .models import FlrReport, Issue
 from .models import MeanTimeToResponseReport, ServiceLevelReport
 
 
+SESSION_UPDATE_PERIOD = timedelta(hours=2)
+SESSION_UPDATE_TIME = None
 NAUMEN_CLIENT = None
 LOGGER = getLogger(__name__)
 
@@ -81,12 +83,19 @@ def client_validation(func: Callable) -> Callable:
 
     def wrapper(*args, **kwargs):
 
+        global SESSION_UPDATE_PERIOD
+        global SESSION_UPDATE_TIME
         global NAUMEN_CLIENT
 
-        if not isinstance(NAUMEN_CLIENT, Client):
+        session_is_old = (datetime.now() -
+                          SESSION_UPDATE_TIME) > SESSION_UPDATE_PERIOD
+
+        if not isinstance(NAUMEN_CLIENT, Client) or session_is_old:
             NAUMEN_CLIENT = get_connect_to_naumen()
+
             # Попытка переподнять соединение
             if not isinstance(NAUMEN_CLIENT, Client):
+                NAUMEN_CLIENT = None
                 raise NaumenConnectionError('Failed to connect to CRM NAUMEN')
         return func(*args, **kwargs)
 
