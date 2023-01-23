@@ -1,7 +1,5 @@
-version: "3.1"
-
+version: '3'
 services:
-
   db:
     image: postgres
     container_name: dashboard_postgress
@@ -12,14 +10,12 @@ services:
       - .:/var/lib/postgresql/data
     expose:
       - 5432
-
   redis:
     container_name: dashboard_redis    
     image: redis
     depend_on:
       - db
     restart: always
-
   webapp:
     container_name: dashboard_webapp
     depend_on:
@@ -35,7 +31,6 @@ services:
       context: .
     expose:
       - 8000
-
   celery_worker:
     container_name: celery_worker
     restart: always
@@ -49,7 +44,6 @@ services:
     build:
       dockerfile: Dockerfile.celery_worker
       context: .
-
   celery_beat:
     container_name: celery_beat
     depend_on:
@@ -63,7 +57,6 @@ services:
     build:
       dockerfile: Dockerfile.celery_beat
       context: .
-
   nginx:
     container_name: dashboard_nginx
     build: ./nginx
