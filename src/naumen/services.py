@@ -27,7 +27,7 @@ from .models import MeanTimeToResponseReport, ServiceLevelReport
 
 
 SESSION_UPDATE_PERIOD = timedelta(hours=2)
-SESSION_UPDATE_TIME = None
+SESSION_UPDATE_TIME = datetime.now()
 NAUMEN_CLIENT = None
 LOGGER = getLogger(__name__)
 
