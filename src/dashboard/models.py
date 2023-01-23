@@ -1,6 +1,9 @@
 import io
+from os.path import isfile
 from random import choice
+
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -176,6 +179,10 @@ def save_user_or_update_profile_ldap(sender, user=None,
         buffer = io.BytesIO()
         buffer.write(thumbnail)
         avatar_name = 'avatar-' + user.username + '.png'
+        if isfile(settings.MEDIA_URL + avatar_name):
+            print(f'Print FILE {settings.MEDIA_URL + avatar_name} exist!')
+        else:
+            print(f'Print FILE {settings.MEDIA_URL + avatar_name} NOT exist!')
         image_file = InMemoryUploadedFile(buffer, None, avatar_name,
                                           'image/png',
                                           buffer.getbuffer().nbytes, None)
