@@ -12,7 +12,6 @@ services:
     expose:
       - 5432
   redis:
-    user: "${UID}:${GID}"
     container_name: dashboard_redis    
     image: redis
     depends_on:
