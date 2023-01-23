@@ -724,7 +724,6 @@ main .monitoring h3 {
   background: var(--color-primary);
   display: flex;
 }
-
 /* MEDIA QUERIES */
 @media screen and (max-width: 1700px) {
   .container {

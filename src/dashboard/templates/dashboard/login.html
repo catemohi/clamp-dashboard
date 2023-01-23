@@ -26,22 +26,22 @@
                 <div class="items-login__body">
                   <label for="login" class="form-auth__login-label">Логин</label>
                   <input name='username' value='' placeholder='example' type="text" id="#login-input" class="form-auth__login-input">
-                  <small class="form-auth__login-help">Логин из AD</small>
                 </div>
               </div>
+              <small class="form-auth__login-help">Логин из AD</small>
               <div class="form-auth__password-items items-password">
                 <img src="{% static 'dashboard/img/icons/password-icon.svg' %}" alt="" class="items-password__img">
                 <div class="items-password__body">
                   <label for="password" class="form-auth__password-label">Пароль</label>
                   <input name='password' value='' placeholder='***********' type="password" id="#password-input" class="form-auth__password-input">
-                  <small class="form-auth__password-help">Пароль из AD</small>
                 </div>
               </div>
+              <small class="form-auth__password-help">Пароль из AD</small>
               <button type="submit" class="form-auth__button">Войти</button>
             </form>
             <div class="login__message">
               {% for message in messages %}
-                <p class="item__login">{{ message }}</p>
+                <p class="item__message">{{ message }}</p>
               {% endfor %}
             </div>
           </div>

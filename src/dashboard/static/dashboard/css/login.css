@@ -297,6 +297,19 @@ html,body {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
+.login__message{
+  display: flex;
+  margin: 0 0 0 18px;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.item__message{
+  background-color: #ff7B7B;
+  color: #fff;
+  font-weight: 600;
+}
+
 @media (max-width: 1600px) {
   html,body {
     overflow: auto;
