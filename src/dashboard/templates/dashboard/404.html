@@ -1,0 +1,18 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="wrapper">
+      <div class="error">
+        <div class="error__container">
+          <div class="error__card">
+            <h2 class="error__title">404</h2>
+            <h4 class="error__subtitle">Ой! Стараница не найдена</h4>
+            <div class="error__img">
+              <img class="error__pic" src="{% static 'dashboard/img/404-crab.webp' %}" alt="">
+            </div>
+            <a class="error__link" href="{% url 'dashboard' %}">Вернуться на главную страницу</a>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
