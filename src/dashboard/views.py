@@ -77,6 +77,11 @@ def logout_page(request):
     return redirect('login')
 
 
+def page_not_found_view(request, exception):
+    context = {}
+    return render(request, 'dashboard/table.html', status=404, context=context)
+
+
 @login_required(login_url=reverse_lazy('login'))
 def index_page(request):
     return redirect(reverse_lazy('dashboard'))
