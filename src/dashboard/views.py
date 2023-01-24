@@ -79,6 +79,7 @@ def logout_page(request):
 
 def page_not_found_view(request, exception):
     context = {}
+    context.update(theme_check(request.COOKIES))
     return render(request, 'dashboard/404.html', status=404, context=context)
 
 
