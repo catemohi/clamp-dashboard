@@ -79,7 +79,7 @@ def logout_page(request):
 
 def page_not_found_view(request, exception):
     context = {}
-    return render(request, 'dashboard/table.html', status=404, context=context)
+    return render(request, 'dashboard/404.html', status=404, context=context)
 
 
 @login_required(login_url=reverse_lazy('login'))
