@@ -23,7 +23,7 @@ from pytz import timezone
 from .exceptions import NaumenBadRequestError, NaumenConnectionError
 from .exceptions import NaumenServiceError
 from .models import FlrReport, Issue
-from .models import MeanTimeToResponseReport, ServiceLevelReport
+from .models import MeanTimeToResponseReport, ServiceLevelReport, AhtReport
 
 
 SESSION_UPDATE_PERIOD = timedelta(hours=2)
@@ -213,6 +213,12 @@ def get_naumen_api_report(report_name: str, *args, **kwargs) -> Sequence:
             {},
         ],
 
+        'aht': [
+            NAUMEN_CLIENT.get_aht_report,
+            [start_date, end_date],
+            {},
+        ],
+
         'issues': [
             NAUMEN_CLIENT.get_issues,
             [],
@@ -349,6 +355,29 @@ def create_or_update_group_flr_report_model(report: dict) -> None:
         int(report['num_issues_closed_independently'])
     obj.number_primary_trouble_tickets = \
         int(report['total_primary_issues'])
+    obj.save()
+
+
+def create_or_update_group_aht_report_model(report: dict) -> None:
+
+    """Создание или обновление обьекта отчета AHT.
+
+    Args:
+        report (dict): словарь параметров отчета.
+    """
+
+    try:
+        obj = AhtReport.objects.get(date=report['date'],
+                                    segment=report['segment'])
+    except FlrReport.DoesNotExist:
+        obj = AhtReport()
+    except:
+        raise NaumenServiceError
+
+    obj.date = report['date']
+    obj.aht_level = float(report['aht_level'])
+    obj.issues_received = int(report['issues_received'])
+    obj.segment = report['segment']
     obj.save()
 
 
@@ -524,6 +553,40 @@ def crud_flr(*args, **kwargs) -> None:
 
         try:
             create_or_update_group_flr_report_model(day_report)
+        except NaumenServiceError as err:
+            LOGGER.exception(err)
+
+
+def crud_aht(*args, **kwargs) -> None:
+
+    """Функция для синзронизации отчетов AHT Naumen и db.
+
+    Args:
+        *args: позиционные аргументы, не используются.
+
+    Kwargs:
+        *kwargs: именнованные аргуметы, пробрасываются в naumen_api.
+
+    """
+    start_date = kwargs.get("start_date", '')
+    end_date = kwargs.get("end_date", '')
+
+    if not any([start_date, end_date]):
+        start_date, end_date = get_dates_for_report()
+        kwargs = {
+            "start_date": start_date,
+            "end_date": end_date,
+            }
+
+    responce = get_naumen_api_report("aht", **kwargs)
+    content = response_analysis(responce)
+    _ = datetime.strptime(start_date, "%d.%m.%Y")
+
+    for day_report in content:
+        day_report["date"] = datetime.strptime(day_report["date"], "%d.%m.%Y")
+
+        try:
+            create_or_update_group_aht_report_model(day_report)
         except NaumenServiceError as err:
             LOGGER.exception(err)
 
@@ -799,8 +862,9 @@ def check_issue_deadline(issue: Mapping, *args, **kwargs) -> None:
 
 
 def get_report_to_period(
-    model: Literal['sl', 'flr', 'mttr'], start_date: date, end_date: date,
-        **filter_fields: Mapping) -> Union[QuerySet, List[models.Model]]:
+    model: Literal['sl', 'flr', 'aht', 'mttr'], start_date: date,
+    end_date: date, **filter_fields: Mapping
+        ) -> Union[QuerySet, List[models.Model]]:
     """
     Фунция для получения данных по отчетам за период из базы данных.
 
@@ -816,6 +880,7 @@ def get_report_to_period(
     models_dict: Mapping[str, models.Model] = {
         'sl': ServiceLevelReport,
         'flr': FlrReport,
+        'aht': AhtReport,
         'mttr': MeanTimeToResponseReport
     }
     chosen_model = models_dict[model]

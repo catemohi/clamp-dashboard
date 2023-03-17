@@ -67,6 +67,21 @@ class ReportMttr(NamedTuple):
     average_mttr_tech_support: int
 
 
+class ReportAht(NamedTuple):
+    """Класс для хранения отчета по AHT
+
+    Хранит данные:
+        - Месячный AHT
+        - Недельный AHT
+        - Дневной AHT
+        - Количество обращений за день
+    """
+    mountly_aht: int
+    weekly_aht: int
+    dayly_aht: int
+    issues_received: int
+
+
 class ReportFlr(NamedTuple):
     """Класс для хранения отчета по MTTR
 
@@ -328,6 +343,82 @@ def _get_service_level(datestring: str) -> Mapping[Literal['sl'], Mapping[
 
     return {'sl': {'first_line': first_line_sl, 'vip_line': vip_line_sl,
             'general': general_sl}}
+
+
+def _parse_aht_level(dates: Dates, chosen_segment: str,
+                     qs: Union[models.QuerySet,
+                               List[models.Model]]) -> ReportAht:
+    """
+    Функция для получения данных по отчёту AHT.
+
+    На выходе мы получаем данные:
+        - AHT за требуемый день
+        - AHT за неделю
+        - AHT за месяц
+
+    Args:
+        dates (Dates): коллекция дат
+        group (str): группа для которой необходима информация
+        qs (Union[models.QuerySet, List[models.Model]]): данные из БД
+
+    Returns:
+        ReportServiceLevel: коллекция необходимых данных
+    """
+    if not qs.exists():
+        return ReportAht(0, 0, 0)
+    # Фильтруем данные для сегмента
+    qs_for_month = qs.filter(segment=chosen_segment)
+    qs_for_week = qs_for_month.filter(
+        date__gte=dates.monday_this_week, date__lte=dates.sunday_this_week)
+    qs_for_chosen_day = qs_for_month.filter(
+        date=dates.chosen_date)
+
+    # Высчитывание проценты SL
+    mountly_aht = sum([report.service_level
+                      for report in qs_for_month]) / len(qs_for_month)
+    mountly_aht = int(round(mountly_aht, 0))
+
+    weekly_aht = sum([report.service_level
+                     for report in qs_for_week]) / len(qs_for_week)
+    weekly_aht = int(round(weekly_aht, 0))
+
+    dayly_aht = qs_for_chosen_day.first().service_level
+    dayly_aht = int(round(dayly_aht, 0))
+
+    # Расскладываем доп. данные
+    issues_received = qs_for_chosen_day.first().issues_received
+
+    return ReportAht(mountly_aht, weekly_aht, dayly_aht, issues_received)
+
+
+def _get_aht(datestring: str) -> Mapping[Literal['aht'], ReportAht]:
+    """Функция для получения данных по отчёту SL для групп.
+
+    На выходе мы получаем данные:
+        - AHT за требуемый день
+        - AHT за неделю
+        - AHT за месяц
+
+    Args:
+        datestring (str): строка даты за которую требуется отчет.
+
+    Returns:
+        Mapping[Literal['sl'], Mapping[Literal['first_line', 'vip_line',
+                                               'general'],
+        ReportServiceLevel]]: словарь данных, с ключами по линиям ТП
+    """
+    today_date = datetime.now().date()
+    # Операции над входящей строкой даты
+    dates = get_date_collections(datestring)
+    # Получение отчетов за месяц
+    qs = get_report_to_period('aht', dates.calends_this_month,
+                              dates.calends_next_month)
+    # Исключаем нулевые отчеты
+    qs = qs.filter(date__lte=today_date)
+    # Получение данных для первой линии.
+    aht = _parse_aht_level(dates, "AHT", qs)
+
+    return {'aht': aht}
 
 
 def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ReportMttr]:
@@ -702,7 +793,8 @@ def get_dashboard_data(datestring: str) -> Mapping:
     service_level_dict = _get_service_level(datestring)
     mttr_dict = _get_mttr(datestring)
     flr_dict = _get_flr(datestring)
-    day_report = {**service_level_dict, **mttr_dict, **flr_dict}
+    aht_dict = _get_aht(datestring)
+    day_report = {**service_level_dict, **mttr_dict, **flr_dict, **aht_dict}
     return day_report
 
 

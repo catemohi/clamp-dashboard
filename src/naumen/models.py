@@ -179,6 +179,34 @@ class FlrReport(models.Model):
         return f'{self.date}'
 
 
+class AhtReport(models.Model):
+
+    """
+    Модель отчёта AHT
+    """
+
+    date = models.DateField(
+        auto_now=False, auto_now_add=False, verbose_name='Дата', db_index=True,
+        )
+    segment = models.CharField(
+        verbose_name="Сегмент", max_length=100, db_index=True,
+    )
+    aht_level = models.FloatField(
+        verbose_name='Среднее время', db_index=True,
+        )
+    issues_received = models.IntegerField(
+        verbose_name='Поступило обращений', db_index=True,
+        )
+
+    class Meta:
+        ordering = ('date',)
+        verbose_name = 'AHT report'
+        verbose_name_plural = 'AHT reports'
+
+    def __str__(self):
+        return f'{self.date}'
+
+
 class WorkdayRate(models.Model):
 
     """

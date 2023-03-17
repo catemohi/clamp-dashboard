@@ -47,6 +47,10 @@ app.conf.beat_schedule = {
         'task': 'naumen.tasks.update_flr_level',
         'schedule': timedelta(hours=6),
     },
+    'Обновление отчета AHT': {
+        'task': 'naumen.tasks.update_aht_level',
+        'schedule': timedelta(hours=1),
+    },
     'Обновление первой линии': {
         'task': 'naumen.tasks.update_issues',
         'schedule': timedelta(minutes=2),

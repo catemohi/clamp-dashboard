@@ -2,7 +2,7 @@ from celery import shared_task
 from logging import getLogger
 
 from .services import crud_service_level, parse_issue_card
-from .services import crud_mttr, crud_flr, download_issues
+from .services import crud_mttr, crud_flr, download_issues, crud_aht
 from .services import issues_list_synchronization
 from .services import delete_issue_model
 from .services import create_or_update_issue_model
@@ -35,6 +35,14 @@ def update_flr_level():
     """Функция обновления уровня FLR
     """
     crud_flr()
+    return True
+
+
+@shared_task()
+def update_aht_level():
+    """Функция обновления уровня FLR
+    """
+    crud_aht()
     return True
 
 
