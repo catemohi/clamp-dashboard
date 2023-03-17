@@ -40,7 +40,7 @@ def update_flr_level():
 
 @shared_task()
 def update_aht_level():
-    """Функция обновления уровня FLR
+    """Функция обновления уровня AHT
     """
     crud_aht()
     return True

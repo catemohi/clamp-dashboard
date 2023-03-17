@@ -70,4 +70,8 @@ app.conf.beat_schedule = {
         'schedule': timedelta(seconds=30),
         'one_off': True,
     },
+    'Удаление устаревших уведомлений': {
+        'task': 'notification.tasks.remove_old_notification',
+        'schedule': timedelta(days=1),
+    },
 }

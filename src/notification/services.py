@@ -141,6 +141,13 @@ def get_notification(*args, json_type: bool = False,
     return notifications
 
 
+def remove_notification(*args, **kwargs) -> None:
+    """
+    Функция для удаления устаревших уведомлений из БД .
+    """
+    NotificationMessage.objects.filter(time__lt=datetime.now()).delete()
+
+
 def send_report(sended_data: dict[Literal['dates', 'dashboard_data'], Any]):
     """
     """

@@ -3,8 +3,17 @@ from logging import getLogger
 
 from .services import create_default_burned_notification_setting
 from .services import create_default_returned_notification_setting
+from .services import remove_notification
 
 LOGGER = getLogger(__name__)
+
+
+@shared_task()
+def remove_old_notification():
+    """Функция создания моделей условий создания уведомлений о привышении
+    лимита времени отработки обращения
+    """
+    remove_notification()
 
 
 @shared_task()
