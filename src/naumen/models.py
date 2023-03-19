@@ -67,9 +67,9 @@ class Issue(models.Model):
         auto_now=False, null=True, auto_now_add=False,
         verbose_name='Время возврата в работу',
         )
-    description = models.CharField(
-        max_length=250, null=True, verbose_name='Описание обращения',
-        )
+    description = models.TextField(null=True,
+                                   verbose_name='Описание обращения',
+                                   )
     alarm_return_to_work = models.BooleanField(
         default=False, verbose_name='Статус уведомление о возврате в работу',
     )
