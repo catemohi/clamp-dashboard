@@ -389,7 +389,15 @@ def create_or_update_issue_model(issue: dict) -> None:
         issue (dict): словарь параметров обращения.
     """
     print(settings.NAUMEN_URL['open2'])
+    print('open2 type', type(settings.NAUMEN_URL['open2']))
+    print(issue.get('uuid'))
+    print('uuid type', type(issue.get('uuid')))
+    print(issue.get('uuid_contragent'))
+    print('uuid_contragent type', type(issue.get('uuid_contragent')))
+    print(issue.get('uuid_service'))
+    print('uuid_service type', type(issue.get('uuid_service')))
     print(settings.NAUMEN_URL)
+    
     issue = {**issue,
              'url_issue': settings.NAUMEN_URL['open2'] +
              '?uuid=' + issue.get('uuid'),
@@ -585,13 +593,14 @@ def crud_aht(*args, **kwargs) -> None:
     _ = datetime.strptime(start_date, "%d.%m.%Y")
 
     for day_report in content:
-        print(day_report)
-        day_report["date"] = datetime.strptime(day_report["date"], "%d.%m.%Y")
+        for segment_report in day_report:
+            segment_report["date"] = datetime.strptime(day_report["date"],
+                                                       "%d.%m.%Y")
 
-        try:
-            create_or_update_group_aht_report_model(day_report)
-        except NaumenServiceError as err:
-            LOGGER.exception(err)
+            try:
+                create_or_update_group_aht_report_model(day_report)
+            except NaumenServiceError as err:
+                LOGGER.exception(err)
 
 
 def download_issues(*args, **kwargs) -> str:
