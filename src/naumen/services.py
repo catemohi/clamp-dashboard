@@ -585,6 +585,7 @@ def crud_aht(*args, **kwargs) -> None:
     _ = datetime.strptime(start_date, "%d.%m.%Y")
 
     for day_report in content:
+        print(day_report)
         day_report["date"] = datetime.strptime(day_report["date"], "%d.%m.%Y")
 
         try:
