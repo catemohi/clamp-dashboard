@@ -374,15 +374,15 @@ def _parse_aht_level(dates: Dates, chosen_segment: str,
         date=dates.chosen_date)
 
     # Высчитывание проценты SL
-    mountly_aht = sum([report.service_level
+    mountly_aht = sum([report.aht_level
                       for report in qs_for_month]) / len(qs_for_month)
     mountly_aht = int(round(mountly_aht, 0))
 
-    weekly_aht = sum([report.service_level
+    weekly_aht = sum([report.aht_level
                      for report in qs_for_week]) / len(qs_for_week)
     weekly_aht = int(round(weekly_aht, 0))
 
-    dayly_aht = qs_for_chosen_day.first().service_level
+    dayly_aht = qs_for_chosen_day.first().aht_level
     dayly_aht = int(round(dayly_aht, 0))
 
     # Расскладываем доп. данные
