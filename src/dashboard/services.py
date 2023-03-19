@@ -365,7 +365,7 @@ def _parse_aht_level(dates: Dates, chosen_segment: str,
         ReportServiceLevel: коллекция необходимых данных
     """
     if not qs.exists():
-        return ReportAht(0, 0, 0)
+        return ReportAht(0, 0, 0, 0)
     # Фильтруем данные для сегмента
     qs_for_month = qs.filter(segment=chosen_segment)
     qs_for_week = qs_for_month.filter(
