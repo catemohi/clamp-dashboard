@@ -388,6 +388,8 @@ def create_or_update_issue_model(issue: dict) -> None:
     Args:
         issue (dict): словарь параметров обращения.
     """
+    print(settings.NAUMEN_URL['open2'])
+    print(settings.NAUMEN_URL)
     issue = {**issue,
              'url_issue': settings.NAUMEN_URL['open2'] +
              '?uuid=' + issue.get('uuid'),
