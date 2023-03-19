@@ -369,7 +369,7 @@ def create_or_update_group_aht_report_model(report: dict) -> None:
     try:
         obj = AhtReport.objects.get(date=report['date'],
                                     segment=report['segment'])
-    except FlrReport.DoesNotExist:
+    except AhtReport.DoesNotExist:
         obj = AhtReport()
     except:
         raise NaumenServiceError
