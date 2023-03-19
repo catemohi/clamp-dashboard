@@ -388,16 +388,13 @@ def create_or_update_issue_model(issue: dict) -> None:
     Args:
         issue (dict): словарь параметров обращения.
     """
-    print(settings.NAUMEN_URL['open2'])
-    print('open2 type', type(settings.NAUMEN_URL['open2']))
-    print(issue.get('uuid'))
-    print('uuid type', type(issue.get('uuid')))
-    print(issue.get('uuid_contragent'))
-    print('uuid_contragent type', type(issue.get('uuid_contragent')))
-    print(issue.get('uuid_service'))
-    print('uuid_service type', type(issue.get('uuid_service')))
-    print(settings.NAUMEN_URL)
-    
+    uuid_service = issue.get('uuid_service', '')
+    name_service = issue.get('name_service', '')
+    if not isinstance(uuid_service, str):
+        issue['uuid_service'] = uuid_service[0]
+    if not isinstance(name_service, str):
+        issue['name_service'] = name_service[0]
+
     issue = {**issue,
              'url_issue': settings.NAUMEN_URL['open2'] +
              '?uuid=' + issue.get('uuid'),
