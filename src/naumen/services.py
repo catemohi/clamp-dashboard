@@ -591,11 +591,11 @@ def crud_aht(*args, **kwargs) -> None:
 
     for day_report in content:
         for segment_report in day_report:
-            segment_report["date"] = datetime.strptime(day_report["date"],
+            segment_report["date"] = datetime.strptime(segment_report["date"],
                                                        "%d.%m.%Y")
 
             try:
-                create_or_update_group_aht_report_model(day_report)
+                create_or_update_group_aht_report_model(segment_report)
             except NaumenServiceError as err:
                 LOGGER.exception(err)
 
