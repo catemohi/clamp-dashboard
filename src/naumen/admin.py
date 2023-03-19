@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import FlrReport, MeanTimeToResponseReport, ServiceLevelReport
-from .models import Issue
+from .models import Issue, AhtReport
 # Register your models here.
 
 
@@ -50,7 +50,15 @@ class IssueAdmin(admin.ModelAdmin):
                      'last_edit_time', 'step_time')
 
 
+class AhtReportAdmin(admin.ModelAdmin):
+
+    list_display = ('date', 'segment', 'aht_level', 'issues_received')
+    list_display_links = ('date', 'aht_level')
+    search_fields = ('date', 'segment', 'aht_level', 'issues_received')
+
+
 admin.site.register(Issue, IssueAdmin)
 admin.site.register(ServiceLevelReport, ServiceLevelReportAdmin)
 admin.site.register(MeanTimeToResponseReport, MeanTimeToResponseReportAdmin)
 admin.site.register(FlrReport, FlrReportAdmin)
+admin.site.register(AhtReport, AhtReportAdmin)
