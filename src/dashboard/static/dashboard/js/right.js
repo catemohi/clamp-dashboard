@@ -208,24 +208,24 @@ function changeAnlyticsValue(data) {
 
     let analyticsMttr = document.querySelector(".mttr");
     analyticsMttr.querySelector(".dayly_mttr *").textContent = data.dashboard_data.mttr.average_mttr_tech_support + 'мин.'
-    analyticsMttr.querySelector(".weekly_mttr *").textContent = data.dashboard_data.mttr.average_mttr_tech_support + 'мин.'
-    analyticsMttr.querySelector(".mountly_mttr *").textContent = data.dashboard_data.mttr.average_mttr_tech_support + 'мин.'
+    analyticsMttr.querySelector(".weekly_mttr *").textContent = data.dashboard_data.mttr.weekly_average_mttr_tech_support + 'мин.'
+    analyticsMttr.querySelector(".mountly_mttr *").textContent = data.dashboard_data.mttr.mountly_average_mttr_tech_support + 'мин.'
     analyticsMttr.querySelector(".num_issues *").textContent = data.dashboard_data.mttr.num_issues
     analyticsMttr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.mttr.rating_to_nominal + '%'
 
     let analyticsFlr = document.querySelector(".flr");
     analyticsFlr.querySelector(".dayly_flr *").textContent = data.dashboard_data.flr.level + '%'
-    analyticsFlr.querySelector(".weekly_flr *").textContent = data.dashboard_data.flr.level + '%'
-    analyticsFlr.querySelector(".mountly_flr *").textContent = data.dashboard_data.flr.level + '%'
+    analyticsFlr.querySelector(".weekly_flr *").textContent = data.dashboard_data.flr.weekly_level + '%'
+    analyticsFlr.querySelector(".mountly_flr *").textContent = data.dashboard_data.flr.mountly_level + '%'
     analyticsFlr.querySelector(".num_primary_issues *").textContent = data.dashboard_data.flr.num_primary_issues
     analyticsFlr.querySelector(".num_issues_closed_independently *").textContent = data.dashboard_data.flr.num_issues_closed_independently    
     analyticsFlr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.flr.rating_to_nominal + '%'
 
     let analyticsAht = document.querySelector(".aht");
-    analyticsAht.querySelector(".dayly_aht *").textContent = data.dashboard_data.flr.level + '%'
-    analyticsAht.querySelector(".weekly_aht *").textContent = data.dashboard_data.flr.level + '%'
-    analyticsAht.querySelector(".mountly_aht *").textContent = data.dashboard_data.flr.level + '%'
-    analyticsAht.querySelector(".issues_received *").textContent = data.dashboard_data.flr.num_primary_issues
+    analyticsAht.querySelector(".dayly_aht *").textContent = data.dashboard_data.aht.dayly_aht + '%'
+    analyticsAht.querySelector(".weekly_aht *").textContent = data.dashboard_data.aht.weekly_aht + '%'
+    analyticsAht.querySelector(".mountly_aht *").textContent = data.dashboard_data.aht.mountly_aht + '%'
+    analyticsAht.querySelector(".issues_received *").textContent = data.dashboard_data.aht.issues_received
     analyticsAht.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.flr.rating_to_nominal + '%'
     changeAnalytics();
 };

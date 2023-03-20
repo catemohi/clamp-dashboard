@@ -41,9 +41,9 @@
       <div class="right">
         <div class="info">
           <ul>
-            <li><h3>Ежедневный SL общая линия</h3></li>
-            <li><h3>Недельный SL общая линия</h3></li>
-            <li><h3>Месячный SL общая линия</h3></li>
+            <li><h5>Ежедневный SL общая линия</h5></li>
+            <li><h5>Недельный SL общая линия</h5></li>
+            <li><h5>Месячный SL общая линия</h5></li>
             <li><h5>Количество ТТ за день:</h5></li>
             <li><h5>Количество ТТ принятых вовремя за сутки:</h5></li>
             <li><h5>Дневная нагрузка относительно нормы:</h5></li>
@@ -69,9 +69,9 @@
       <div class="right">
         <div class="info">
           <ul>
-            <li><h3>Ежедневный SL vip линия</h3></li>
-            <li><h3>Недельный SL vip линия</h3></li>
-            <li><h3>Месячный SL vip линия</h3></li>
+            <li><h5>Ежедневный SL vip линия</h5></li>
+            <li><h5>Недельный SL vip линия</h5></li>
+            <li><h5>Месячный SL vip линия</h5></li>
             <li><h5>Количество ТТ за сутки:</h5></li>
             <li><h5>Количество ТТ принятых вовремя за сутки:</h5></li>
             <li><h5>Дневная нагрузка относительно нормы:</h5></li>
@@ -97,9 +97,9 @@
       <div class="right">
         <div class="info">
           <ul>
-            <li><h3>Ежедневный SL итоговый</h3></li>
-            <li><h3>Недельный SL итоговый</h3></li>
-            <li><h3>Месячный SL итоговый</h3></li>
+            <li><h5>Ежедневный SL итоговый</h5></li>
+            <li><h5>Недельный SL итоговый</h5></li>
+            <li><h5>Месячный SL итоговый</h5></li>
             <li><h5>Количество ТТ за сутки:</h5></li>
             <li><h5>Количество ТТ принятых вовремя за сутки:</h5></li>
             <li><h5>Дневная нагрузка относительно нормы:</h5></li>
@@ -125,9 +125,9 @@
       <div class="right">
         <div class="info">
           <ul>
-            <li><h3>Ежедневный MTTR:</h3></li>
-            <li><h3>Недельный MTTR:</h3></li>
-            <li><h3>Месячный MTTR:</h3></li>
+            <li><h5>Ежедневный MTTR:</h5></li>
+            <li><h5>Недельный MTTR:</h5></li>
+            <li><h5>Месячный MTTR:</h5></li>
             <li><h5>Количество закрытых ТТ за сутки:</h5></li>
             <li><h5>Дневная нагрузка относительно нормы:</h5></li>
           </ul>
@@ -136,8 +136,8 @@
         <div class="count-info">
           <ul>
             <li class="dayly_mttr"><h5>{{ dashboard_data.mttr.average_mttr_tech_support }} мин.</h5></li>
-            <li class="weekly_mttr"><h5>{{ dashboard_data.mttr.average_mttr_tech_support }} мин.</h5></li>
-            <li class="mountly_mttr"><h5>{{ dashboard_data.mttr.average_mttr_tech_support }} мин.</h5></li>
+            <li class="weekly_mttr"><h5>{{ dashboard_data.mttr.weekly_average_mttr_tech_support }} мин.</h5></li>
+            <li class="mountly_mttr"><h5>{{ dashboard_data.mttr.mountly_average_mttr_tech_support }} мин.</h5></li>
             <li class="num_issues"><h5>{{ dashboard_data.mttr.num_issues }}</h5></li>
             <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.mttr.rating_to_nominal }}%</h5></li>
           </ul>
@@ -151,9 +151,9 @@
       <div class="right">
         <div class="info">
           <ul>
-            <li><h3>Ежедневный FLR:</h3></li>
-            <li><h3>Недельный FLR:</h3></li>
-            <li><h3>Месячный FLR:</h3></li>
+            <li><h5>Ежедневный FLR:</h5></li>
+            <li><h5>Недельный FLR:</h5></li>
+            <li><h5>Месячный FLR:</h5></li>
             <li><h5>Количество первичных ТТ за сутки:</h5></li>
             <li><h5>Количество закрытых ТТ самостоятельно за сутки:</h5></li>
             <li><h5>Дневная нагрузка относительно нормы:</h5></li>
@@ -163,8 +163,8 @@
         <div class="count-info">
           <ul>
             <li class="dayly_flr"><h5>{{ dashboard_data.flr.level }}%</h5></li>
-            <li class="weekly_flr"><h5>{{ dashboard_data.flr.level }}%</h5></li>
-            <li class="mountly_flr"><h5>{{ dashboard_data.flr.level }}%</h5></li>
+            <li class="weekly_flr"><h5>{{ dashboard_data.flr.weekly_level }}%</h5></li>
+            <li class="mountly_flr"><h5>{{ dashboard_data.flr.mountly_level }}%</h5></li>
             <li class="num_primary_issues"><h5>{{ dashboard_data.flr.num_primary_issues }}</h5></li>
             <li class="num_issues_closed_independently"><h5>{{ dashboard_data.flr.num_issues_closed_independently }}</h5></li>
             <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.flr.rating_to_nominal }}%</h5></li>
@@ -179,9 +179,9 @@
       <div class="right">
         <div class="info">
           <ul>
-            <li><h3>Ежедневный AHT:</h3></li>
-            <li><h3>Недельный AHT:</h3></li>
-            <li><h3>Месячный AHT:</h3></li>
+            <li><h5>Ежедневный AHT:</h5></li>
+            <li><h5>Недельный AHT:</h5></li>
+            <li><h5>Месячный AHT:</h5></li>
             <li><h5>Поступило ТТ за сутки:</h5></li>
             <li><h5>Дневная нагрузка относительно нормы:</h5></li>
           </ul>
@@ -189,10 +189,10 @@
         </div>
         <div class="count-info">
           <ul>
-            <li class="dayly_aht"><h5>{{ dashboard_data.flr.level }}%</h5></li>
-            <li class="weekly_aht"><h5>{{ dashboard_data.flr.level }}%</h5></li>
-            <li class="mountly_aht"><h5>{{ dashboard_data.flr.level }}%</h5></li>
-            <li class="issues_received"><h5>{{ dashboard_data.flr.num_primary_issues }}</h5></li>
+            <li class="dayly_aht"><h5>{{ dashboard_data.aht.dayly_aht }}%</h5></li>
+            <li class="weekly_aht"><h5>{{ dashboard_data.aht.weekly_aht }}%</h5></li>
+            <li class="mountly_aht"><h5>{{ dashboard_data.aht.mountly_aht }}%</h5></li>
+            <li class="issues_received"><h5>{{ dashboard_data.aht.issues_received }}</h5></li>
             <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.flr.rating_to_nominal }}%</h5></li>
           </ul>
         </div>

@@ -155,7 +155,7 @@ function changeProgresTabsValue(data) {
   counterDailyAht = cardDailyAht.querySelector(".number *");
   date = cardDailyAht.querySelector(".middle h1");
   date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
-  counterDailyAht.textContent = data.dashboard_data.mttr.average_mttr_tech_support;
+  counterDailyAht.textContent = data.dashboard_data.aht.dayly_aht;
   changeCardProgress();
 };
 
