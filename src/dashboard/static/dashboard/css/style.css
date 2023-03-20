@@ -524,9 +524,14 @@ main .input-date button {
   row-gap: 0.5rem;
 }
 
+ul.filtres-list{
+  display: grid;
+  grid-auto-flow: column;
+  gap: 0.5rem;
+}
+
 li.filter-text {
   display: inline-flex;
-  margin: 0 0.2rem 0 0;
   background: var(--color-light);
   border-radius: var(--border-radius-1);
   padding: 0.5rem 1.6rem;
@@ -890,7 +895,7 @@ main .monitoring h3 {
   
   .filter {
     display: grid;
-    justify-content: end;
+    justify-content: start;
     align-content: end;
   }
 }
