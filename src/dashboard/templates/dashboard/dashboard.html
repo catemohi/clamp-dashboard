@@ -3,20 +3,22 @@
 {% block content %}
   <main>
     <h1>Мониторинг показателей смены</h1>
-    <form id="form-date" action="#" method="post">
-      <div class="input-date">
-        {% csrf_token %}
-        <input type="date" class='date-calendar' id="date" data-date="" data-date-format="DD MM YYYY" value="{{ dates.chosen_date|date:"Y-m-d" }}">
-        <button type="submit" class='submit-date-calendar'>Применить</button>
+    <div class="input-group">
+      <form id="form-date" action="#" method="post">
+        <div class="input-date">
+          {% csrf_token %}
+          <input type="date" class='date-calendar' id="date" data-date="" data-date-format="DD MM YYYY" value="{{ dates.chosen_date|date:"Y-m-d" }}">
+          <button type="submit" class='submit-date-calendar'>Применить</button>
+        </div>
+      </form>
+      <div class="filter">
+        <ul>
+          <li data-f="filter-all" class="filter-text">Все</li>
+          <li data-f="filter-day" class="filter-text">День</li>
+          <li data-f="filter-week" class="filter-text">Неделя</li>
+          <li data-f="filter-mounth" class="filter-text">Месяц</li>
+        </ul>
       </div>
-    </form>
-    <div class="filter">
-      <ul>
-        <li data-f="filter-all" class="filter-text">Все</li>
-        <li data-f="filter-day" class="filter-text">День</li>
-        <li data-f="filter-week" class="filter-text">Неделя</li>
-        <li data-f="filter-mounth" class="filter-text">Месяц</li>
-      </ul>
     </div>
     <div class="insights">
       <div class="daily-sl card">

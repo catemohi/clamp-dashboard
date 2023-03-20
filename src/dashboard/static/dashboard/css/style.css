@@ -516,6 +516,19 @@ main .input-date button {
   cursor: pointer;
 }
 
+.input-group {
+  display: grid;
+}
+
+li.filter-text {
+  display: inline-flex;
+  margin: 0 0.5rem 0 0;
+}
+
+#form-date {
+  display: inline-flex;
+}
+
 main .input-date input[type="date"] {
   background: transparent;
   font-size: 1.2rem;
