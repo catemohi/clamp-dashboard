@@ -1,3 +1,4 @@
+const allCard  = document.querySelectorAll(".card");
 const cardDailySl = document.querySelector(".daily-sl");
 const cardWeeklySl = document.querySelector(".weekly-sl");
 const cardMonthlySl = document.querySelector(".monthly-sl");
@@ -21,6 +22,20 @@ function month_name(dt){
             "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ];
   return mlist[dt.getMonth()];
 };
+
+document.querySelector('.filter').addEventListener('click', (event) => {
+  // Анонимная функция для фильтрации отоброжаемых карточек
+  if (event.target.tagName !== "LI") {
+    return false
+  };
+  let filterClass = event.target.dataset["f"];
+  allCard.forEach( (element) => {
+    element.classList.remove('hide-card');
+    if (!element.classList.contains(filterClass) && filterClass !== 'all') {
+      element.classList.add('hide-card');
+    };
+  });
+});
 
 function formatWeekDataString(dateFirst, dateSecond) {
   dateFirst = new Date(dateFirst)
