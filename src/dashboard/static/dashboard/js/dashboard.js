@@ -29,7 +29,7 @@ document.querySelector('.filter').addEventListener('click', (event) => {
     return false
   };
   document.querySelectorAll('.filter-text').forEach( (element) => {
-    element.classList.remove("filter-text");
+    element.classList.remove("active-filter");
   });
   event.target.classList.add('active-filter');
   let filterClass = event.target.dataset["f"];
@@ -118,7 +118,7 @@ function setCardProgress(card, typeReport, unit) {
       break;
 
     case 'aht':
-      if (value < maxSuccessAHT) {
+      if (value > maxSuccessAHT) {
         card.querySelector(".number").classList.add("danger");
       } else {
         card.querySelector(".number").classList.remove("danger");
