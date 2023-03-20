@@ -522,11 +522,21 @@ main .input-date button {
 
 li.filter-text {
   display: inline-flex;
-  margin: 0 0.5rem 0 0;
+  margin: 0 0.2rem 0 0;
+  background: var(--color-light);
+  border-radius: var(--border-radius-1);
+  padding: 0.5rem 1.6rem;
+  font-size: 0.88rem;
 }
 
 #form-date {
-  display: inline-flex;
+  display: flex;
+}
+
+.filter {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 main .input-date input[type="date"] {
