@@ -316,24 +316,6 @@ input[type="date"]:hover {
   cursor: pointer;
 };
 
-main .insights div.card.hide-card {
-  opacity: 1;
-  animation-name: animation-hide-card;
-  animation-duration: 1s;
-  animation-fill-mode: forwards;
-}
-
-@keyframes animation-hide-card {
-  to {
-    opacity: 0;
-    min-height: 0;
-    min-width: 0;
-    padding: 0;
-    margin: 0;
-    border: 0;
-  }
-}
-
 
 /* ASIDE */
 aside {
@@ -1127,5 +1109,18 @@ main .monitoring h3 {
   .error__container {
     max-width: 320px;
     padding: 10px ;
+  }
+}
+
+main .insights div.card.hide-card {
+  opacity: 1;
+  animation-name: animation-hide-card;
+  animation-duration: 0s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes animation-hide-card {
+  to {
+    opacity: 0;
   }
 }
