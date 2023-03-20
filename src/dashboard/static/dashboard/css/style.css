@@ -316,7 +316,7 @@ input[type="date"]:hover {
   cursor: pointer;
 };
 
-.hide-card {
+main .insights div.card.hide-card {
   opacity: 1;
   animation-name: animation-hide-card;
   animation-duration: 1s;
@@ -591,7 +591,7 @@ main .insights {
   gap: 1.6rem;
 }
 
-main .insights > div {
+main .insights div.card {
   background: var(--color-dash);
   padding: var(--card-padding);
   border-radius: var(--card-border-radius);
@@ -601,11 +601,11 @@ main .insights > div {
 }
 
 
-main .insights > div:hover {
+main .insights div.card:hover {
   box-shadow: none;
 }
 
-main .insights > div span {
+main .insights div.card span {
   background: var(--color-primary);
   padding: 0.5rem;
   border-radius: 50%;
@@ -613,7 +613,7 @@ main .insights > div span {
   font-size: 2rem;
 }
 
-main .insights > div .middle {
+main .insights div.card .middle {
   display: flex;
   align-items: center;
   justify-content: space-between;

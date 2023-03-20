@@ -28,13 +28,15 @@ document.querySelector('.filter').addEventListener('click', (event) => {
   if (event.target.tagName !== "LI") {
     return false
   };
+  querySelectorAll('.filter-text').forEach( (element) => {
+    element.classList.remove("filter-text");
+  });
+  event.classList.add('active-filter');
   let filterClass = event.target.dataset["f"];
   allCard.forEach( (element) => {
     element.classList.remove('hide-card');
-    element.classList.remove('active-filter');
     if (!element.classList.contains(filterClass) && filterClass !== 'all') {
       element.classList.add('hide-card');
-      element.classList.add('active-filter');
     };
   });
 });
