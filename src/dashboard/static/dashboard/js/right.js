@@ -110,7 +110,7 @@ function changeAnalytics() {
 
     Analytics.forEach(function modifyPercentRatings(module) {
         let RatingObjs =  [module.querySelector(".rating_to_nominal *"),
-                           module.querySelector(".rating_to_comparison *")];
+                           ];
 
         RatingObjs.forEach(function modifyRating(ratingObj) {
             let valueRating = parsingInt(ratingObj.textContent);
