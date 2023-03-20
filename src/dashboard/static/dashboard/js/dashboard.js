@@ -28,10 +28,10 @@ document.querySelector('.filter').addEventListener('click', (event) => {
   if (event.target.tagName !== "LI") {
     return false
   };
-  querySelectorAll('.filter-text').forEach( (element) => {
+  document.querySelectorAll('.filter-text').forEach( (element) => {
     element.classList.remove("filter-text");
   });
-  event.classList.add('active-filter');
+  event.target.classList.add('active-filter');
   let filterClass = event.target.dataset["f"];
   allCard.forEach( (element) => {
     element.classList.remove('hide-card');
