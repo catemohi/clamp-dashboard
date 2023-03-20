@@ -86,7 +86,7 @@ function setCardProgress(card, typeReport, unit) {
   let a = -1;
   let run = setInterval(frames, 10);
   function frames() {
-    if (a == value) {
+    if (a === value && a >= value ) {
         clearInterval(run);
     };
     counter.textContent = a + unit;
