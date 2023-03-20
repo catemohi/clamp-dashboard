@@ -182,7 +182,7 @@
         <div class="middle">
           <div class="lef">
             <h3>Месячный FLR</h3>
-            <h1>{{ dates.chosen_date|date:"F" }}</h1>
+            <h1>{{ dates.monday_this_week|date:"d.m" }} - {{ dates.sunday_this_week|date:"d.m" }}</h1>
           </div>
           <div class="progress">
             <svg>
@@ -220,7 +220,7 @@
         <div class="middle">
           <div class="lef">
             <h3>Недельный MTTR</h3>
-            <h1>{{ dates.chosen_date|date:"F" }}</h1>
+            <h1>{{ dates.monday_this_week|date:"d.m" }} - {{ dates.sunday_this_week|date:"d.m" }}</h1>
           </div>
           <div class="progress">
             <svg>
@@ -246,7 +246,7 @@
               <circle class="circle" cx="38" cy="38" r="36"></circle>
             </svg>
             <div class="number">
-              <h2>{{ dashboard_data.mttr.monthly_average_mttr_tech_support }}</h2>
+              <h2>{{ dashboard_data.mttr.mountly_average_mttr_tech_support }}</h2>
             </div>
           </div>
         </div>
@@ -277,7 +277,7 @@
         <div class="middle">
           <div class="lef">
             <h3>Недельный AHT</h3>
-            <h1>{{ dates.chosen_date|date:"F" }}</h1>
+            <h1>{{ dates.monday_this_week|date:"d.m" }} - {{ dates.sunday_this_week|date:"d.m" }}</h1>
           </div>
           <div class="progress">
             <svg>
@@ -303,7 +303,7 @@
               <circle class="circle" cx="38" cy="38" r="36"></circle>
             </svg>
             <div class="number">
-              <h2>{{ dashboard_data.aht.monthly_aht }}</h2>
+              <h2>{{ dashboard_data.aht.mountly_aht }}</h2>
             </div>
           </div>
         </div>
