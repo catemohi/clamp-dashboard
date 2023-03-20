@@ -163,7 +163,7 @@
         <div class="middle">
           <div class="lef">
             <h3>Недельный FLR</h3>
-            <h1>{{ dates.chosen_date|date:"F" }}</h1>
+            <h1>{{ dates.monday_this_week|date:"d.m" }} - {{ dates.sunday_this_week|date:"d.m" }}</h1>
           </div>
           <div class="progress">
             <svg>
@@ -177,12 +177,12 @@
         <small class="text-muted">Отчет за последний час</small>
       </div>
       <!-- END OF weekly-flr -->
-      <div class="monthly-flr card">
+      <div class="mountly-flr card">
         <span class="_icon-signal_cellular_alt material-icons-sharp"></span>
         <div class="middle">
           <div class="lef">
             <h3>Месячный FLR</h3>
-            <h1>{{ dates.monday_this_week|date:"d.m" }} - {{ dates.sunday_this_week|date:"d.m" }}</h1>
+            <h1>{{ dates.chosen_date|date:"F" }}</h1>
           </div>
           <div class="progress">
             <svg>
@@ -195,7 +195,7 @@
         </div>
         <small class="text-muted">Отчет за последний час</small>
       </div>
-      <!-- END OF monthly-flr -->
+      <!-- END OF mountly-flr -->
       <div class="daily-mttr card">
         <span class="_icon-signal_cellular_alt material-icons-sharp"></span>
         <div class="middle">
@@ -234,7 +234,7 @@
         <small class="text-muted">Отчет за последний час</small>
       </div>
       <!-- END OF weekly-mttr -->
-      <div class="monthly-mttr card">
+      <div class="mountly-mttr card">
         <span class="_icon-signal_cellular_alt material-icons-sharp"></span>
         <div class="middle">
           <div class="lef">
@@ -252,7 +252,7 @@
         </div>
         <small class="text-muted">Отчет за последний час</small>
       </div>
-      <!-- END OF monthly-mttr -->
+      <!-- END OF mountly-mttr -->
       <div class="daily-aht card">
         <span class="_icon-signal_cellular_alt material-icons-sharp"></span>
         <div class="middle">
@@ -291,7 +291,7 @@
         <small class="text-muted">Отчет за последний час</small>
       </div>
       <!-- END OF weekly-aht -->
-      <div class="monthly-aht card">
+      <div class="mountly-aht card">
         <span class="_icon-signal_cellular_alt material-icons-sharp"></span>
         <div class="middle">
           <div class="lef">
@@ -309,7 +309,7 @@
         </div>
         <small class="text-muted">Отчет за последний час</small>
       </div>
-      <!-- END OF monthly-aht -->
+      <!-- END OF mountly-aht -->
     </div>
   </main>
   <!-- END OF MAIN -->
