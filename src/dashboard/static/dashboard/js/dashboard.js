@@ -5,8 +5,14 @@ const cardDailySlVip = document.querySelector(".daily-sl-vip");
 const cardWeeklySlVip = document.querySelector(".weekly-sl-vip");
 const cardMonthlySlVip = document.querySelector(".monthly-sl-vip");
 const cardDailyFlr = document.querySelector(".daily-flr");
+const cardWeeklyFlr = document.querySelector(".weekly-flr");
+const cardMountlyFlr = document.querySelector(".mountly-flr");
 const cardDailyMttr = document.querySelector(".daily-mttr");
+const cardWeeklyMttr = document.querySelector(".weekly-mttr");
+const cardMountlyMttr = document.querySelector(".mountly-mttr");
 const cardDailyAht = document.querySelector(".daily-aht");
+const cardWeeklyAht = document.querySelector(".weekly-aht");
+const cardMountlyAht = document.querySelector(".mountly-aht");
 const options_dash = {year: 'numeric', month: 'numeric', day: 'numeric',
                       timezone: 'Moscow'};
 
@@ -91,7 +97,15 @@ function setCardProgress(card, typeReport, unit) {
         card.querySelector(".number").classList.remove("danger");
       };
       break;
-    
+
+    case 'aht':
+      if (value < maxSuccessAHT) {
+        card.querySelector(".number").classList.add("danger");
+      } else {
+        card.querySelector(".number").classList.remove("danger");
+      };
+      break;
+      
     default:
       // pass
       break;
@@ -106,8 +120,14 @@ function changeCardProgress() {
   setCardProgress(cardWeeklySlVip, 'sl', '%');
   setCardProgress(cardMonthlySlVip, 'sl', '%');
   setCardProgress(cardDailyFlr, 'flr', '%');
+  setCardProgress(cardWeeklyFlr, 'flr', '%');
+  setCardProgress(cardMountlyFlr, 'flr', '%');
   setCardProgress(cardDailyMttr, 'mttr', ' м.');
-  setCardProgress(cardDailyAht, 'mttr', ' м.');
+  setCardProgress(cardWeeklyMttr, 'mttr', ' м.');
+  setCardProgress(cardMountlyMttr, 'mttr', ' м.');
+  setCardProgress(cardDailyAht, 'aht', ' м.');
+  setCardProgress(cardWeeklyAht, 'aht', ' м.');
+  setCardProgress(cardMountlyAht, 'aht', ' м.');
 };
 
 function changeProgresTabsValue(data) {
@@ -146,16 +166,46 @@ function changeProgresTabsValue(data) {
   date = cardDailyMttr.querySelector(".middle h1");
   date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
   counterDailyMttr.textContent = data.dashboard_data.mttr.average_mttr_tech_support;
+
+  counterWeeklyMttr = cardWeeklyMttr.querySelector(".number *");
+  date = cardWeeklyMttr.querySelector(".middle h1");
+  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
+  counterWeeklyMttr.textContent = data.dashboard_data.mttr.weekly_average_mttr_tech_support;
+
+  counterMountlyMttr = cardMountlyMttr.querySelector(".number *");
+  date = cardMountlyMttr.querySelector(".middle h1");
+  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
+  counterMountlyMttr.textContent = data.dashboard_data.mttr.mountly_average_mttr_tech_support;
   // flr
   counterDailyFlr = cardDailyFlr.querySelector(".number *");
   date = cardDailyFlr.querySelector(".middle h1");
   date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
   counterDailyFlr.textContent = data.dashboard_data.flr.level;
+
+  counterWeeklyFlr = cardWeeklyFlr.querySelector(".number *");
+  date = cardWeeklyFlr.querySelector(".middle h1");
+  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
+  counterWeeklyFlr.textContent = data.dashboard_data.flr.weekly_level;
+
+  counterMountlyFlr = cardMountlyFlr.querySelector(".number *");
+  date = cardMountlyFlr.querySelector(".middle h1");
+  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
+  counterMountlyFlr.textContent = data.dashboard_data.flr.mountly_level;
   // aht
   counterDailyAht = cardDailyAht.querySelector(".number *");
   date = cardDailyAht.querySelector(".middle h1");
   date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
   counterDailyAht.textContent = data.dashboard_data.aht.dayly_aht;
+
+  counterWeeklyAht = cardWeeklyAht.querySelector(".number *");
+  date = cardWeeklyAht.querySelector(".middle h1");
+  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
+  counterDailyAht.textContent = data.dashboard_data.aht.weekly_aht;
+
+  counterMountlyAht = cardMountlyAht.querySelector(".number *");
+  date = cardMountlyAht.querySelector(".middle h1");
+  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
+  counterMountlyAht.textContent = data.dashboard_data.aht.mountly_aht;
   changeCardProgress();
 };
 

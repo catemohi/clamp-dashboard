@@ -170,6 +170,28 @@ function changeAnalytics() {
                 daylyMTTR.classList.add("danger");
             }
         }
+        let weeklyMTTR = module.querySelector(".weekly_mttr *")
+        if (weeklyMTTR != null) {
+            let valueMTTR= parsingInt(weeklyMTTR.textContent);
+			// maxSuccessMTTR прописана в контексте base.html и тянется с БД
+            if (valueMTTR <= maxSuccessMTTR) {
+                weeklyMTTR.classList.add("success");
+            }
+            else {
+                weeklyMTTR.classList.add("danger");
+            }
+        }
+        let mountlyMTTR = module.querySelector(".mountly_mttr *")
+        if (mountlyMTTR != null) {
+            let valueMTTR= parsingInt(mountlyMTTR.textContent);
+			// maxSuccessMTTR прописана в контексте base.html и тянется с БД
+            if (valueMTTR <= maxSuccessMTTR) {
+                mountlyMTTR.classList.add("success");
+            }
+            else {
+                mountlyMTTR.classList.add("danger");
+            }
+        }
         let daylyFLR = module.querySelector(".dayly_flr *")
         if (daylyFLR != null) {
             let valueFLR= parsingInt(daylyFLR.textContent);
@@ -179,6 +201,61 @@ function changeAnalytics() {
             }
             else {
                 daylyFLR.classList.add("danger");
+            }
+        }
+        let weeklyFLR = module.querySelector(".weekly_flr *")
+        if (weeklyFLR != null) {
+            let valueFLR= parsingInt(weeklyFLR.textContent);
+			// minSuccessFLR прописана в контексте base.html и тянется с БД
+            if (valueFLR >= minSuccessFLR) {
+                weeklyFLR.classList.add("success");
+            }
+            else {
+                weeklyFLR.classList.add("danger");
+            }
+        }
+        let mountlyFLR = module.querySelector(".mountly_flr *")
+        if (mountlyFLR != null) {
+            let valueFLR= parsingInt(mountlyFLR.textContent);
+			// minSuccessFLR прописана в контексте base.html и тянется с БД
+            if (valueFLR >= minSuccessFLR) {
+                mountlyFLR.classList.add("success");
+            }
+            else {
+                mountlyFLR.classList.add("danger");
+            }
+        }
+        let daylyAHT = module.querySelector(".dayly_aht *")
+        if (daylyAHT != null) {
+            let valueAHT= parsingInt(daylyAHT.textContent);
+			// maxSuccessAHT прописана в контексте base.html и тянется с БД
+            if (valueAHT <= maxSuccessAHT) {
+                daylyAHT.classList.add("success");
+            }
+            else {
+                daylyAHT.classList.add("danger");
+            }
+        }
+        let weeklyAHT = module.querySelector(".weekly_aht *")
+        if (weeklyAHT != null) {
+            let valueAHT= parsingInt(weeklyAHT.textContent);
+			// maxSuccessAHT прописана в контексте base.html и тянется с БД
+            if (valueAHT <= maxSuccessAHT) {
+                weeklyAHT.classList.add("success");
+            }
+            else {
+                weeklyAHT.classList.add("danger");
+            }
+        }
+        let mountlyAHT = module.querySelector(".mountly_aht *")
+        if (mountlyAHT != null) {
+            let valueAHT= parsingInt(mountlyAHT.textContent);
+			// maxSuccessAHT прописана в контексте base.html и тянется с БД
+            if (valueAHT <= maxSuccessAHT) {
+                mountlyAHT.classList.add("success");
+            }
+            else {
+                mountlyAHT.classList.add("danger");
             }
         }
         let numWorkedAfterDeadline = module.querySelector(".num_worked_after_deadline *")
@@ -222,9 +299,9 @@ function changeAnlyticsValue(data) {
     analyticsFlr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.flr.rating_to_nominal + '%'
 
     let analyticsAht = document.querySelector(".aht");
-    analyticsAht.querySelector(".dayly_aht *").textContent = data.dashboard_data.aht.dayly_aht + '%'
-    analyticsAht.querySelector(".weekly_aht *").textContent = data.dashboard_data.aht.weekly_aht + '%'
-    analyticsAht.querySelector(".mountly_aht *").textContent = data.dashboard_data.aht.mountly_aht + '%'
+    analyticsAht.querySelector(".dayly_aht *").textContent = data.dashboard_data.aht.dayly_aht + 'мин.'
+    analyticsAht.querySelector(".weekly_aht *").textContent = data.dashboard_data.aht.weekly_aht + 'мин.'
+    analyticsAht.querySelector(".mountly_aht *").textContent = data.dashboard_data.aht.mountly_aht + 'мин.'
     analyticsAht.querySelector(".issues_received *").textContent = data.dashboard_data.aht.issues_received
     analyticsAht.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.flr.rating_to_nominal + '%'
     changeAnalytics();
