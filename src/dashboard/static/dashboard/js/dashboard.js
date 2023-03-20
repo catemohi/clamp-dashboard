@@ -6,6 +6,7 @@ const cardWeeklySlVip = document.querySelector(".weekly-sl-vip");
 const cardMonthlySlVip = document.querySelector(".monthly-sl-vip");
 const cardDailyFlr = document.querySelector(".daily-flr");
 const cardDailyMttr = document.querySelector(".daily-mttr");
+const cardDailyAht = document.querySelector(".daily-aht");
 const options_dash = {year: 'numeric', month: 'numeric', day: 'numeric',
                       timezone: 'Moscow'};
 
@@ -106,9 +107,11 @@ function changeCardProgress() {
   setCardProgress(cardMonthlySlVip, 'sl', '%');
   setCardProgress(cardDailyFlr, 'flr', '%');
   setCardProgress(cardDailyMttr, 'mttr', ' м.');
+  setCardProgress(cardDailyAht, 'mttr', ' м.');
 };
 
 function changeProgresTabsValue(data) {
+  console.log(data);
   let current_date = document.getElementById('date');
   current_date.value = data.dates.chosen_date;
   // first line
@@ -148,6 +151,11 @@ function changeProgresTabsValue(data) {
   date = cardDailyFlr.querySelector(".middle h1");
   date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
   counterDailyFlr.textContent = data.dashboard_data.flr.level;
+  // aht
+  counterDailyAht = cardDailyAht.querySelector(".number *");
+  date = cardDailyAht.querySelector(".middle h1");
+  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
+  counterDailyAht.textContent = data.dashboard_data.mttr.average_mttr_tech_support;
   changeCardProgress();
 };
 

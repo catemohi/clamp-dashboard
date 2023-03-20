@@ -41,23 +41,23 @@
       <div class="right">
         <div class="info">
           <ul>
-            <li><h3>SL первая линия</h3></li>
+            <li><h3>Ежедневный SL общая линия</h3></li>
+            <li><h3>Недельный SL общая линия</h3></li>
+            <li><h3>Месячный SL общая линия</h3></li>
             <li><h5>Количество ТТ за день:</h5></li>
-            <li><h5>Количество ТТ принятых за 15 минут:</h5></li>
-            <li><h5>Количество ТТ принятых после 15 минут:</h5></li>
-            <li><h5>Нагрузка относительно нормы:</h5></li>
-            <li><h5>Нагрузка относительно прошлого дня:</h5></li>
+            <li><h5>Количество ТТ принятых вовремя за сутки:</h5></li>
+            <li><h5>Дневная нагрузка относительно нормы:</h5></li>
           </ul>
           <small>Последние 24 часа</small>
         </div>
         <div class="count-info">
           <ul>
             <li class="dayly_sl"><h5>{{ dashboard_data.sl.first_line.dayly_sl }}%</h5></li>
+            <li class="weekly_sl"><h5>{{ dashboard_data.sl.first_line.weekly_sl }}%</h5></li>
+            <li class="mountly_sl"><h5>{{ dashboard_data.sl.first_line.mountly_sl }}%</h5></li>
             <li class="num_issues"><h5>{{ dashboard_data.sl.first_line.num_issues }}</h5></li>
             <li class="num_worked_before_deadline"><h5>{{ dashboard_data.sl.first_line.num_worked_before_deadline }}</h5></li>
-            <li class="num_worked_after_deadline"><h5>{{ dashboard_data.sl.first_line.num_worked_after_deadline }}</h5></li>
             <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.sl.first_line.rating_to_nominal }}%</h5></li>
-            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.sl.first_line.rating_to_comparison }}%</h5></li>
           </ul>
         </div>
       </div>
@@ -69,23 +69,23 @@
       <div class="right">
         <div class="info">
           <ul>
-            <li><h3>SL vip линия</h3></li>
-            <li><h5>Количество ТТ за день:</h5></li>
-            <li><h5>Количество ТТ принятых за 15 минут:</h5></li>
-            <li><h5>Количество ТТ принятых после 15 минут:</h5></li>
-            <li><h5>Нагрузка относительно нормы:</h5></li>
-            <li><h5>Нагрузка относительно прошлого дня:</h5></li>
+            <li><h3>Ежедневный SL vip линия</h3></li>
+            <li><h3>Недельный SL vip линия</h3></li>
+            <li><h3>Месячный SL vip линия</h3></li>
+            <li><h5>Количество ТТ за сутки:</h5></li>
+            <li><h5>Количество ТТ принятых вовремя за сутки:</h5></li>
+            <li><h5>Дневная нагрузка относительно нормы:</h5></li>
           </ul>
           <small>Последние 24 часа</small>
         </div>
         <div class="count-info">
           <ul>
             <li class="dayly_sl"><h5>{{ dashboard_data.sl.vip_line.dayly_sl }}%</h5></li>
+            <li class="weekly_sl"><h5>{{ dashboard_data.sl.vip_line.weekly_sl }}%</h5></li>
+            <li class="mountly_sl"><h5>{{ dashboard_data.sl.vip_line.mountly_sl }}%</h5></li>
             <li class="num_issues"><h5>{{ dashboard_data.sl.vip_line.num_issues }}</h5></li>
             <li class="num_worked_before_deadline"><h5>{{ dashboard_data.sl.vip_line.num_worked_before_deadline }}</h5></li>
-            <li class="num_worked_after_deadline"><h5>{{ dashboard_data.sl.vip_line.num_worked_after_deadline }}</h5></li>
             <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.sl.vip_line.rating_to_nominal }}%</h5></li>
-            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.sl.vip_line.rating_to_comparison }}%</h5></li>
           </ul>
         </div>
       </div>
@@ -97,23 +97,23 @@
       <div class="right">
         <div class="info">
           <ul>
-            <li><h3>SL общий</h3></li>
-            <li><h5>Количество ТТ за день:</h5></li>
-            <li><h5>Количество ТТ принятых за 15 минут:</h5></li>
-            <li><h5>Количество ТТ принятых после 15 минут:</h5></li>
-            <li><h5>Нагрузка относительно нормы:</h5></li>
-            <li><h5>Нагрузка относительно прошлого дня:</h5></li>
+            <li><h3>Ежедневный SL итоговый</h3></li>
+            <li><h3>Недельный SL итоговый</h3></li>
+            <li><h3>Месячный SL итоговый</h3></li>
+            <li><h5>Количество ТТ за сутки:</h5></li>
+            <li><h5>Количество ТТ принятых вовремя за сутки:</h5></li>
+            <li><h5>Дневная нагрузка относительно нормы:</h5></li>
           </ul>
           <small>Последние 24 часа</small>
         </div>
         <div class="count-info">
           <ul>
             <li class="dayly_sl"><h5>{{ dashboard_data.sl.general.dayly_sl }}%</h5></li>
+            <li class="weekly_sl"><h5>{{ dashboard_data.sl.general.weekly_sl }}%</h5></li>
+            <li class="mountly_sl"><h5>{{ dashboard_data.sl.general.mountly_sl }}%</h5></li>
             <li class="num_issues"><h5>{{ dashboard_data.sl.general.num_issues }}</h5></li>
             <li class="num_worked_before_deadline"><h5>{{ dashboard_data.sl.general.num_worked_before_deadline }}</h5></li>
-            <li class="num_worked_after_deadline"><h5>{{ dashboard_data.sl.general.num_worked_after_deadline }}</h5></li>
             <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.sl.general.rating_to_nominal }}%</h5></li>
-            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.sl.general.rating_to_comparison }}%</h5></li>
           </ul>
         </div>
       </div>
@@ -125,19 +125,21 @@
       <div class="right">
         <div class="info">
           <ul>
-            <li><h3>MTTR:</h3></li>
-            <li><h5>Количество закрытых ТТ:</h5></li>
-            <li><h5>Нагрузка относительно нормы:</h5></li>
-            <li><h5>Нагрузка относительно прошлого дня:</h5></li>
+            <li><h3>Ежедневный MTTR:</h3></li>
+            <li><h3>Недельный MTTR:</h3></li>
+            <li><h3>Месячный MTTR:</h3></li>
+            <li><h5>Количество закрытых ТТ за сутки:</h5></li>
+            <li><h5>Дневная нагрузка относительно нормы:</h5></li>
           </ul>
           <small>Последние 24 часа</small>
         </div>
         <div class="count-info">
           <ul>
             <li class="dayly_mttr"><h5>{{ dashboard_data.mttr.average_mttr_tech_support }} мин.</h5></li>
+            <li class="weekly_mttr"><h5>{{ dashboard_data.mttr.average_mttr_tech_support }} мин.</h5></li>
+            <li class="mountly_mttr"><h5>{{ dashboard_data.mttr.average_mttr_tech_support }} мин.</h5></li>
             <li class="num_issues"><h5>{{ dashboard_data.mttr.num_issues }}</h5></li>
             <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.mttr.rating_to_nominal }}%</h5></li>
-            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.mttr.rating_to_comparison }}%</h5></li>
           </ul>
         </div>
       </div>
@@ -149,21 +151,49 @@
       <div class="right">
         <div class="info">
           <ul>
-            <li><h3>FLR:</h3></li>
-            <li><h5>Количество первичных ТТ:</h5></li>
-            <li><h5>Количество закрытых ТТ самостоятельно:</h5></li>
-            <li><h5>Нагрузка относительно нормы:</h5></li>
-            <li><h5>Нагрузка относительно прошлого дня:</h5></li>
+            <li><h3>Ежедневный FLR:</h3></li>
+            <li><h3>Недельный FLR:</h3></li>
+            <li><h3>Месячный FLR:</h3></li>
+            <li><h5>Количество первичных ТТ за сутки:</h5></li>
+            <li><h5>Количество закрытых ТТ самостоятельно за сутки:</h5></li>
+            <li><h5>Дневная нагрузка относительно нормы:</h5></li>
           </ul>
           <small>Последние 24 часа</small>
         </div>
         <div class="count-info">
           <ul>
             <li class="dayly_flr"><h5>{{ dashboard_data.flr.level }}%</h5></li>
+            <li class="weekly_flr"><h5>{{ dashboard_data.flr.level }}%</h5></li>
+            <li class="mountly_flr"><h5>{{ dashboard_data.flr.level }}%</h5></li>
             <li class="num_primary_issues"><h5>{{ dashboard_data.flr.num_primary_issues }}</h5></li>
             <li class="num_issues_closed_independently"><h5>{{ dashboard_data.flr.num_issues_closed_independently }}</h5></li>
             <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.flr.rating_to_nominal }}%</h5></li>
-            <li class="rating_to_comparison"><h5>{{ dashboard_data.analytics.flr.rating_to_comparison }}%</h5></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="item aht">
+      <!-- <div class="icon">
+        <span class="material-icons-sharp">donut_small</span>
+      </div> -->
+      <div class="right">
+        <div class="info">
+          <ul>
+            <li><h3>Ежедневный AHT:</h3></li>
+            <li><h3>Недельный AHT:</h3></li>
+            <li><h3>Месячный AHT:</h3></li>
+            <li><h5>Поступило ТТ за сутки:</h5></li>
+            <li><h5>Дневная нагрузка относительно нормы:</h5></li>
+          </ul>
+          <small>Последние 24 часа</small>
+        </div>
+        <div class="count-info">
+          <ul>
+            <li class="dayly_aht"><h5>{{ dashboard_data.flr.level }}%</h5></li>
+            <li class="weekly_aht"><h5>{{ dashboard_data.flr.level }}%</h5></li>
+            <li class="mountly_aht"><h5>{{ dashboard_data.flr.level }}%</h5></li>
+            <li class="issues_received"><h5>{{ dashboard_data.flr.num_primary_issues }}</h5></li>
+            <li class="rating_to_nominal"><h5>{{ dashboard_data.analytics.flr.rating_to_nominal }}%</h5></li>
           </ul>
         </div>
       </div>

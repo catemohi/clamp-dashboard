@@ -60,10 +60,14 @@ class ReportMttr(NamedTuple):
     Хранит данные:
         - Общее количество обращений
         - Средний МТТР
-        - Средний МТТР ТП'
+        - Средний МТТР ТП за месяц
+        - Средний МТТР ТП за неделю
+        - Средний МТТР ТП за день
     """
     num_issues: int
     average_mttr: int
+    mountly_average_mttr_tech_support: int
+    weekly_average_mttr_tech_support: int
     average_mttr_tech_support: int
 
 
@@ -86,10 +90,14 @@ class ReportFlr(NamedTuple):
     """Класс для хранения отчета по MTTR
 
     Хранит данные:
+        - FLR за месяц (в %)
+        - FLR за неделю (в %)
         - FLR за день (в %)
         - Количество обращений закрытых без других отделов
         - Количество первичных обращений
     """
+    mountly_level: int
+    weekly_level: int
     level: int
     num_issues_closed_independently: int
     num_primary_issues: int
@@ -421,6 +429,60 @@ def _get_aht(datestring: str) -> Mapping[Literal['aht'], ReportAht]:
     return {'aht': aht}
 
 
+def _parse_mttr_level(dates: Dates,
+                      qs: Union[models.QuerySet, List[models.Model]]
+                      ) -> ReportMttr:
+    """
+    Функция для получения данных по отчёту MTTR.
+
+    На выходе мы получаем данные:
+        - Общее количество обращений
+        - Средний МТТР
+        - Средний МТТР ТП за месяц
+        - Средний МТТР ТП за неделю
+        - Средний МТТР ТП за день
+
+    Args:
+        dates (Dates): коллекция дат
+        qs (Union[models.QuerySet, List[models.Model]]): данные из БД
+
+    Returns:
+        Mapping: словарь входных данных.
+    """
+    if not qs.exists():
+        return ReportMttr(0, 0, 0, 0, 0)
+    # Фильтруем данные для сегмент
+    qs_for_month = qs
+    qs_for_week = qs_for_month.filter(
+        date__gte=dates.monday_this_week, date__lte=dates.sunday_this_week)
+    qs_for_chosen_day = qs_for_month.filter(
+        date=dates.chosen_date)
+
+    # Высчитывание проценты SL
+    mountly_mttr_tech_support = sum([report.average_mttr_tech_support.seconds
+                                     // 60 for report in qs_for_month]
+                                    ) / len(qs_for_month)
+    mountly_mttr_tech_support = int(round(mountly_mttr_tech_support, 0))
+
+    weekly_mttr_tech_support = sum([report.average_mttr_tech_support.seconds
+                                    // 60 for report in qs_for_week]
+                                   ) / len(qs_for_week)
+    weekly_mttr_tech_support = int(round(weekly_mttr_tech_support, 0))
+
+    dayly_mttr_tech_support = qs_for_chosen_day.first()\
+        .average_mttr_tech_support.seconds // 60
+    dayly_mttr_tech_support = int(round(dayly_mttr_tech_support, 0))
+
+    dayly_mttr = qs_for_chosen_day.first().average_mttr.seconds // 60
+    dayly_mttr = int(round(dayly_mttr, 0))
+
+    # Расскладываем доп. данные
+    num_issues = qs_for_chosen_day.first().total_number_trouble_ticket
+
+    return ReportMttr(num_issues, dayly_mttr, mountly_mttr_tech_support,
+                      weekly_mttr_tech_support, dayly_mttr_tech_support)
+
+
 def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ReportMttr]:
     """Функция получение данных по отчёту MTTR:
 
@@ -429,7 +491,9 @@ def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ReportMttr]:
     На выходе поступают данные:
         - Общее количество обращений
         - Средний МТТР
-        - Средний МТТР ТП'
+        - Средний МТТР ТП за месяц
+        - Средний МТТР ТП за неделю
+        - Средний МТТР ТП за день
 
     Args:
         datestring (str): строка даты, за который необходим отчёт.
@@ -437,27 +501,77 @@ def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ReportMttr]:
     Returns:
         Mapping: словарь входных данных.
     """
+    today_date = datetime.now().date()
     # Операции над входящей строкой даты
     dates = get_date_collections(datestring)
-    qs = get_report_to_period('mttr', dates.chosen_date, dates.next_day)
+    qs = get_report_to_period('mttr', dates.calends_this_month,
+                              dates.calends_next_month)
+    # Исключаем нулевые отчеты
+    qs = qs.filter(date__lte=today_date)
+    # Получение данных для первой линии.
+    mttr = _parse_mttr_level(dates, qs)
+    return {'mttr': mttr}
+
+
+def _parse_flr_level(dates: Dates, chosen_segment: str,
+                     qs: Union[models.QuerySet,
+                               List[models.Model]]) -> ReportFlr:
+    """
+    Функция для получения данных по отчёту FLR.
+
+    На выходе мы получаем данные:
+        - FLR за месяц (в %)
+        - FLR за неделю (в %)
+        - FLR за день (в %)
+        - Количество обращений закрытых без других отделов
+        - Количество первичных обращений
+
+    Args:
+        dates (Dates): коллекция дат
+        qs (Union[models.QuerySet, List[models.Model]]): данные из БД
+
+    Returns:
+        ReportFlr: коллекция необходимых данных
+    """
     if not qs.exists():
-        return {'mttr': ReportMttr(0, 0, 0)}
-    # Формируем данные
-    num_issues = qs.first().total_number_trouble_ticket
-    average_mttr = (qs.first().average_mttr.seconds) // 60
-    average_mttr_tech_support = qs.first()\
-        .average_mttr_tech_support.seconds // 60
-    mttr_report = ReportMttr(num_issues, average_mttr,
-                             average_mttr_tech_support)
-    return {'mttr': mttr_report}
+        return ReportFlr(0, 0, 0, 0, 0)
+    # Фильтруем данные для сегмента
+    qs_for_month = qs
+    qs_for_week = qs_for_month.filter(
+        date__gte=dates.monday_this_week, date__lte=dates.sunday_this_week)
+    qs_for_chosen_day = qs_for_month.filter(
+        date=dates.chosen_date)
+
+    # Высчитывание проценты SL
+    mountly_flr = sum([report.flr_level
+                      for report in qs_for_month]) / len(qs_for_month)
+    mountly_flr = int(round(mountly_flr, 0))
+
+    weekly_flr = sum([report.flr_level
+                     for report in qs_for_week]) / len(qs_for_week)
+    weekly_flr = int(round(weekly_flr, 0))
+
+    dayly_flr = qs_for_chosen_day.first().flr_level
+    dayly_flr = int(round(dayly_flr, 0))
+
+    # Расскладываем доп. данные
+    num_issues_closed_independently = qs_for_chosen_day.first()\
+        .number_trouble_ticket_closed_independently
+    num_primary_issues = qs_for_chosen_day.first()\
+        .number_primary_trouble_tickets
+
+    return ReportFlr(mountly_flr, weekly_flr, dayly_flr,
+                     num_issues_closed_independently, num_primary_issues)
 
 
 def _get_flr(datestring: str) -> Mapping[Literal['flr'], ReportFlr]:
-    """Функция получение данных по отчёту MTTR:
+    """Функция получение данных по отчёту FLR:
 
     На вход поступает строка даты, за который необходим отчёт.
 
     На выходе поступают данные:
+        - FLR за месяц (в %)
+        - FLR за неделю (в %)
         - FLR за день (в %)
         - Количество обращений закрытых без других отделов
         - Количество первичных обращений
@@ -468,20 +582,16 @@ def _get_flr(datestring: str) -> Mapping[Literal['flr'], ReportFlr]:
     Returns:
         Mapping: словарь входных данных.
     """
+    today_date = datetime.now().date()
     # Операции над входящей строкой даты
     dates = get_date_collections(datestring)
-    qs = get_report_to_period('flr', dates.chosen_date, dates.next_day)
-    if not qs.exists():
-        return {'flr': ReportFlr(0, 0, 0)}
+    qs = get_report_to_period('flr', dates.calends_this_month,
+                              dates.calends_next_month)
+    # Исключаем нулевые отчеты
+    qs = qs.filter(date__lte=today_date)
     # Формируем данные
-    level = int(round(qs.first().flr_level, 0))
-    num_issues_closed_independently = qs.first().\
-        number_trouble_ticket_closed_independently
-    num_primary_issues = qs.first().number_primary_trouble_tickets
-
-    flr_report = ReportFlr(level, num_issues_closed_independently,
-                           num_primary_issues)
-    return {'flr': flr_report}
+    flr = _parse_flr_level(dates, qs)
+    return {'flr': flr}
 
 
 def get_load_ratings() -> Union[models.QuerySet, List[models.Model]]:
@@ -812,7 +922,8 @@ def get_day_dates_and_data(datestring: Literal['%Y-%m-%d'] = None) -> dict[
 
     dates = get_date_collections(datestring)
     dashboard_data = get_dashboard_data(dates.chosen_date.isoformat())
-    before_day_data = get_dashboard_data(dates.before_day.isoformat())
+    # before_day_data = get_dashboard_data(dates.before_day.isoformat())
+    before_day_data = {}
     dashboard_data = analytics(dashboard_data, before_day_data)
     return {'dates': dates, 'dashboard_data': dashboard_data}
 
