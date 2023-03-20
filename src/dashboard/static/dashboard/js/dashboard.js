@@ -31,8 +31,10 @@ document.querySelector('.filter').addEventListener('click', (event) => {
   let filterClass = event.target.dataset["f"];
   allCard.forEach( (element) => {
     element.classList.remove('hide-card');
+    element.classList.remove('active-filter');
     if (!element.classList.contains(filterClass) && filterClass !== 'all') {
       element.classList.add('hide-card');
+      element.classList.add('active-filter');
     };
   });
 });

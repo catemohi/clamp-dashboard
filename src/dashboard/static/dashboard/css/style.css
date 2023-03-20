@@ -574,7 +574,7 @@ li.filter-text:hover {
   align-items: flex-end;
 }
 
-li.filter-text.activ {
+li.filter-text.active-filter {
   background: var(--color-primary);
 }
 
