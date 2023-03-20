@@ -1122,5 +1122,6 @@ main .insights div.card.hide-card {
 @keyframes animation-hide-card {
   to {
     opacity: 0;
+    position: absolute;
   }
 }
