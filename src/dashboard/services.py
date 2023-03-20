@@ -513,9 +513,9 @@ def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ReportMttr]:
     return {'mttr': mttr}
 
 
-def _parse_flr_level(dates: Dates, chosen_segment: str,
-                     qs: Union[models.QuerySet,
-                               List[models.Model]]) -> ReportFlr:
+def _parse_flr_level(dates: Dates,
+                     qs: Union[models.QuerySet, List[models.Model]]
+                     ) -> ReportFlr:
     """
     Функция для получения данных по отчёту FLR.
 
