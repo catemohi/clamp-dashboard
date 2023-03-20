@@ -507,6 +507,7 @@ main .input-date-reports {
   color: var(--color-dark);
 }
 main .input-date button {
+  font-family: Montserrat, Arial, sans-serif;
   color: var(--color-dark);
   background: transparent;
   font-size: 1.2rem;
@@ -518,6 +519,9 @@ main .input-date button {
 
 .input-group {
   display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 1.6rem;
+  row-gap: 0.5rem;
 }
 
 li.filter-text {
@@ -526,11 +530,13 @@ li.filter-text {
   background: var(--color-light);
   border-radius: var(--border-radius-1);
   padding: 0.5rem 1.6rem;
-  font-size: 0.88rem;
+  font-size: 1.2rem;
 }
 
 #form-date {
-  display: flex;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: flex-end;
 }
 
 .filter {
@@ -539,7 +545,12 @@ li.filter-text {
   align-items: flex-end;
 }
 
+li.filter-text.activ {
+  background: var(--color-primary);
+}
+
 main .input-date input[type="date"] {
+  font-family: Montserrat, Arial, sans-serif;
   background: transparent;
   font-size: 1.2rem;
   color: var(--color-black);
@@ -872,6 +883,17 @@ main .monitoring h3 {
   }
 }
 
+@media (max-width: 1550px) {
+  .input-group {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  
+  .filter {
+    display: grid;
+    justify-content: end;
+    align-content: end;
+  }
+}
 
 @media (max-width: 1300px) {
   .error__container {
