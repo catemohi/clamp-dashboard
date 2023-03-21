@@ -16,6 +16,10 @@ themeToggler.addEventListener('click', () => {
 
 })
 
+document.querySelector('.accordion').addEventListener('click', (event) => {
+    document.querySelector('.panel').classList.toggle('hide');
+});
+
 // show sidebar
 menuBtn.addEventListener('click', () => {
     sideMenu.style.display = 'block';

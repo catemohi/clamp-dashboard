@@ -307,6 +307,15 @@ b {
   --color-dash:#FF7070;
 }
 
+.panel.hide {
+  opacity: 0;
+  position: absolute;
+}
+
+.accordion {
+  cursor: pointer;
+}
+
 .emoji-span {
   display: inline-block;
   padding: 0 3px 0 0;
