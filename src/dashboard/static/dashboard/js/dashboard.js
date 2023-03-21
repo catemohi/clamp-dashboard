@@ -46,7 +46,7 @@ document.querySelector('.filter').addEventListener('click', (event) => {
     return false
   };
   let filterClass = activeObject.dataset["f"];
-  document.cookie = "activeCardFilter=${filterClass}; path=/;";
+  document.cookie = `activeCardFilter=${filterClass}; path=/;`;
   chengeActiveFilterView(activeObject);
   filterCards(filterClass);
 });
