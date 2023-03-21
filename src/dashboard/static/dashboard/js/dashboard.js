@@ -2,6 +2,9 @@ const allCard  = document.querySelectorAll(".card");
 const cardDailySl = document.querySelector(".daily-sl");
 const cardWeeklySl = document.querySelector(".weekly-sl");
 const cardMonthlySl = document.querySelector(".monthly-sl");
+const cardDailySlGeneral = document.querySelector(".daily-sl-general");
+const cardWeeklySlGeneral = document.querySelector(".weekly-sl-general");
+const cardMonthlySlGeneral = document.querySelector(".monthly-sl-general");
 const cardDailySlVip = document.querySelector(".daily-sl-vip");
 const cardWeeklySlVip = document.querySelector(".weekly-sl-vip");
 const cardMonthlySlVip = document.querySelector(".monthly-sl-vip");
@@ -155,6 +158,9 @@ function changeCardProgress() {
   setCardProgress(cardDailySl, 'sl', '%');
   setCardProgress(cardWeeklySl, 'sl', '%');
   setCardProgress(cardMonthlySl, 'sl', '%');
+  setCardProgress(cardDailySlGeneral, 'sl', '%');
+  setCardProgress(cardWeeklySlGeneral, 'sl', '%');
+  setCardProgress(cardMonthlySlGeneral, 'sl', '%');
   setCardProgress(cardDailySlVip, 'sl', '%');
   setCardProgress(cardWeeklySlVip, 'sl', '%');
   setCardProgress(cardMonthlySlVip, 'sl', '%');
@@ -200,6 +206,19 @@ function changeProgresTabsValue(data) {
   date = cardMonthlySlVip.querySelector(".middle h1");
   date.textContent = month_name(new Date(data.dates.chosen_date));    
   counterMonthlySlVipLine.textContent = data.dashboard_data.sl.vip_line.mountly_sl;
+  // general line
+  counterDailySlGeneralLine = cardDailySlGeneral.querySelector(".number *");
+  date = cardDailySlGeneral.querySelector(".middle h1");
+  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);    
+  counterDailySlGeneralLine.textContent = data.dashboard_data.sl.general.dayly_sl;
+  counterWeeklySlGeneralLine = cardWeeklySlGeneral.querySelector(".number *");
+  date = cardWeeklySlGeneral.querySelector(".middle h1");
+  date.textContent = formatWeekDataString(data.dates.monday_this_week, data.dates.sunday_this_week);
+  counterWeeklySlGeneralLine.textContent = data.dashboard_data.sl.general.weekly_sl; 
+  counterMonthlySlGeneralLine = cardMonthlySlGeneral.querySelector(".number *");
+  date = cardMonthlySlGeneral.querySelector(".middle h1");
+  date.textContent = month_name(new Date(data.dates.chosen_date));    
+  counterMonthlySlGeneralLine.textContent = data.dashboard_data.sl.general.mountly_sl;
   // mttr
   counterDailyMttr = cardDailyMttr.querySelector(".number *");
   date = cardDailyMttr.querySelector(".middle h1");

@@ -81,6 +81,66 @@
         <small class="text-muted">Отчет за последние 15 минут</small>
       </div>
       <!-- END OF monthly-sl -->
+      <div class="daily-sl-general card day">
+        <span class="_icon-signal_cellular_alt material-icons-sharp"></span>
+        <div class="middle">
+          <div class="lef">
+            <h3>Общий</h3>
+            <h3>Ежедневный SL</h3>
+            <h1>{{ dates.chosen_date|date:"d.m.Y" }}</h1>
+          </div>
+          <div class="progress">
+            <svg>
+              <circle class="circle" id="circle" cx="38" cy="38" r="36"></circle>
+            </svg>
+            <div class="number">
+              <h2>{{ dashboard_data.sl.general.dayly_sl }}</h2>
+            </div>
+          </div>
+        </div>
+        <small class="text-muted">Отчет за последние 15 минут</small>
+      </div>
+      <!-- END OF daily-sl -->
+      <div class="weekly-sl-general card week">
+        <span class="_icon-signal_cellular_alt material-icons-sharp"></span>
+        <div class="middle">
+          <div class="lef">
+            <h3>Общий</h3>
+            <h3>Недельный SL</h3>
+            <h1>{{ dates.monday_this_week|date:"d.m" }} - {{ dates.sunday_this_week|date:"d.m" }}</h1>
+          </div>
+          <div class="progress">
+            <svg>
+              <circle class="circle" cx="38" cy="38" r="36"></circle>
+            </svg>
+            <div class="number">
+              <h2>{{ dashboard_data.sl.general.weekly_sl }}</h2>
+            </div>
+          </div>
+        </div>
+        <small class="text-muted">Отчет за последние 15 минут</small>
+      </div>
+      <!-- END OF weekly-sl -->
+      <div class="monthly-sl-general card mounth">
+        <span class="_icon-signal_cellular_alt material-icons-sharp"></span>
+        <div class="middle">
+          <div class="lef">
+            <h3>Общий</h3>
+            <h3>Месячный SL</h3>
+            <h1>{{ dates.chosen_date|date:"F" }}</h1>
+          </div>
+          <div class="progress">
+            <svg>
+              <circle class="circle" cx="38" cy="38" r="36"></circle>
+            </svg>
+            <div class="number">
+              <h2>{{ dashboard_data.sl.general.mountly_sl }}</h2>
+            </div>
+          </div>
+        </div>
+        <small class="text-muted">Отчет за последние 15 минут</small>
+      </div>
+      <!-- END OF monthly-sl -->
       <div class="daily-sl-vip card day">
         <span class="_icon-favorite_border material-icons-sharp"></span>
         <div class="middle">
