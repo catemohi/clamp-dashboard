@@ -23,23 +23,43 @@ function month_name(dt){
   return mlist[dt.getMonth()];
 };
 
-document.querySelector('.filter').addEventListener('click', (event) => {
-  // Анонимная функция для фильтрации отоброжаемых карточек
-  if (event.target.tagName !== "LI") {
-    return false
-  };
-  document.querySelectorAll('.filter-text').forEach( (element) => {
-    element.classList.remove("active-filter");
-  });
-  event.target.classList.add('active-filter');
-  let filterClass = event.target.dataset["f"];
+function filterCards(filterClass) {
   allCard.forEach( (element) => {
     element.classList.remove('hide-card');
     if (!element.classList.contains(filterClass) && filterClass !== 'all') {
       element.classList.add('hide-card');
     };
   });
+};
+
+function chengeActiveFilterView(activeObject) {
+  document.querySelectorAll('.filter-text').forEach( (element) => {
+    element.classList.remove("active-filter");
+  });
+  activeObject.classList.add('active-filter');
+};
+
+document.querySelector('.filter').addEventListener('click', (event) => {
+  // Анонимная функция для фильтрации отоброжаемых карточек
+  let activeObject = event.target;
+  if (activeObject.tagName !== "LI") {
+    return false
+  };
+  let filterClass = activeObject.dataset["f"];
+  document.cookie = "activeCardFilter=${filterClass}; path=/;";
+  chengeActiveFilterView(activeObject);
+  filterCards(filterClass);
 });
+
+function activateFilterFromCookie() {
+  let filterCard = getCookie('activeCardFilter')
+  document.querySelectorAll('.filter-text').forEach( (element) => {
+    if (element.dataset["f"] === filterCard) {
+      chengeActiveFilterView(element);
+      filterCards(filterCard);
+    };
+  });
+};
 
 function formatWeekDataString(dateFirst, dateSecond) {
   dateFirst = new Date(dateFirst)
@@ -188,12 +208,12 @@ function changeProgresTabsValue(data) {
 
   counterWeeklyMttr = cardWeeklyMttr.querySelector(".number *");
   date = cardWeeklyMttr.querySelector(".middle h1");
-  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
+  date.textContent = formatWeekDataString(data.dates.monday_this_week, data.dates.sunday_this_week);
   counterWeeklyMttr.textContent = data.dashboard_data.mttr.weekly_average_mttr_tech_support;
 
   counterMountlyMttr = cardMountlyMttr.querySelector(".number *");
   date = cardMountlyMttr.querySelector(".middle h1");
-  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
+  date.textContent = month_name(new Date(data.dates.chosen_date));
   counterMountlyMttr.textContent = data.dashboard_data.mttr.mountly_average_mttr_tech_support;
   // flr
   counterDailyFlr = cardDailyFlr.querySelector(".number *");
@@ -203,12 +223,12 @@ function changeProgresTabsValue(data) {
 
   counterWeeklyFlr = cardWeeklyFlr.querySelector(".number *");
   date = cardWeeklyFlr.querySelector(".middle h1");
-  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
+  date.textContent = formatWeekDataString(data.dates.monday_this_week, data.dates.sunday_this_week);
   counterWeeklyFlr.textContent = data.dashboard_data.flr.weekly_level;
 
   counterMountlyFlr = cardMountlyFlr.querySelector(".number *");
   date = cardMountlyFlr.querySelector(".middle h1");
-  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
+  date.textContent = month_name(new Date(data.dates.chosen_date));
   counterMountlyFlr.textContent = data.dashboard_data.flr.mountly_level;
   // aht
   counterDailyAht = cardDailyAht.querySelector(".number *");
@@ -218,12 +238,12 @@ function changeProgresTabsValue(data) {
 
   counterWeeklyAht = cardWeeklyAht.querySelector(".number *");
   date = cardWeeklyAht.querySelector(".middle h1");
-  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
+  date.textContent = formatWeekDataString(data.dates.monday_this_week, data.dates.sunday_this_week);
   counterWeeklyAht.textContent = data.dashboard_data.aht.weekly_aht;
 
   counterMountlyAht = cardMountlyAht.querySelector(".number *");
   date = cardMountlyAht.querySelector(".middle h1");
-  date.textContent = new Date(data.dates.chosen_date).toLocaleString("ru", options_dash);
+  date.textContent = month_name(new Date(data.dates.chosen_date));
   counterMountlyAht.textContent = data.dashboard_data.aht.mountly_aht;
   changeCardProgress();
 };
@@ -242,6 +262,7 @@ function getDashboardData() {
 
 $(document).ready(function(){
   changeCardProgress();
+  activateFilterFromCookie();
 });
 
 $("#form-date").submit(function(event) {

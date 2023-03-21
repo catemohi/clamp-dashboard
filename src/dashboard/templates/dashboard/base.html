@@ -16,6 +16,13 @@
   <body class="{{ body_class }}">
     <p id='raw-burned-notification-settings' style="display: none;">{{ burned_notification_settings }}</p>
     <p id="raw-returned-notification-settings" style="display: none;">{{ returned_notification_settings }}</p>
+    <script>
+      function getCookie(name) {
+        function escape(s) { return s.replace(/([.*+?\^$(){}|\[\]\/\\])/g, '\\$1'); }
+        var match = document.cookie.match(RegExp('(?:^|;\\s*)' + escape(name) + '=([^;]*)'));
+        return match ? match[1] : null;
+      };
+    </script>
     <script src="{% static 'dashboard/js/jquery-latest.js' %}"></script>
     <script src="{% static 'dashboard/js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'dashboard/js/dataTables.bootstrap5.min.js' %}"></script>    
