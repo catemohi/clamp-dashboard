@@ -678,9 +678,9 @@ def _sl_analytics(chosen_day: Mapping[Literal['sl'], Mapping],
     # Структура выходного словаря
     analytics_dict = {
         'sl': {
-            'first_line': None,
-            'vip_line': None,
-            'general': None
+            'first_line': RatingAnalytics(0.0, 0.0),
+            'vip_line': RatingAnalytics(0.0, 0.0),
+            'general': RatingAnalytics(0.0, 0.0),
         }
     }
     # Аналитика относительно дня сравнения если день не передан
@@ -754,7 +754,7 @@ def _mttr_analytics(chosen_day: Mapping[Literal['mttr'], ReportMttr],
     """
     # Структура выходного словаря
     analytics_dict = {
-        'mttr': None
+        'mttr': RatingAnalytics(0.0, 0.0),
     }
     # Аналитика относительно дня сравнения если день не передан
     rating_to_comparison = 0.0
@@ -800,7 +800,7 @@ def _flr_analytics(chosen_day: Mapping[Literal['flr'], ReportFlr],
     """
     # Структура выходного словаря
     analytics_dict = {
-        'flr': None
+        'flr': RatingAnalytics(0.0, 0.0),
     }
     # Аналитика относительно дня сравнения если день не передан
     rating_to_comparison = 0.0
@@ -847,7 +847,7 @@ def _aht_analytics(chosen_day: Mapping[Literal['aht'], ReportAht],
     """
     # Структура выходного словаря
     analytics_dict = {
-        'flr': None
+        'aht': RatingAnalytics(0.0, 0.0),
     }
     # Аналитика относительно дня сравнения если день не передан
     rating_to_comparison = 0.0
