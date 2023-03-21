@@ -88,6 +88,18 @@ function reloadDatatable( desiredDate, comparisonDate ) {
         '-'],
       [ 27, 'Общая нагрузка относительно дня сравнения',
         data.desired_date.analytics.flr.rating_to_comparison,
+        '-'],
+      [ 28, 'AHT',
+        data.desired_date.aht.dayly_aht,
+        data.comparison_date.aht.dayly_aht],
+      [ 29, 'Общее количество поступивших обращений',
+        data.desired_date.aht.issues_received,
+        data.comparison_date.aht.issues_received],
+      [ 30, 'Общая нагрузка относительно нормы',
+        data.desired_date.analytics.aht.rating_to_nominal,
+        '-'],
+      [ 31, 'Общая нагрузка относительно дня сравнения',
+        data.desired_date.analytics.aht.rating_to_comparison,
         '-']
       ];
       let table = $('#trouble-table').DataTable({
@@ -181,6 +193,27 @@ function reloadDatatable( desiredDate, comparisonDate ) {
             };
             data[2] = data[2] + '%';
             data[3] = data[3] + '%';
+            $( "td:eq(2)", row ).text(data[2]);
+            $( "td:eq(3)", row ).text(data[3]);
+          } else if ( data[1].toLowerCase().indexOf( 'aht' ) != -1 ) {
+            $( "td:eq(2)", row ).addClass( "aht-level" );
+            $( "td:eq(3)", row ).addClass( "aht-level" );
+            if ( data[2] <= maxSuccessAHT ) {
+              $( "td:eq(2)", row ).addClass( "success" );
+              $( "td:eq(2)", row ).removeClass( "danger" );
+            } else {
+              $( "td:eq(2)", row ).addClass( "danger" );
+              $( "td:eq(2)", row ).removeClass( "success" );
+            };
+            if ( data[3] <= maxSuccessAHT ) {
+              $( "td:eq(3)", row ).addClass( "success" );
+              $( "td:eq(3)", row ).removeClass( "danger" );
+            } else {
+              $( "td:eq(3)", row ).addClass( "danger" );
+              $( "td:eq(3)", row ).removeClass( "success" );
+            };
+            data[3] = data[3] + ' минут';
+            data[2] = data[2] + ' минут';
             $( "td:eq(2)", row ).text(data[2]);
             $( "td:eq(3)", row ).text(data[3]);
           };

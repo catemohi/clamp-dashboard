@@ -821,6 +821,55 @@ def _flr_analytics(chosen_day: Mapping[Literal['flr'], ReportFlr],
     return analytics_dict
 
 
+def _aht_analytics(chosen_day: Mapping[Literal['aht'], ReportAht],
+                   nominal_values: Union[models.QuerySet, List[models.Model]],
+                   comparison_day: Mapping[Literal['aht'], ReportAht] = {}
+                   ) -> Mapping[Literal['aht'], RatingAnalytics]:
+    """
+    Функция сравнения данных aht, с номинальными и с переданным днем.
+
+    На вход, функция получает отчёт aht, который необходимо сравнить.
+    При необходимости можно передать дополнительный день сравнения.
+
+    На выходе функция отдает модифицированный словарь аналитики aht
+
+    Args:
+        chosen_day (Mapping[Literal['aht'], ReportAht]):
+            дневной отчёт flr, который необходимо сравнить
+        nominal_values: Union[models.QuerySet, List[models.Model]]:
+            номинальные значения нагрузки
+        comparison_day (Mapping[Literal['aht'], ReportAht]):
+            дополнительный день сравнения. По умол. {}
+
+    Returns:
+        Mapping[Literal['aht'], RatingAnalytics]: словарь аналитики aht
+
+    """
+    # Структура выходного словаря
+    analytics_dict = {
+        'flr': None
+    }
+    # Аналитика относительно дня сравнения если день не передан
+    rating_to_comparison = 0.0
+
+    # Аналитики относительно номинальных значений.
+    # TODO
+    # rating_to_nominal = _compare_num(chosen_day['aht'].issues_received,
+    #                                  nominal_values.issues_received)
+    rating_to_nominal = _compare_num(chosen_day['aht'].issues_received,
+                                     0)
+    # Аналитика относительно дня сравнения
+    if comparison_day:
+        rating_to_comparison = _compare_num(
+            chosen_day['aht'].issues_received,
+            comparison_day['aht'].issues_received)
+
+    analytics_dict['aht'] = RatingAnalytics(rating_to_nominal,
+                                            rating_to_comparison)
+
+    return analytics_dict
+
+
 def analytics(chosen_day: dict[Literal['sl', 'mttr', 'flr'], Mapping],
               comparison_day: Mapping[Literal['sl', 'mttr', 'flr'], Mapping] = {}
               ) -> dict[Literal['sl', 'mttr', 'flr', 'analytics'], Mapping]:
@@ -853,9 +902,11 @@ def analytics(chosen_day: dict[Literal['sl', 'mttr', 'flr'], Mapping],
                                           comparison_day)
     flr_analytics_dict = _flr_analytics(chosen_day, nominal_values,
                                         comparison_day)
+    aht_analytics_dict = _aht_analytics(chosen_day, nominal_values,
+                                        comparison_day)
     modificated_day.update(
         {'analytics': {**sl_analytics_dict, **mttr_analytics_dict,
-                       **flr_analytics_dict}}
+                       **flr_analytics_dict, **aht_analytics_dict}}
         )
     return modificated_day
 
