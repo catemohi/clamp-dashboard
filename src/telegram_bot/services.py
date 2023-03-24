@@ -1,6 +1,6 @@
 from re import findall, sub
 from requests import post
-from typing import Sequence, Literal, Union, Iterable
+from typing import Sequence, Literal, Union, Iterable, Mapping
 from django.conf import settings
 from .models import TelegramUser, NotificationChannel
 
@@ -349,6 +349,16 @@ def send_message_to_channel(message: str, channel: str) -> Iterable:
     except Exception as e:
         return (False, str(e))
     return (True, "OK")
+
+
+def push_to_telegram(notification: Mapping) -> None:
+    """_summary_
+
+    Args:
+        notification (Mapping): _description_
+    """
+    text = notification.get("text", '')
+    send_message_to_channel(text, "reports")
 
 
 def get_sl():
