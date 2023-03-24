@@ -422,7 +422,7 @@ def help(update, context):
 
 
 DISPATCHER.add_handler(CommandHandler('start', start))
-DISPATCHER.add_handler(CommandHandler('register', register_user))
+DISPATCHER.add_handler(CommandHandler('registration', register_user))
 DISPATCHER.add_handler(CommandHandler('r', restart))
 # DISPATCHER.add_handler(CallbackQueryHandler(button))
 DISPATCHER.add_handler(CallbackQueryHandler(
