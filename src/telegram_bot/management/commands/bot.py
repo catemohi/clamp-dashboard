@@ -12,12 +12,12 @@ from telegram.ext import Updater
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram import BotCommand
-from bot.services import create_user, get_user_id, get_user_subscriptions
-from bot.services import unsubscribe, subscribe, get_channels, get_ban_user
-from bot.services import authorizate_user, ban_user, get_waited_user, get_admin
-from bot.services import replace_for_markdown
-from bot.services import get_sl, get_mttr, get_flr, get_aht
-from bot import message_utils
+from telegram_bot.services import create_user, get_user_id, get_user_subscriptions
+from telegram_bot.services import unsubscribe, subscribe, get_channels, get_ban_user
+from telegram_bot.services import authorizate_user, ban_user, get_waited_user, get_admin
+from telegram_bot.services import replace_for_markdown
+from telegram_bot.services import get_sl, get_mttr, get_flr, get_aht
+from telegram_bot import message_utils
 
 # Объявление переменной бота
 UPDATER = Updater(token=settings.TELEGRAM_TOKEN, use_context=True)
