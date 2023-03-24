@@ -17,5 +17,3 @@ cd naumen_api && python3 setup.py install
 
 COPY ./src .
 COPY .venv/config.json .
-
-CMD [ "celery", "-A", "clamp", "beat", "-l", "info", "--scheduler", "django_celery_beat.schedulers:DatabaseScheduler"]

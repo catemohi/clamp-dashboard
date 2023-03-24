@@ -81,12 +81,16 @@ class RatingSetting(models.Model):
         )
     mttr_level = models.IntegerField(
         verbose_name='Верхняя граница допустимого MTTR (мин.)',
-        default=45,
+        default=60,
         )
     flr_level = models.IntegerField(
         verbose_name='Нижняя граница допустимого FLR (%)',
-        default=30,
+        default=45,
         )
+    aht_level = models.IntegerField(
+        verbose_name='Верхняя граница допустимого AHT (мин.)',
+        default=30,
+    )
     num_issues_first_line = models.IntegerField(
         verbose_name='Норма количества обращений первой линии (кол.)',
         default=180,
@@ -106,6 +110,10 @@ class RatingSetting(models.Model):
     num_primary_issues = models.IntegerField(
         verbose_name='Норма количества первичных обращений (кол.)',
         default=60,
+        )
+    issues_received = models.IntegerField(
+        verbose_name='Норма количества поступивших обращений AHT (кол.)',
+        default=30,
         )
     is_active = models.BooleanField(default=False,
                                     verbose_name='Активные настройки')

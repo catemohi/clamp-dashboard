@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'notification',
     'dashboard',
     'naumen',
-
+    'telegram_bot',
 ]
 
 MIDDLEWARE = [
@@ -234,3 +234,4 @@ CHANNEL_LAYERS = {
         }
     }
 }
+TELEGRAM_TOKEN = environ.get('TELEGRAM_TOKEN')

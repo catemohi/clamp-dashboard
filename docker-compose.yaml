@@ -58,6 +58,21 @@ services:
     build:
       dockerfile: Dockerfile.celery_beat
       context: .
+    command: [ "celery", "-A", "clamp", "beat", "-l", "info", "--scheduler", "django_celery_beat.schedulers:DatabaseScheduler"]
+  telegram:
+    container_name: telegram_bot
+    depends_on:
+      - webapp
+    restart: always
+    volumes:
+      - .static:/static
+      - .media:/media
+    env_file:
+      - .env
+    build:
+      dockerfile: Dockerfile.celery_beat
+      context: .
+    command: [ "python", "manage.py", "bot"]
   nginx:
     container_name: dashboard_nginx
     build: ./nginx
