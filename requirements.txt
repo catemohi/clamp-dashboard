@@ -35,4 +35,5 @@ daphne
 pillow
 python-ldap
 django-auth-ldap
+python-telegram-bot==13.15
 
