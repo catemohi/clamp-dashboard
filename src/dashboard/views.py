@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from naumen.services import get_issues_from_db
+from naumen import services as naumen_services
 from notification.services import get_notification
 from notification.services import get_burned_notification_setting
 from notification.services import get_returned_notification_setting
@@ -177,5 +177,5 @@ def report_json(request):
 
 @login_required(login_url=reverse_lazy('login'))
 def table_json(request):
-    content = get_issues_from_db()
+    content = naumen_services.get_issues_from_db()
     return JsonResponse({'data': content})
