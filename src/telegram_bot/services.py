@@ -359,14 +359,18 @@ def send_message_to_channel(message: str, channel: str) -> Iterable:
 
 
 def push_to_telegram(notification: Mapping) -> None:
-    """_summary_
+    """Отправка уведомления в telegram_
 
     Args:
-        notification (Mapping): _description_
+        notification (Mapping): обьект уведомления
     """
-    print(dumps(notification))
+    # print(dumps(notification))
+    subtype = notification.get('subtype', '')
+    is_vip = notiication.get('issue', {}).get('vip_contragent', False)
     text = notification.get('text', '')
-    send_message_to_channel(text, "reports")
+    channel = 'vip_line' if is_vip else 'westcall_line'
+    text = 'channel: {}\nsubtype: {}\ntext: {}'.format(channel, subtype, text)
+    send_message_to_channel(text, 'reports')
 
 
 def get_sl() -> str:
