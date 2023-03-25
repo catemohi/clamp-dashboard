@@ -215,7 +215,9 @@ def format_aht_message(data: Mapping) -> str:
     Returns:
         str: форматированная строка данных
     """
-    aht_analytics = data.get('analytics', {}).get('aht', {})                                                        aht = data.get('aht', {})                               dayly_aht = aht.dayly_aht if aht else 0
+    aht_analytics = data.get('analytics', {}).get('aht', {})
+    aht = data.get('aht', {})
+    dayly_aht = aht.dayly_aht if aht else 0
     weekly_aht = aht.weekly_aht if aht else 0
     mountly_aht = aht.mountly_aht if aht else 0
     rating_to_nominal = aht_analytics.rating_to_nominal if aht_analytics else 0
