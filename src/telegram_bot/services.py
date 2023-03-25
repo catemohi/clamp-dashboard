@@ -369,7 +369,7 @@ def push_to_telegram(notification: Mapping) -> None:
     is_vip = notification.get('issue', {}).get('vip_contragent', False)
     text = notification.get('text', '')
     channel = 'vip_line' if is_vip else 'westcall_line'
-    text = 'channel: {}\nsubtype: {}\ntext: {}'.format(channel, subtype, text)
+    print('channel: {}\nsubtype: {}\ntext: {}'.format(channel, subtype, text))
     send_message_to_channel(text, 'reports')
 
 

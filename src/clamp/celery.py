@@ -3,6 +3,7 @@ import os
 from datetime import timedelta
 
 from celery import Celery
+from celery.schedules import crontab
 
 # он установит модуль настроек по умолчанию Django для приложения 'celery'.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'clamp.settings')
@@ -73,5 +74,9 @@ app.conf.beat_schedule = {
     'Удаление устаревших уведомлений': {
         'task': 'notification.tasks.remove_old_notification',
         'schedule': timedelta(days=1),
+    },
+    'Ежедневный отчет в телеграм': {
+        'task': 'telegram_bot.tasks.push_day_report',
+        'schedule': crontab(hour=23, minute=40),
     },
 }
