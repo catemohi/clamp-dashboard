@@ -111,7 +111,7 @@ def format_sl_message(data: Mapping) -> str:
         .format(first_line_num_worked_after_deadline) + \
         'Нагрузка westcall линии относительно нормы: {}\n'\
         .format(first_line_rating_to_nominal) + \
-        'Service Level westcall линии: {}\n'.format(first_line_dayly_sl) + \
+        'Service Level westcall линии: {}%\n'.format(first_line_dayly_sl) + \
         '=========\n' + \
         'Количество обращений за день на vip линию: {}\n'\
         .format(vip_line_num_issues) + \
@@ -121,7 +121,7 @@ def format_sl_message(data: Mapping) -> str:
         .format(vip_line_num_worked_after_deadline) + \
         'Нагрузка vip линии относительно нормы: {}\n'\
         .format(vip_line_rating_to_nominal) + \
-        'Service Level vip линии: {}\n'.format(vip_line_dayly_sl) + \
+        'Service Level vip линии: {}%\n'.format(vip_line_dayly_sl) + \
         '=========\n' + \
         'Общее количество обращений за день: {}\n'\
         .format(general_num_issues) + \
@@ -132,11 +132,10 @@ def format_sl_message(data: Mapping) -> str:
         'Общая нагрузка относительно нормы: {}\n'\
         .format(general_rating_to_nominal) + \
         '=========\n' + \
-        'Общий дневной Service Level: {}\n'.format(general_dayly_sl) + \
-        'Общий недельный Service Level: {}\n'.format(general_weekly_sl) + \
-        'Общий месячный Service Level: {}\n'.format(general_mountly_sl)
+        'Общий дневной Service Level: {}%\n'.format(general_dayly_sl) + \
+        'Общий недельный Service Level: {}%\n'.format(general_weekly_sl) + \
+        'Общий месячный Service Level: {}%\n'.format(general_mountly_sl)
 
-    print(message)
     return message
 
 
@@ -149,18 +148,13 @@ def format_mttr_message(data: Mapping) -> str:
     Returns:
         str: форматированная строка данных
     """
-    average_mttr_tech_support = (data.get('desired_date', {}).get('mttr', {})
-                                 .get('average_mttr_tech_support', ''))
-    weekly_average_mttr_tech_support = (data.get('desired_date', {})
-                                        .get('mttr', {})
-                                        .get('weekly_average_mttr_tech_support', ''))
-    mountly_average_mttr_tech_support = (data.get('desired_date', {}).get('mttr', {})
-                                         .get('mountly_average_mttr_tech_support', ''))
-    num_issues = (data.get('desired_date', {}).get('mttr', {})
-                  .get('num_issues', ''))
-    rating_to_nominal = (data.get('desired_date', {}).get('analytics', {})
-                         .get('mttr', {})
-                         .get('rating_to_nominal', ''))
+    mttr_analytics = data.get('analytics', {}).get('mttr', {})
+    mttr = data.get('mttr', {})
+    average_mttr_tech_support = mttr.average_mttr_tech_support if mttr else 0
+    weekly_average_mttr_tech_support = mttr.weekly_average_mttr_tech_support if mttr else 0
+    mountly_average_mttr_tech_support = mttr.mountly_average_mttr_tech_support if mttr else 0
+    num_issues = mttr.num_issues if mttr else 0
+    rating_to_nominal = mttr_analytics.rating_to_nominal if mttr_analytics else 0
 
     message = '=========\n' + \
         'Дневной MTTR: {} мин.\n'\
@@ -186,20 +180,14 @@ def format_flt_message(data: Mapping) -> str:
     Returns:
         str: форматированная строка данных
     """
-    level = (data.get('desired_date', {}).get('flr', {})
-             .get('level', ''))
-    weekly_level = (data.get('desired_date', {})
-                    .get('flr', {})
-                    .get('weekly_level', ''))
-    mountly_level = (data.get('desired_date', {}).get('flr', {})
-                     .get('mountly_level', ''))
-    num_primary_issues = (data.get('desired_date', {}).get('flr', {})
-                          .get('num_primary_issues', ''))
-    num_issues_closed_independently = (data.get('desired_date', {}).get('flr', {})
-                                       .get('num_issues_closed_independently', ''))
-    rating_to_nominal = (data.get('desired_date', {}).get('analytics', {})
-                         .get('flr', {})
-                         .get('rating_to_nominal', ''))
+    flr_analytics = data.get('analytics', {}).get('flr', {})
+    flr = data.get('flr', {})
+    level = flr.level if flr else 0
+    weekly_level = flr.weekly_level if flr else 0
+    mountly_level = flr.mountly_level if flr else 0
+    num_primary_issues = flr.num_primary_issues if flr else 0
+    num_issues_closed_independently = flr.num_issues_closed_independently if flr else 0
+    rating_to_nominal = flr_analytics.rating_to_nominal if flr_analytics else 0
 
     message = '=========\n' + \
         'Дневной FLR: {}%\n'\
@@ -227,19 +215,10 @@ def format_aht_message(data: Mapping) -> str:
     Returns:
         str: форматированная строка данных
     """
-
-    dayly_aht = (data.get('desired_date', {}).get('aht', {})
-                 .get('dayly_aht', ''))
-    weekly_aht = (data.get('desired_date', {})
-                  .get('aht', {})
-                  .get('weekly_aht', ''))
-    mountly_aht = (data.get('desired_date', {}).get('aht', {})
-                   .get('mountly_aht', ''))
-    issues_received = (data.get('desired_date', {}).get('aht', {})
-                       .get('issues_received', ''))
-    rating_to_nominal = (data.get('desired_date', {}).get('analytics', {})
-                         .get('aht', {})
-                         .get('rating_to_nominal', ''))
+    aht_analytics = data.get('analytics', {}).get('aht', {})                                                        aht = data.get('aht', {})                               dayly_aht = aht.dayly_aht if aht else 0
+    weekly_aht = aht.weekly_aht if aht else 0
+    mountly_aht = aht.mountly_aht if aht else 0
+    rating_to_nominal = aht_analytics.rating_to_nominal if aht_analytics else 0
 
     message = '=========\n' + \
         'Дневной AHT: {} мин.\n'\
