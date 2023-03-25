@@ -70,8 +70,8 @@ def format_sl_message(data: Mapping) -> str:
     Returns:
         str: форматированная строка данных
     """
-    first_line_analytics = data.get('desired_date', {}).get('analytics', {}).get('sl', {}).get('first_line', {})
-    first_line = data.get('desired_date', {}).get('sl', {}).get('first_line', {})
+    first_line_analytics = data.get('analytics', {}).get('sl', {}).get('first_line', {})
+    first_line = data.get('sl', {}).get('first_line', {})
     first_line_num_issues = first_line.num_issues if first_line else 0
     first_line_num_worked_before_deadline = first_line.num_worked_before_deadline if first_line else 0
     first_line_num_worked_after_deadline = first_line.num_worked_after_deadline if first_line else 0
@@ -80,8 +80,8 @@ def format_sl_message(data: Mapping) -> str:
     first_line_weekly_sl = first_line.weekly_sl if first_line else 0
     first_line_mountly_sl = first_line.mountly_sl if first_line else 0
 
-    vip_line_analytics = data.get('desired_date', {}).get('analytics', {}).get('sl', {}).get('vip_line', {})
-    vip_line = data.get('desired_date', {}).get('sl', {}).get('vip_line', {})
+    vip_line_analytics = data.get('analytics', {}).get('sl', {}).get('vip_line', {})
+    vip_line = data.get('sl', {}).get('vip_line', {})
     vip_line_num_issues = vip_line.num_issues if vip_line else 0
     vip_line_num_worked_before_deadline = vip_line.num_worked_before_deadline if vip_line else 0
     vip_line_num_worked_after_deadline = vip_line.num_worked_after_deadline if vip_line else 0
@@ -90,8 +90,8 @@ def format_sl_message(data: Mapping) -> str:
     vip_line_weekly_sl = vip_line.weekly_sl if vip_line else 0
     vip_line_mountly_sl = vip_line.mountly_sl if vip_line else 0
 
-    general_analytics = data.get('desired_date', {}).get('analytics', {}).get('sl', {}).get('general', {})
-    general = data.get('desired_date', {}).get('sl', {}).get('general', {})
+    general_analytics = data.get('analytics', {}).get('sl', {}).get('general', {})
+    general = data.get('sl', {}).get('general', {})
     general_num_issues = general.num_issues if general else 0
     general_num_worked_before_deadline = general.num_worked_before_deadline if general else 0
     general_num_worked_after_deadline = general.num_worked_after_deadline if general else 0
