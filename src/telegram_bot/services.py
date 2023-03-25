@@ -375,8 +375,8 @@ def get_sl() -> str:
     Returns:
         str: отформотированное сообщение
     """
-    # day = get_day_dates_and_data().get("dashboard_data", {})
-    # text = format_sl_message(day)
+    day = dashboard_services.get_day_dates_and_data().get("dashboard_data", {})
+    text = format_sl_message(day)
     text = ""
     return text
 
@@ -387,8 +387,8 @@ def get_mttr() -> str:
     Returns:
         str: отформотированное сообщение
     """
-    # day = get_day_dates_and_data()
-    # text = format_mttr_message(day)
+    day = dashboard_services.get_day_dates_and_data()
+    text = format_mttr_message(day)
     text = ""
     return text
 
@@ -399,8 +399,8 @@ def get_flr() -> str:
     Returns:
         str: отформотированное сообщение
     """
-    # day = get_day_dates_and_data()
-    # text = format_flt_message(day)
+    day = dashboard_services.get_day_dates_and_data()
+    text = format_flt_message(day)
     text = ""
     return text
 
@@ -411,7 +411,7 @@ def get_aht() -> str:
     Returns:
         str: отформотированное сообщение
     """
-    # day = get_day_dates_and_data()
-    # text = format_aht_message(day)
+    day = dashboard_services.get_day_dates_and_data()
+    text = format_aht_message(day)
     text = ""
     return text
