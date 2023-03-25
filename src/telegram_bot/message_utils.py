@@ -78,7 +78,7 @@ def format_sl_message(data: Mapping) -> str:
     first_line_num_worked_before_deadline = first_line.num_worked_before_deadline if first_line else 0
     first_line_num_worked_after_deadline = first_line.num_worked_after_deadline if first_line else 0
     first_line_rating_to_nominal = first_line_analytics.rating_to_nominal if first_line_analytics else 0
-    first_line_rating_to_nominal = "> на {}%".format(first_line_rating_to_nominal) if first_line_rating_to_nominal >= 0 else "< на {}%".format(first_line_rating_to_nominal)
+    first_line_rating_to_nominal = "> на {}%".format(abs(int(first_line_rating_to_nominal))) if int(first_line_rating_to_nominal) >= 0 else "< на {}%".format(abs(int(first_line_rating_to_nominal)))
     first_line_dayly_sl = first_line.dayly_sl if first_line else 0
     first_line_weekly_sl = first_line.weekly_sl if first_line else 0
     first_line_mountly_sl = first_line.mountly_sl if first_line else 0
@@ -89,7 +89,7 @@ def format_sl_message(data: Mapping) -> str:
     vip_line_num_worked_before_deadline = vip_line.num_worked_before_deadline if vip_line else 0
     vip_line_num_worked_after_deadline = vip_line.num_worked_after_deadline if vip_line else 0
     vip_line_rating_to_nominal = vip_line_analytics.rating_to_nominal if vip_line_analytics else 0
-    vip_line_rating_to_nominal = "> на {}%".format(vip_line_rating_to_nominal) if vip_line_rating_to_nominal >= 0 else "< на {}%".format(vip_line_rating_to_nominal)
+    vip_line_rating_to_nominal = "> на {}%".format(abs(int(vip_line_rating_to_nominal))) if int(vip_line_rating_to_nominal) >= 0 else "< на {}%".format(abs(int(vip_line_rating_to_nominal)))
     vip_line_dayly_sl = vip_line.dayly_sl if vip_line else 0
     vip_line_weekly_sl = vip_line.weekly_sl if vip_line else 0
     vip_line_mountly_sl = vip_line.mountly_sl if vip_line else 0
@@ -100,7 +100,7 @@ def format_sl_message(data: Mapping) -> str:
     general_num_worked_before_deadline = general.num_worked_before_deadline if general else 0
     general_num_worked_after_deadline = general.num_worked_after_deadline if general else 0
     general_rating_to_nominal = general_analytics.rating_to_nominal if general_analytics else 0
-    general_rating_to_nominal = "> на {}%".format(general_rating_to_nominal) if general_rating_to_nominal >= 0 else "< на {}%".format(general_rating_to_nominal)
+    general_rating_to_nominal = "> на {}%".format(abs(int(general_rating_to_nominal))) if int(general_rating_to_nominal) >= 0 else "< на {}%".format(abs(int(general_rating_to_nominal)))
     general_dayly_sl = general.dayly_sl if general else 0
     general_weekly_sl = general.weekly_sl if general else 0
     general_mountly_sl = general.mountly_sl if general else 0
@@ -159,7 +159,7 @@ def format_mttr_message(data: Mapping) -> str:
     mountly_average_mttr_tech_support = mttr.mountly_average_mttr_tech_support if mttr else 0
     num_issues = mttr.num_issues if mttr else 0
     rating_to_nominal = mttr_analytics.rating_to_nominal if mttr_analytics else 0
-    rating_to_nominal = "> на {}%".format(rating_to_nominal) if rating_to_nominal >= 0 else "< на {}%".format(rating_to_nominal)
+    rating_to_nominal = "> на {}%".format(abs(int(rating_to_nominal))) if int(rating_to_nominal) >= 0 else "< на {}%".format(abs(int(rating_to_nominal)))
 
     message = '=========\n' + \
         'Дневной MTTR: {} мин.\n'\
@@ -193,7 +193,7 @@ def format_flt_message(data: Mapping) -> str:
     num_primary_issues = flr.num_primary_issues if flr else 0
     num_issues_closed_independently = flr.num_issues_closed_independently if flr else 0
     rating_to_nominal = flr_analytics.rating_to_nominal if flr_analytics else 0
-    rating_to_nominal = "> на {}%".format(rating_to_nominal) if rating_to_nominal >= 0 else "< на {}%".format(rating_to_nominal)
+    rating_to_nominal = "> на {}%".format(abs(int(rating_to_nominal))) if int(rating_to_nominal) >= 0 else "< на {}%".format(abs(int(rating_to_nominal)))
 
     message = '=========\n' + \
         'Дневной FLR: {}%\n'\
@@ -228,7 +228,7 @@ def format_aht_message(data: Mapping) -> str:
     mountly_aht = aht.mountly_aht if aht else 0
     issues_received = aht.issues_received if aht else 0
     rating_to_nominal = aht_analytics.rating_to_nominal if aht_analytics else 0
-    rating_to_nominal = "> на {}%".format(rating_to_nominal) if rating_to_nominal >= 0 else "< на {}%".format(rating_to_nominal)
+    rating_to_nominal = "> на {}%".format(abs(int(rating_to_nominal))) if int(rating_to_nominal) >= 0 else "< на {}%".format(abs(int(rating_to_nominal)))
 
     message = '=========\n' + \
         'Дневной AHT: {} мин.\n'\
