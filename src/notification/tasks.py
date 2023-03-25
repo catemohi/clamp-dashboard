@@ -5,7 +5,7 @@ from typing import Mapping, Sequence
 from .services import create_default_burned_notification_setting
 from .services import create_default_returned_notification_setting
 from .services import remove_notification
-from telegram_bot.services import push_to_telegram
+
 
 
 LOGGER = getLogger(__name__)
@@ -33,17 +33,3 @@ def create_returned_notification_models():
     обращения на шаг ТП
     """
     create_default_returned_notification_setting()
-
-
-@shared_task()
-def push_notification_to_telegram(notification: Mapping) -> Sequence:
-    """Отправка уведомления в телеграмм
-
-    Args:
-        notification (Mapping): уведомление
-
-    Returns:
-        Sequence: статус отправки
-    """
-    result = push_to_telegram(notification)
-    return result

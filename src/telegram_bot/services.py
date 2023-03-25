@@ -12,7 +12,6 @@ from .message_utils import format_aht_message, format_sl_message
 from dashboard.services import get_day_dates_and_data
 
 
-
 def get_user_id() -> Sequence[str]:
     """Получить id пользователей.
 
@@ -365,7 +364,8 @@ def push_to_telegram(notification: Mapping) -> None:
     Args:
         notification (Mapping): _description_
     """
-    text = dumps(notification)
+    print(dumps(notification))
+    text = notification.get('text', '')
     send_message_to_channel(text, "reports")
 
 

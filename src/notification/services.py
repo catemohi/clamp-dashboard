@@ -9,8 +9,7 @@ from django.core import serializers
 
 from .models import NotificationMessage, StepNotificationSetting
 from .models import RetrunToWorkNotificationSetting
-from .tasks import push_notification_to_telegram
-
+from telegram_bot.tasks import push_notification_to_telegram
 
 
 CHANNEL_LAYER = get_channel_layer()
