@@ -2,7 +2,7 @@ from celery import shared_task
 from logging import getLogger
 from typing import Mapping, Sequence
 
-from .services import push_to_telegram
+from telegram_bot import services
 
 
 @shared_task()
@@ -15,5 +15,5 @@ def push_notification_to_telegram(notification: Mapping) -> Sequence:
     Returns:
         Sequence: статус отправки
     """
-    result = push_to_telegram(notification)
+    result = services.push_to_telegram(notification)
     return result
