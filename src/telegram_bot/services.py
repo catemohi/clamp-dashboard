@@ -255,7 +255,8 @@ def replace_for_markdown(data: str) -> str:
     Returns:
         str: экранированный текст
     """
-    pattern = r'[-.+?^$[\](){}><!=]'
+    pattern = r'[_\*\[\]\(\)\~`><$\^?#+-=\|\{\}\.!]'
+    # pattern = r'[-.+?^$[\](){}><!=]'
     list_after = []
     for line in data.split('\n'):
         if 'http' in line:
