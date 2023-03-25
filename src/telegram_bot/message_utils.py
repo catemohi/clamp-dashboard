@@ -70,10 +70,8 @@ def format_sl_message(data: Mapping) -> str:
     Returns:
         str: форматированная строка данных
     """
-    print(data)
     first_line_analytics = data.get('analytics', {}).get('sl', {}).get('first_line', {})
     first_line = data.get('sl', {}).get('first_line', {})
-    print(first_line)
     first_line_num_issues = first_line.num_issues if first_line else 0
     first_line_num_worked_before_deadline = first_line.num_worked_before_deadline if first_line else 0
     first_line_num_worked_after_deadline = first_line.num_worked_after_deadline if first_line else 0

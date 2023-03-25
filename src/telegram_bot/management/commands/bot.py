@@ -359,7 +359,6 @@ def callback_sl(update, context):
                                                time=datetime.strftime(
                                                    datetime.now(), "%d.%m.%Y"))
     message += text
-    print(message)
     message = replace_for_markdown(message)
     query.edit_message_text(text=message, parse_mode='MarkdownV2')
 
