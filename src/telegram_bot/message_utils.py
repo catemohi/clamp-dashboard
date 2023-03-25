@@ -103,38 +103,39 @@ def format_sl_message(data: Mapping) -> str:
     general_mountly_sl = general.mountly_sl if general else 0
 
     message = '=========\n' + \
-        'Количество обращений за день на westcall линию: {}\n'\
+        'Кол-во обращений за день на westcall линию: {}\n'\
         .format(first_line_num_issues) + \
-        'Количество обращений westcall линии принятых вовремя: {}\n'\
+        'Кол-во обращений westcall линии принятых вовремя: {}\n'\
         .format(first_line_num_worked_before_deadline) + \
-        'Количество обращений westcall линии принятых после срока: {}\n'\
+        'Кол-во обращений westcall линии принятых после срока: {}\n'\
         .format(first_line_num_worked_after_deadline) + \
         'Нагрузка westcall линии относительно нормы: {}\n'\
         .format(first_line_rating_to_nominal) + \
         'Service Level westcall линии: {}%\n'.format(first_line_dayly_sl) + \
         '=========\n' + \
-        'Количество обращений за день на vip линию: {}\n'\
+        'Кол-во обращений за день на vip линию: {}\n'\
         .format(vip_line_num_issues) + \
-        'Количество обращений vip линии принятых вовремя: {}\n'\
+        'Кол-во обращений vip линии принятых вовремя: {}\n'\
         .format(vip_line_num_worked_before_deadline) + \
-        'Количество обращений vip линии принятых после срока: {}\n'\
+        'Кол-во обращений vip линии принятых после срока: {}\n'\
         .format(vip_line_num_worked_after_deadline) + \
         'Нагрузка vip линии относительно нормы: {}\n'\
         .format(vip_line_rating_to_nominal) + \
         'Service Level vip линии: {}%\n'.format(vip_line_dayly_sl) + \
         '=========\n' + \
-        'Общее количество обращений за день: {}\n'\
+        'Общее кол-во обращений за день: {}\n'\
         .format(general_num_issues) + \
-        'Общее количество обращений принятых вовремя: {}\n'\
+        'Общее Кол-во обращений принятых вовремя: {}\n'\
         .format(general_num_worked_before_deadline) + \
-        'Общее количество обращений принятых после срока: {}\n'\
+        'Общее кол-во обращений принятых после срока: {}\n'\
         .format(general_num_worked_after_deadline) + \
         'Общая нагрузка относительно нормы: {}\n'\
         .format(general_rating_to_nominal) + \
         '=========\n' + \
         'Общий дневной Service Level: {}%\n'.format(general_dayly_sl) + \
         'Общий недельный Service Level: {}%\n'.format(general_weekly_sl) + \
-        'Общий месячный Service Level: {}%\n'.format(general_mountly_sl)
+        'Общий месячный Service Level: {}%\n'.format(general_mountly_sl) + \
+        '=========\n'
 
     return message
 
@@ -163,7 +164,7 @@ def format_mttr_message(data: Mapping) -> str:
         .format(weekly_average_mttr_tech_support) + \
         'Месячный MTTR: {} мин.\n'\
         .format(mountly_average_mttr_tech_support) + \
-        'Общее количество закрытых обращений: {}\n'\
+        'Общее кол-во закрытых обращений: {}\n'\
         .format(num_issues) + \
         'Общая нагрузка относительно нормы: {}\n'\
         .format(rating_to_nominal) + \
@@ -196,9 +197,9 @@ def format_flt_message(data: Mapping) -> str:
         .format(weekly_level) + \
         'Месячный FLR: {}%\n'\
         .format(mountly_level) + \
-        'Общее количество первичных обращений: {}\n'\
+        'Общее кол-во первичных обращений: {}\n'\
         .format(num_primary_issues) + \
-        'Количество обращений закрытых самостоятельно: {}\n'\
+        'Кол-во обращений закрытых самостоятельно: {}\n'\
         .format(num_issues_closed_independently) + \
         'Общая нагрузка относительно нормы: {}\n'\
         .format(rating_to_nominal) + \
