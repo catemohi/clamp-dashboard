@@ -415,3 +415,19 @@ def get_aht() -> str:
     day = dashboard_services.get_day_dates_and_data().get("dashboard_data", {})
     text = format_aht_message(day)
     return text
+
+
+def day_report() -> None:
+    """Получени отчета AHT и отправка его в telegram
+
+    Returns:
+        str: отформотированное сообщение
+    """
+    day = dashboard_services.get_day_dates_and_data().get("dashboard_data", {})
+    sl_text = format_sl_message(day)
+    mttr_text = format_mttr_message(day)
+    flt_text = format_flt_message(day)
+    aht_text = format_aht_message(day)
+    text = "{}\n{}\n{}\n{}\n".format(sl_text, mttr_text, flt_text, aht_text)
+    send_message_to_channel(text, 'reports')
+

@@ -17,3 +17,10 @@ def push_notification_to_telegram(notification: Mapping) -> Sequence:
     """
     result = services.push_to_telegram(notification)
     return result
+
+
+@shared_task()
+def push_day_report() -> None:
+    """Отправка дневного отчета в телеграмм
+    """
+    services.day_report()
