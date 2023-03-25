@@ -4,8 +4,7 @@ from typing import Union, List, Any
 
 from django.db import models
 
-from naumen.services import add_months, get_report_to_period
-from naumen.services import get_issues_from_db
+from naumen import services as naumen_services
 
 
 from .models import RatingSetting, NaumenSetting
@@ -222,7 +221,7 @@ def get_date_collections(datestring: str) -> Dates:
     chosen_date = chosen_datetime.date()
 
     first_day_month = date(chosen_date.year, chosen_date.month, 1)
-    first_day_next_month = add_months(first_day_month, 1)
+    first_day_next_month = naumen_services.add_months(first_day_month, 1)
 
     _monday_days_passed = datetime.isoweekday(chosen_date) - 1
     monday_this_week = (chosen_datetime -
@@ -335,8 +334,8 @@ def _get_service_level(datestring: str) -> Mapping[Literal['sl'], Mapping[
     # Операции над входящей строкой даты
     dates = get_date_collections(datestring)
     # Получение отчетов за месяц
-    qs = get_report_to_period('sl', dates.calends_this_month,
-                              dates.calends_next_month)
+    qs = naumen_services.get_report_to_period('sl', dates.calends_this_month,
+                                              dates.calends_next_month)
     # Исключаем нулевые отчеты
     qs = qs.filter(date__lte=today_date)
     # Получение данных для первой линии.
@@ -419,8 +418,8 @@ def _get_aht(datestring: str) -> Mapping[Literal['aht'], ReportAht]:
     # Операции над входящей строкой даты
     dates = get_date_collections(datestring)
     # Получение отчетов за месяц
-    qs = get_report_to_period('aht', dates.calends_this_month,
-                              dates.calends_next_month)
+    qs = naumen_services.get_report_to_period('aht', dates.calends_this_month,
+                                              dates.calends_next_month)
     # Исключаем нулевые отчеты
     qs = qs.filter(date__lte=today_date)
     # Получение данных для первой линии.
@@ -504,8 +503,8 @@ def _get_mttr(datestring: str) -> Mapping[Literal['mttr'], ReportMttr]:
     today_date = datetime.now().date()
     # Операции над входящей строкой даты
     dates = get_date_collections(datestring)
-    qs = get_report_to_period('mttr', dates.calends_this_month,
-                              dates.calends_next_month)
+    qs = naumen_services.get_report_to_period('mttr', dates.calends_this_month,
+                                              dates.calends_next_month)
     # Исключаем нулевые отчеты
     qs = qs.filter(date__lte=today_date)
     # Получение данных для первой линии.
@@ -585,8 +584,8 @@ def _get_flr(datestring: str) -> Mapping[Literal['flr'], ReportFlr]:
     today_date = datetime.now().date()
     # Операции над входящей строкой даты
     dates = get_date_collections(datestring)
-    qs = get_report_to_period('flr', dates.calends_this_month,
-                              dates.calends_next_month)
+    qs = naumen_services.get_report_to_period('flr', dates.calends_this_month,
+                                              dates.calends_next_month)
     # Исключаем нулевые отчеты
     qs = qs.filter(date__lte=today_date)
     # Формируем данные
@@ -1008,10 +1007,10 @@ def issues_on_group():
     Returns:
         (dict): словарь с счетчиками.
     """
-    first_line_count = len(get_issues_from_db(
+    first_line_count = len(naumen_services.get_issues_from_db(
         **{'responsible': _get_group_name('first_line_group_name'),
            'step': _get_group_step_name()}))
-    vip_line_count = len(get_issues_from_db(
+    vip_line_count = len(naumen_services.get_issues_from_db(
         **{'responsible': _get_group_name('vip_line_group_name'),
            'step': _get_group_step_name()}))
     return {'first_line_counter': first_line_count,
