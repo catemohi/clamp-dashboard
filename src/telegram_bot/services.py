@@ -376,6 +376,7 @@ def get_sl() -> str:
         str: отформотированное сообщение
     """
     day = dashboard_services.get_day_dates_and_data().get("dashboard_data", {})
+    print(day)
     text = format_sl_message(day)
     text = ""
     return text
