@@ -220,6 +220,7 @@ def format_aht_message(data: Mapping) -> str:
     dayly_aht = aht.dayly_aht if aht else 0
     weekly_aht = aht.weekly_aht if aht else 0
     mountly_aht = aht.mountly_aht if aht else 0
+    issues_received = aht.issues_received if aht else 0
     rating_to_nominal = aht_analytics.rating_to_nominal if aht_analytics else 0
 
     message = '=========\n' + \
