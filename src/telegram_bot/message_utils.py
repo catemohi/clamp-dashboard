@@ -1,6 +1,7 @@
 from typing import Mapping
 
 from dashboard import services
+from datetime import datetime
 
 
 # EMOJI
@@ -265,3 +266,26 @@ def format_aht_message(data: Mapping) -> str:
         .format(rating_to_nominal) + \
         '=========\n'
     return message
+
+
+def format_day_report_message(data: Mapping) -> str:
+    """Форматированние данных под отчет AHT
+
+    Args:
+        data (Mapping): данные для форматирования
+
+    Returns:
+        str: форматированная строка данных
+    """
+    daytime = datetime.strftime(datetime.now(), "%d.%m.%Y")
+    text = EMOJI_REPORT + " Итоговый отчёт по показателям за {}:\n".format(daytime) +\
+        "=========\n" +\
+        "SL" +\
+        format_sl_message(data) +\
+        "MTTR" +\
+        format_mttr_message(data) +\
+        "FLR" +\
+        format_flt_message(data) +\
+        "AHT" +\
+        format_aht_message(data)
+    return text

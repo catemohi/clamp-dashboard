@@ -7,7 +7,7 @@ from requests import post
 
 from .models import TelegramUser, NotificationChannel
 from .message_utils import format_mttr_message, format_flt_message
-from .message_utils import format_aht_message, format_sl_message
+from .message_utils import format_aht_message, format_sl_message, format_day_report_message
 
 from dashboard import services as dashboard_services
 
@@ -424,10 +424,5 @@ def day_report() -> None:
         str: отформотированное сообщение
     """
     day = dashboard_services.get_day_dates_and_data().get("dashboard_data", {})
-    sl_text = format_sl_message(day)
-    mttr_text = format_mttr_message(day)
-    flt_text = format_flt_message(day)
-    aht_text = format_aht_message(day)
-    text = "{}\n{}\n{}\n{}\n".format(sl_text, mttr_text, flt_text, aht_text)
+    text = format_day_report_message(day)
     send_message_to_channel(text, 'reports')
-
