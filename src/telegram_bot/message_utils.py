@@ -280,12 +280,12 @@ def format_day_report_message(data: Mapping) -> str:
     daytime = datetime.strftime(datetime.now(), "%d.%m.%Y")
     text = EMOJI_REPORT + " Итоговый отчёт по показателям за {}:\n".format(daytime) +\
         "=========\n" +\
-        "SL" +\
+        "SL\n" +\
         format_sl_message(data) +\
-        "MTTR" +\
+        "MTTR\n" +\
         format_mttr_message(data) +\
-        "FLR" +\
+        "FLR\n" +\
         format_flt_message(data) +\
-        "AHT" +\
+        "AHT\n" +\
         format_aht_message(data)
     return text
