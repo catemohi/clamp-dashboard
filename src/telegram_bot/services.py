@@ -9,7 +9,7 @@ from .models import TelegramUser, NotificationChannel
 from .message_utils import format_mttr_message, format_flt_message
 from .message_utils import format_aht_message, format_sl_message
 
-# from dashboard.services import get_day_dates_and_data
+from dashboard import services as dashboard_services
 
 
 def get_user_id() -> Sequence[str]:
