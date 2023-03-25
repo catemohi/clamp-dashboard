@@ -1,3 +1,5 @@
+from typing import Mapping
+
 # EMOJI
 EMOJI_RED_CROSS = "\U0000274C"
 EMOJI_GREEN_CHECK = "\U00002705"
@@ -57,3 +59,220 @@ POKEBALL = "CAACAgIAAxkBAAEIS4dkHfbJGBkFlb3pV" +\
     "rydJ2cp9o5SiAACqSEAAosY0UhpT6noUQv9ni8E"
 HAGS = "CAACAgIAAxkBAAEIS5NkHfjogG8nbW2f3Efwd" +\
     "1v8p9PJFgAChRsAAjLHwUjJM1wXg4u6Fy8E"
+# FORMAT MESSAGES
+
+
+def format_sl_message(data: Mapping) -> str:
+    """Форматированние данных под отчет SL
+
+    Args:
+        data (Mapping): данные для форматирования
+
+    Returns:
+        str: форматированная строка данных
+    """
+    first_line_num_issues = (data.get('desired_date', {}).get('sl', {})
+                             .get('first_line', {}).get('num_issues', ''))
+    first_line_num_worked_before_deadline = (data.get('desired_date', {})
+                                             .get('sl', {})
+                                             .get('first_line', {})
+                                             .get('num_worked_before_deadline', ''))
+    first_line_num_worked_after_deadline = (data.get('desired_date', {})
+                                            .get('sl', {})
+                                            .get('first_line', {})
+                                            .get('num_worked_after_deadline', ''))
+    first_line_rating_to_nominal = (data.get('desired_date', {})
+                                    .get('analytics', {})
+                                    .get('sl', {})
+                                    .get('first_line', {})
+                                    .get('rating_to_nominal', ''))
+    first_line_dayly_sl = (data.get('desired_date', {}).get('sl', {})
+                           .get('first_line', {}).get('dayly_sl', ''))
+
+    vip_line_num_issues = (data.get('desired_date', {}).get('sl', {})
+                           .get('vip_line', {}).get('num_issues', ''))
+    vip_line_num_worked_before_deadline = (data.get('desired_date', {})
+                                           .get('sl', {})
+                                           .get('vip_line', {})
+                                           .get('num_worked_before_deadline', ''))
+    vip_line_num_worked_after_deadline = (data.get('desired_date', {}).get('sl', {})
+                                          .get('vip_line', {})
+                                          .get('num_worked_after_deadline', ''))
+    vip_line_rating_to_nominal = (data.get('desired_date', {})
+                                  .get('analytics', {})
+                                  .get('sl', {})
+                                  .get('vip_line', {})
+                                  .get('rating_to_nominal', ''))
+    vip_line_dayly_sl = (data.get('desired_date', {}).get('sl', {})
+                         .get('vip_line', {}).get('dayly_sl', ''))
+
+    general_num_issues = (data.get('desired_date', {}).get('sl', {})
+                          .get('general', {}).get('num_issues', ''))
+    general_num_worked_before_deadline = (data.get('desired_date', {}).get('sl', {})
+                                          .get('general', {})
+                                          .get('num_worked_before_deadline', ''))
+    general_num_worked_after_deadline = (data.get('desired_date', {}).get('sl', {})
+                                         .get('general', {})
+                                         .get('num_worked_after_deadline', ''))
+    general_rating_to_nominal = (data.get('desired_date', {})
+                                 .get('analytics', {})
+                                 .get('sl', {})
+                                 .get('general', {})
+                                 .get('rating_to_nominal', ''))
+    general_dayly_sl = (data.get('desired_date', {}).get('sl', {})
+                        .get('general', {}).get('dayly_sl', ''))
+    general_weekly_sl = (data.get('desired_date', {}).get('sl', {})
+                         .get('general', {}).get('weekly_sl', ''))
+    general_mountly_sl = (data.get('desired_date', {}).get('sl', {})
+                          .get('general', {}).get('mountly_sl', ''))
+    message = '=========\n' + \
+        'Количество обращений за день на westcall линию: {}\n'\
+        .format(first_line_num_issues) + \
+        'Количество обращений westcall линии принятых вовремя: {}\n'\
+        .format(first_line_num_worked_before_deadline) + \
+        'Количество обращений westcall линии принятых после срока: {}\n'\
+        .format(first_line_num_worked_after_deadline) + \
+        'Нагрузка westcall линии относительно нормы: {}\n'\
+        .format(first_line_rating_to_nominal) + \
+        'Service Level westcall линии: {}\n'.format(first_line_dayly_sl) + \
+        '=========\n' + \
+        'Количество обращений за день на vip линию: {}\n'\
+        .format(vip_line_num_issues) + \
+        'Количество обращений vip линии принятых вовремя: {}\n'\
+        .format(vip_line_num_worked_before_deadline) + \
+        'Количество обращений vip линии принятых после срока: {}\n'\
+        .format(vip_line_num_worked_after_deadline) + \
+        'Нагрузка vip линии относительно нормы: {}\n'\
+        .format(vip_line_rating_to_nominal) + \
+        'Service Level vip линии: {}\n'.format(vip_line_dayly_sl) + \
+        '=========\n' + \
+        'Общее количество обращений за день: {}\n'\
+        .format(general_num_issues) + \
+        'Общее количество обращений принятых вовремя: {}\n'\
+        .format(general_num_worked_before_deadline) + \
+        'Общее количество обращений принятых после срока: {}\n'\
+        .format(general_num_worked_after_deadline) + \
+        'Общая нагрузка относительно нормы: {}\n'\
+        .format(general_rating_to_nominal) + \
+        '=========\n' + \
+        'Общий дневной Service Level: {}\n'.format(general_dayly_sl) + \
+        'Общий недельный Service Level: {}\n'.format(general_weekly_sl) + \
+        'Общий месячный Service Level: {}\n'.format(general_mountly_sl)
+
+    return message
+
+
+def format_mttr_message(data: Mapping) -> str:
+    """Форматированние данных под отчет MTTR
+
+    Args:
+        data (Mapping): данные для форматирования
+
+    Returns:
+        str: форматированная строка данных
+    """
+    average_mttr_tech_support = (data.get('desired_date', {}).get('mttr', {})
+                                 .get('average_mttr_tech_support', ''))
+    weekly_average_mttr_tech_support = (data.get('desired_date', {})
+                                        .get('mttr', {})
+                                        .get('weekly_average_mttr_tech_support', ''))
+    mountly_average_mttr_tech_support = (data.get('desired_date', {}).get('mttr', {})
+                                         .get('mountly_average_mttr_tech_support', ''))
+    num_issues = (data.get('desired_date', {}).get('mttr', {})
+                  .get('num_issues', ''))
+    rating_to_nominal = (data.get('desired_date', {}).get('analytics', {})
+                         .get('mttr', {})
+                         .get('rating_to_nominal', ''))
+
+    message = '=========\n' + \
+        'Дневной MTTR: {} мин.\n'\
+        .format(average_mttr_tech_support) + \
+        'Недельный MTTR: {} мин.\n'\
+        .format(weekly_average_mttr_tech_support) + \
+        'Месячный MTTR: {} мин.\n'\
+        .format(mountly_average_mttr_tech_support) + \
+        'Общее количество закрытых обращений: {}\n'\
+        .format(num_issues) + \
+        'Общая нагрузка относительно нормы: {}\n'\
+        .format(rating_to_nominal) + \
+        '=========\n'
+    return message
+
+
+def format_flt_message(data: Mapping) -> str:
+    """Форматированние данных под отчет FLR
+
+    Args:
+        data (Mapping): данные для форматирования
+
+    Returns:
+        str: форматированная строка данных
+    """
+    level = (data.get('desired_date', {}).get('flr', {})
+             .get('level', ''))
+    weekly_level = (data.get('desired_date', {})
+                    .get('flr', {})
+                    .get('weekly_level', ''))
+    mountly_level = (data.get('desired_date', {}).get('flr', {})
+                     .get('mountly_level', ''))
+    num_primary_issues = (data.get('desired_date', {}).get('flr', {})
+                          .get('num_primary_issues', ''))
+    num_issues_closed_independently = (data.get('desired_date', {}).get('flr', {})
+                                       .get('num_issues_closed_independently', ''))
+    rating_to_nominal = (data.get('desired_date', {}).get('analytics', {})
+                         .get('flr', {})
+                         .get('rating_to_nominal', ''))
+
+    message = '=========\n' + \
+        'Дневной FLR: {}%\n'\
+        .format(level) + \
+        'Недельный FLR: {}%\n'\
+        .format(weekly_level) + \
+        'Месячный FLR: {}%\n'\
+        .format(mountly_level) + \
+        'Общее количество первичных обращений: {}\n'\
+        .format(num_primary_issues) + \
+        'Количество обращений закрытых самостоятельно: {}\n'\
+        .format(num_issues_closed_independently) + \
+        'Общая нагрузка относительно нормы: {}\n'\
+        .format(rating_to_nominal) + \
+        '=========\n'
+    return message
+
+
+def format_aht_message(data: Mapping) -> str:
+    """Форматированние данных под отчет AHT
+
+    Args:
+        data (Mapping): данные для форматирования
+
+    Returns:
+        str: форматированная строка данных
+    """
+
+    dayly_aht = (data.get('desired_date', {}).get('aht', {})
+                 .get('dayly_aht', ''))
+    weekly_aht = (data.get('desired_date', {})
+                  .get('aht', {})
+                  .get('weekly_aht', ''))
+    mountly_aht = (data.get('desired_date', {}).get('aht', {})
+                   .get('mountly_aht', ''))
+    issues_received = (data.get('desired_date', {}).get('aht', {})
+                       .get('issues_received', ''))
+    rating_to_nominal = (data.get('desired_date', {}).get('analytics', {})
+                         .get('aht', {})
+                         .get('rating_to_nominal', ''))
+
+    message = '=========\n' + \
+        'Дневной AHT: {} мин.\n'\
+        .format(dayly_aht) + \
+        'Недельный AHT: {} мин.\n'\
+        .format(weekly_aht) + \
+        'Месячный AHT: {} мин.\n'\
+        .format(mountly_aht) + \
+        'Поступило обращений: {}\n'\
+        .format(issues_received) + \
+        'Общая нагрузка относительно нормы: {}\n'\
+        .format(rating_to_nominal) + \
+        '=========\n'
+    return message

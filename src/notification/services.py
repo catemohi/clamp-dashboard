@@ -9,8 +9,9 @@ from django.core import serializers
 
 from .models import NotificationMessage, StepNotificationSetting
 from .models import RetrunToWorkNotificationSetting
+from .tasks import push_notification_to_telegram
 
-from telegram_bot.services import push_to_telegram
+
 
 CHANNEL_LAYER = get_channel_layer()
 
@@ -120,8 +121,7 @@ def send_notification(issue: str, *args, **kwargs):
                         issue=dumps(result[1]["issue"])).save()
 
     result[1]["time"] = result[1]["time"].isoformat()
-    # TODO celety задача
-    push_to_telegram(result[1])
+    push_notification_to_telegram.delay(result[1])
     async_to_sync(CHANNEL_LAYER.group_send)(*result)
 
 

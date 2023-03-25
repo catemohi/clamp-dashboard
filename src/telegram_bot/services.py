@@ -1,8 +1,16 @@
 from re import findall, sub
-from requests import post
+from json import dumps
 from typing import Sequence, Literal, Union, Iterable, Mapping
+
 from django.conf import settings
+from requests import post
+
 from .models import TelegramUser, NotificationChannel
+from .message_utils import format_mttr_message, format_flt_message
+from .message_utils import format_aht_message, format_sl_message
+
+from dashboard.services import get_day_dates_and_data
+
 
 
 def get_user_id() -> Sequence[str]:
@@ -357,21 +365,49 @@ def push_to_telegram(notification: Mapping) -> None:
     Args:
         notification (Mapping): _description_
     """
-    text = notification.get("text", '')
+    text = dumps(notification)
     send_message_to_channel(text, "reports")
 
 
-def get_sl():
-    return ""
+def get_sl() -> str:
+    """Получени отчета SL и отправка его в telegram
+
+    Returns:
+        str: отформотированное сообщение
+    """
+    day = get_day_dates_and_data().get("dashboard_data", {})
+    text = format_sl_message(day)
+    return text
 
 
-def get_mttr():
-    return ""
+def get_mttr() -> str:
+    """Получени отчета MTTR и отправка его в telegram
+
+    Returns:
+        str: отформотированное сообщение
+    """
+    day = get_day_dates_and_data()
+    text = format_mttr_message(day)
+    return text
 
 
-def get_flr():
-    return ""
+def get_flr() -> str:
+    """Получени отчета FLR и отправка его в telegram
+
+    Returns:
+        str: отформотированное сообщение
+    """
+    day = get_day_dates_and_data()
+    text = format_flt_message(day)
+    return text
 
 
-def get_aht():
-    return ""
+def get_aht() -> str:
+    """Получени отчета AHT и отправка его в telegram
+
+    Returns:
+        str: отформотированное сообщение
+    """
+    day = get_day_dates_and_data()
+    text = format_aht_message(day)
+    return text
