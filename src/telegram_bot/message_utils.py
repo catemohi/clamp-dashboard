@@ -203,7 +203,7 @@ def format_flt_message(data: Mapping) -> str:
     flr_analytics = data.get('analytics', {}).get('flr', {})
     flr = data.get('flr', {})
     level = flr.level if flr else 0
-    level_emoji_sl = EMOJI_GREEN_CIRCLE if int(level) <= ratings.flr_level else EMOJI_RED_CIRCLE
+    level_emoji_sl = EMOJI_GREEN_CIRCLE if int(level) >= ratings.flr_level else EMOJI_RED_CIRCLE
     weekly_level = flr.weekly_level if flr else 0
     weekly_level_emoji_sl = EMOJI_GREEN_CIRCLE if int(weekly_level) >= ratings.flr_level else EMOJI_RED_CIRCLE
     mountly_level = flr.mountly_level if flr else 0
