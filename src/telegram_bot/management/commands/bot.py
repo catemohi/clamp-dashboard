@@ -148,7 +148,7 @@ def user_subscriptions(update, context):
         user_subscriptions = get_user_subscriptions(user_id)
     except ValueError as e:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=str(e))
+                                 text=message_utils.EMOJI_RED_CROSS + " " + str(e))
         return
     if not user_subscriptions:
         context.bot.send_message(chat_id=update.effective_chat.id,
@@ -176,7 +176,7 @@ def unsubscribe_channel(update, context):
         user_subscriptions = get_user_subscriptions(user_id)
     except ValueError as e:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=str(e))
+                                 text=message_utils.EMOJI_RED_CROSS + " " + str(e))
         return
     if len(user_subscriptions) == 0:
         context.bot.send_message(chat_id=update.effective_chat.id,
@@ -202,7 +202,7 @@ def callback_unsubsctibe(update, context):
         unsubscribe(user_id, data)
     except ValueError as e:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=str(e))
+                                 text=message_utils.EMOJI_RED_CROSS + " " + str(e))
         return
     query.edit_message_text(text=message_utils.UNSCRIBE_SUCCESS_MESSAGE)
 
@@ -240,7 +240,7 @@ def callback_subsctibe(update, context):
         subscribe(user_id, data)
     except ValueError as e:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=str(e))
+                                 text=message_utils.EMOJI_RED_CROSS + " " + str(e))
         return
     query.edit_message_text(text=message_utils.SUBSCRIBE_SUCCESS_MESSAGE)
 
@@ -257,7 +257,7 @@ def get_notification_channel(update, context):
         channels = get_channels()
     except ValueError as e:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=str(e))
+                                 text=message_utils.EMOJI_RED_CROSS + " " + str(e))
         return
     channels_text = ""
     for num, channel in enumerate(channels, 1):
@@ -311,7 +311,7 @@ def callback_auth(update, context):
                                  text=message_utils.AUTH_SUCCESS_NOTIFICATION)
     except ValueError as e:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=str(e))
+                                 text=message_utils.EMOJI_RED_CROSS + " " + str(e))
         return
     query.edit_message_text(text=message_utils.USER_IS_AUTH.format(data))
 
@@ -327,7 +327,7 @@ def callback_ban(update, context):
                                  text=message_utils.BAN_NOTIFICATION)
     except ValueError as e:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=str(e))
+                                 text=message_utils.EMOJI_RED_CROSS + " " + str(e))
         return
     query.edit_message_text(text=message_utils.USER_IS_BAN.format(data))
 
@@ -359,7 +359,7 @@ def callback_sl(update, context):
         text = get_sl()
     except ValueError as e:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=str(e))
+                                 text=message_utils.EMOJI_RED_CROSS + " " + str(e))
         return
     message = message_utils.REPORT_HEAD.format(name="SL",
                                                time=datetime.strftime(
@@ -376,7 +376,7 @@ def callback_mttr(update, context):
         text = get_mttr()
     except ValueError as e:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=str(e))
+                                 text=message_utils.EMOJI_RED_CROSS + " " + str(e))
         return
     message = message_utils.REPORT_HEAD.format(name="MTTR",
                                                time=datetime.strftime(
@@ -393,7 +393,7 @@ def callback_flr(update, context):
         text = get_flr()
     except ValueError as e:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=str(e))
+                                 text=message_utils.EMOJI_RED_CROSS + " " + str(e))
         return
     message = message_utils.REPORT_HEAD.format(name="FLR",
                                                time=datetime.strftime(
@@ -410,7 +410,7 @@ def callback_aht(update, context):
         text = get_aht()
     except ValueError as e:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=str(e))
+                                 text=message_utils.EMOJI_RED_CROSS + " " + str(e))
         return
     message = message_utils.REPORT_HEAD.format(name="AHT",
                                                time=datetime.strftime(
