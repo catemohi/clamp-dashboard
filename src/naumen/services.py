@@ -16,7 +16,7 @@ from naumen_api.naumen_api import Client
 
 from notification.models import StepNotificationSetting
 from notification.models import RetrunToWorkNotificationSetting
-from notification.services import send_notification, IssueNotification
+from notification.services import send_notification, IssueNotification, get_burned_steps
 
 from pytz import timezone
 
@@ -25,6 +25,7 @@ from .exceptions import NaumenServiceError
 from .models import FlrReport, Issue
 from .models import MeanTimeToResponseReport, ServiceLevelReport, AhtReport
 
+import dashboard.services as dashboard_services
 
 SESSION_UPDATE_PERIOD = timedelta(hours=2)
 SESSION_UPDATE_TIME = datetime.now()
@@ -415,9 +416,19 @@ def create_or_update_issue_model(issue: dict) -> None:
             obj.save()
 
         if status:
-            send_notification(
-                issue,
-                **{"type": IssueNotification.CHANGED, "changed": changed_dict})
+            naumen_service = dashboard_services.get_load_naumen_settings()
+            work_lines = (naumen_service.first_group_name,
+                          naumen_service.vip_group_name)
+            if issue.get('responsible') in work_lines and issue.get('step') in get_burned_steps():
+                send_notification(
+                    issue,
+                    **{"type": IssueNotification.BACK_TO_WORK,
+                       "changed": changed_dict})
+            else:
+                send_notification(
+                    issue,
+                    **{"type": IssueNotification.CHANGED,
+                       "changed": changed_dict})
 
         change_model_fields(Issue, {'uuid': issue.get('uuid')},
                             _converter_timestring_to_timeobj_for_obj(issue))

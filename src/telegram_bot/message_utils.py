@@ -10,6 +10,9 @@ EMOJI_GREEN_CHECK = "\U00002705"
 EMOJI_REPORT = "\U0001F4CA"
 EMOJI_RED_CIRCLE = "\U0001F534"
 EMOJI_GREEN_CIRCLE = "\U0001F7E2"
+EMOJI_MAIL = "\U00002709"
+EMOJI_LOVE_MAIL = "\U0001F48C"
+EMOJI_DYNAMITE = "\U0001F9E8"
 # MESSAGE
 NOT_SUBSCRIPTIONS_MESSAGE = EMOJI_RED_CROSS + " У вас нет активных подписок!"
 REGISTRATION_EXIST = EMOJI_RED_CROSS + " Вы уже зарегистрированы!"
@@ -42,6 +45,8 @@ NOT_WAITED = EMOJI_RED_CROSS + " Нет пользователей ожидаю�
 USER_FORM = "Имя: {}\nНик: @{}\nID: {}"
 RUN_AUTH = EMOJI_GREEN_CHECK + " Авторизовать"
 RUN_BAN = EMOJI_RED_CROSS + " Заблокировать"
+AUTH_SUCCESS_NOTIFICATION = EMOJI_GREEN_CHECK + " Администратор авторизовал Вас. Для вывода команд наберитe: /help"
+BAN_NOTIFICATION = EMOJI_RED_CROSS + " Администратор заблокировал Вас!"
 # HELP MESSAGE
 HELP_MESSAGE = (
     "*Команды бота:*\n\n"
@@ -65,6 +70,8 @@ POKEBALL = "CAACAgIAAxkBAAEIS4dkHfbJGBkFlb3pV" +\
     "rydJ2cp9o5SiAACqSEAAosY0UhpT6noUQv9ni8E"
 HAGS = "CAACAgIAAxkBAAEIS5NkHfjogG8nbW2f3Efwd" +\
     "1v8p9PJFgAChRsAAjLHwUjJM1wXg4u6Fy8E"
+SUCCESS_PIKACHU = "CAACAgIAAxkBAAEIVlJkIKfn5PaWYwriGPkOK2" +\
+    "Zq-GpXpwACMQADIfAEHFfQN2PZvuwvLwQ"
 # FORMAT MESSAGES
 
 
@@ -289,3 +296,43 @@ def format_day_report_message(data: Mapping) -> str:
         "AHT\n" +\
         format_aht_message(data)
     return text
+
+
+def massage_on_group(issue: Mapping, group: str,
+                     returned: bool = False) -> str:
+    head_dict = {
+        "westcall_line": {
+            True: EMOJI_MAIL + ' *На группу вернулся ТТ!*\n',
+            False: EMOJI_MAIL + ' *На группе появился ТТ!*\n',
+        },
+        "vip_line": {
+            True: EMOJI_LOVE_MAIL + ' *На VIP-группу вернулся ТТ!*\n',
+            False: EMOJI_LOVE_MAIL + ' *На VIP-группе появился новый ТТ!*\n',
+        },
+    }
+    return head_dict.get(group, {}).get(returned, '') + \
+        'Номер : {}\n'.format(issue.get('number', '')) + \
+        '[Ссылка на ТТ]({})\n'.format(issue.get('url_issue', '')) + \
+        'Дата и время регистрации ТТ : {}\n'.format(issue.get('creation_date', '')) + \
+        'Услуга : {}\n'.format(issue.get('name_service', '')) + \
+        '[Ссылка на услугу]({})\n'.format(issue.get('url_service', ''))
+
+
+def massage_returned(issue: Mapping, group: str) -> str:
+    head_dict = {
+        "westcall_line": EMOJI_MAIL + ' *На группу в {} вернется ТТ!*\n'.format(issue.get('return_to_work_time', '')),
+
+        "vip_line": EMOJI_LOVE_MAIL + ' *На VIP-группу в {} вернется ТТ!*\n'.format(issue.get('return_to_work_time', '')),
+    }
+    return head_dict.get(group, '') + \
+        'Номер : {}\n'.format(issue.get('number', '')) + \
+        '[Ссылка на ТТ]({})\n'.format(issue.get('url_issue', '')) + \
+        'Дата и время регистрации ТТ : {}\n'.format(issue.get('creation_date', '')) + \
+        'Услуга : {}\n'.format(issue.get('name_service', '')) + \
+        '[Ссылка на услугу]({})\n'.format(issue.get('url_service', ''))
+
+
+def massage_alarm(issue, message):
+    return EMOJI_DYNAMITE + ' *ПРЕДУПРЕЖДЕНИЕ*\n' +\
+        "{}\n".format(message) + \
+        "[Ссылки на ТТ]({})".format(issue.get("url_issue",))

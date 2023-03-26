@@ -305,6 +305,10 @@ def callback_auth(update, context):
     data = query.data.replace('_AUTH', '')
     try:
         authorizate_user(data)
+        context.bot.send_sticker(int(data),
+                                 message_utils.SUCCESS_PIKACHU)
+        context.bot.send_message(chat_id=int(data),
+                                 text=message_utils.AUTH_SUCCESS_NOTIFICATION)
     except ValueError as e:
         context.bot.send_message(chat_id=update.effective_chat.id,
                                  text=str(e))
@@ -319,6 +323,8 @@ def callback_ban(update, context):
     data = query.data.replace('_BAN', '')
     try:
         ban_user(data)
+        context.bot.send_message(chat_id=int(data),
+                                 text=message_utils.BAN_NOTIFICATION)
     except ValueError as e:
         context.bot.send_message(chat_id=update.effective_chat.id,
                                  text=str(e))

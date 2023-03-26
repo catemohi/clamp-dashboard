@@ -24,9 +24,11 @@ class IssueNotification(Enum):
     CLOSED = 3
     BURNED = 4
     RETURNED = 5
+    BACK_TO_WORK = 6
 
 
-def create_update_message(issue: Mapping, changed: Mapping) -> str:
+def create_update_message(issue: Mapping, changed: Mapping,
+                          back_to_work: bool = False) -> str:
     """Функция для генерации текста уведомления о изменении.
     Т.к приоретет уведомлений не одинаков. Возвратиться самое преоритетное
     уведомление.
@@ -34,11 +36,16 @@ def create_update_message(issue: Mapping, changed: Mapping) -> str:
     Args:
         issue (Mapping): обращение
         changed (Mapping): извенения
+        back_to_work(bool): обращение вернулось в работу
 
     Returns:
         str: текст уведомления
     """
     message = ''
+    if back_to_work:
+        message = (f'Обращение номер {issue.get("number")} '
+                   f'вернулось в работу на линию')
+        return message
 
     if changed.get('return_to_work_time', False):
         message = (f'Время решения обращения номер '
@@ -56,13 +63,21 @@ def create_update_message(issue: Mapping, changed: Mapping) -> str:
     return message
 
 
-def send_notification(issue: str, *args, **kwargs):
+def send_notification(issue: Mapping, *args, **kwargs):
     """Уведомление о новом обращении.
     """
 
     time = datetime.now()
+    if kwargs.get('type') == IssueNotification.BACK_TO_WORK:
+        message = create_update_message(issue, kwargs['changed'], True)
+        result = (
+            "clamp",
+            {"type": "notification", "subtype": "updated", "issue": issue,
+             "text": message, "time": time},
+            )
+        push_notification_to_telegram.delay(result[1])
 
-    if kwargs.get('type') == IssueNotification.CHANGED:
+    elif kwargs.get('type') == IssueNotification.CHANGED:
         message = create_update_message(issue, kwargs['changed'])
         result = (
             "clamp",
@@ -80,6 +95,7 @@ def send_notification(issue: str, *args, **kwargs):
             {"type": "notification", "subtype": "new", "issue": issue,
              "text": message, "time": time},
             )
+        push_notification_to_telegram.delay(result[1])
 
     elif kwargs.get('type') == IssueNotification.CLOSED:
         group = (lambda issue: 'VIP линии' if issue['vip_contragent']
@@ -102,6 +118,7 @@ def send_notification(issue: str, *args, **kwargs):
             "clamp",
             {"type": "notification", "subtype": "returned", "issue": issue,
              "text": message, "time": time})
+        push_notification_to_telegram.delay(result[1])
 
     elif kwargs.get('type') == IssueNotification.BURNED:
         group = (lambda issue: 'VIP линии' if issue['vip_contragent']
@@ -113,6 +130,7 @@ def send_notification(issue: str, *args, **kwargs):
             "clamp",
             {"type": "notification", "subtype": "burned", "issue": issue,
              "text": message, "time": time})
+        push_notification_to_telegram.delay(result[1])
 
     NotificationMessage(text=result[1]["text"],
                         time=result[1]["time"],
@@ -120,7 +138,6 @@ def send_notification(issue: str, *args, **kwargs):
                         issue=dumps(result[1]["issue"])).save()
 
     result[1]["time"] = result[1]["time"].isoformat()
-    push_notification_to_telegram.delay(result[1])
     async_to_sync(CHANNEL_LAYER.group_send)(*result)
 
 
@@ -235,3 +252,10 @@ def get_returned_notification_setting():
     """
     settings = [entry for entry in RetrunToWorkNotificationSetting.objects.values()]
     return dumps(settings)
+
+
+def get_burned_steps():
+    """Функция для получения шагов работы
+    """
+    steps = [entry.step for entry in StepNotificationSetting.objects.all()]
+    return steps

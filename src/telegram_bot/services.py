@@ -8,6 +8,7 @@ from requests import post
 from .models import TelegramUser, NotificationChannel
 from .message_utils import format_mttr_message, format_flt_message
 from .message_utils import format_aht_message, format_sl_message, format_day_report_message
+from .message_utils import massage_alarm, massage_on_group, massage_returned
 
 from dashboard import services as dashboard_services
 
@@ -364,14 +365,20 @@ def push_to_telegram(notification: Mapping) -> None:
     Args:
         notification (Mapping): обьект уведомления
     """
-    # print(dumps(notification))
     subtype = notification.get('subtype', '')
     is_vip = notification.get('issue', {}).get('vip_contragent', False)
     text = notification.get('text', '')
-    print(subtype)
-    print(text)
     channel = 'vip_line' if is_vip else 'westcall_line'
+    if subtype == "new":
+        test_text = massage_on_group(notification.get('issue', {}), channel, False)
+    elif subtype == "update":
+        test_text = massage_on_group(notification.get('issue', {}), channel, True)
+    elif subtype == "returned":
+        test_text = massage_returned(notification.get('issue', {}), channel)
+    elif subtype == "burned":
+        test_text = massage_alarm(notification.get('issue', {}), text)
     send_message_to_channel(text, channel)
+    send_message_to_channel(test_text, 'test')
 
 
 def get_sl() -> str:
