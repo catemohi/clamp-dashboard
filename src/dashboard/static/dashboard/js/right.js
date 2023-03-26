@@ -113,22 +113,7 @@ function changeAnalytics() {
 
 
     Analytics.forEach(function modifyPercentRatings(module) {
-        let RatingObjs =  [module.querySelector(".rating_to_nominal *"),
-                           ];
 
-        RatingObjs.forEach(function modifyRating(ratingObj) {
-            let valueRating = parsingInt(ratingObj.textContent);
-            if (valueRating > 0) {
-                ratingObj.textContent = "> на " + Math.abs(valueRating) + "%";
-                ratingObj.classList.add("danger");
-            } else if (valueRating < 0){
-                ratingObj.textContent = "< на " + Math.abs(valueRating) + "%";
-                ratingObj.classList.add("success");
-            }
-            else {
-                //pass
-            }
-        });
 
         let daylySL = module.querySelector(".dayly_sl *")
         if (daylySL != null) {
@@ -284,7 +269,6 @@ function changeAnlyticsValue(data) {
         Obj[0].querySelector(".mountly_sl *").textContent = Obj[1].mountly_sl + '%'
         Obj[0].querySelector(".num_issues *").textContent = Obj[1].num_issues
         Obj[0].querySelector(".num_worked_before_deadline *").textContent = Obj[1].num_worked_before_deadline
-        Obj[0].querySelector(".rating_to_nominal *").textContent = Obj[2].rating_to_nominal + '%'
     });
 
     let analyticsMttr = document.querySelector(".mttr");
@@ -292,7 +276,6 @@ function changeAnlyticsValue(data) {
     analyticsMttr.querySelector(".weekly_mttr *").textContent = data.dashboard_data.mttr.weekly_average_mttr_tech_support + ' мин.'
     analyticsMttr.querySelector(".mountly_mttr *").textContent = data.dashboard_data.mttr.mountly_average_mttr_tech_support + ' мин.'
     analyticsMttr.querySelector(".num_issues *").textContent = data.dashboard_data.mttr.num_issues
-    analyticsMttr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.mttr.rating_to_nominal + '%'
 
     let analyticsFlr = document.querySelector(".flr");
     analyticsFlr.querySelector(".dayly_flr *").textContent = data.dashboard_data.flr.level + '%'
@@ -300,14 +283,12 @@ function changeAnlyticsValue(data) {
     analyticsFlr.querySelector(".mountly_flr *").textContent = data.dashboard_data.flr.mountly_level + '%'
     analyticsFlr.querySelector(".num_primary_issues *").textContent = data.dashboard_data.flr.num_primary_issues
     analyticsFlr.querySelector(".num_issues_closed_independently *").textContent = data.dashboard_data.flr.num_issues_closed_independently    
-    analyticsFlr.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.flr.rating_to_nominal + '%'
 
     let analyticsAht = document.querySelector(".aht");
     analyticsAht.querySelector(".dayly_aht *").textContent = data.dashboard_data.aht.dayly_aht + ' мин.'
     analyticsAht.querySelector(".weekly_aht *").textContent = data.dashboard_data.aht.weekly_aht + ' мин.'
     analyticsAht.querySelector(".mountly_aht *").textContent = data.dashboard_data.aht.mountly_aht + ' мин.'
     analyticsAht.querySelector(".issues_received *").textContent = data.dashboard_data.aht.issues_received
-    analyticsAht.querySelector(".rating_to_nominal *").textContent =  data.dashboard_data.analytics.flr.rating_to_nominal + '%'
     changeAnalytics();
 };
 function createNotification(){
