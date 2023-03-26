@@ -77,8 +77,8 @@ def ban_user(user_id):
         user_id (_type_): _description_
     """
     tlgm_user_queryset = TelegramUser.objects.filter(tlgm_id=user_id)
-    if tlgm_user_queryset.exists():
-        raise ValueError("User with id '%s' already exists" % user_id)
+    if not tlgm_user_queryset.exists():
+        raise ValueError("User with id '%s' not exists" % user_id)
     if len(tlgm_user_queryset) > 1:
         raise ValueError("User has more than one."
                          "Specify multiple arguments for search.")

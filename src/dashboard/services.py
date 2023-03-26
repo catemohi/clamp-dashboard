@@ -852,11 +852,8 @@ def _aht_analytics(chosen_day: Mapping[Literal['aht'], ReportAht],
     rating_to_comparison = 0.0
 
     # Аналитики относительно номинальных значений.
-    # TODO
-    # rating_to_nominal = _compare_num(chosen_day['aht'].issues_received,
-    #                                  nominal_values.issues_received)
     rating_to_nominal = _compare_num(chosen_day['aht'].issues_received,
-                                     0)
+                                     nominal_values.issues_received)
     # Аналитика относительно дня сравнения
     if comparison_day:
         rating_to_comparison = _compare_num(
