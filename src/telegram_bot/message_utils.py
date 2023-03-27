@@ -45,7 +45,7 @@ NOT_WAITED = EMOJI_RED_CROSS + " Нет пользователей ожидаю�
 USER_FORM = "Имя: {}\nНик: @{}\nID: {}"
 RUN_AUTH = EMOJI_GREEN_CHECK + " Авторизовать"
 RUN_BAN = EMOJI_RED_CROSS + " Заблокировать"
-AUTH_SUCCESS_NOTIFICATION = EMOJI_GREEN_CHECK + " Администратор авторизовал Вас\n. Для вывода команд наберитe: /help"
+AUTH_SUCCESS_NOTIFICATION = EMOJI_GREEN_CHECK + " Администратор авторизовал Вас.\nДля вывода команд наберитe: /help"
 BAN_NOTIFICATION = EMOJI_RED_CROSS + " Администратор заблокировал Вас!"
 # HELP MESSAGE
 HELP_MESSAGE = (
@@ -336,6 +336,7 @@ def massage_returned(issue: Mapping, group: str) -> str:
 
 
 def massage_alarm(issue, message):
+    message = message.replace("ПРЕДУПРЕЖДЕНИЕ! ", "").strip()
     return EMOJI_DYNAMITE + ' *ПРЕДУПРЕЖДЕНИЕ*\n' +\
         "{}\n".format(message) + \
         "[Ссылки на ТТ]({})".format(issue.get("url_issue",))
