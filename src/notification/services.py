@@ -43,8 +43,10 @@ def create_update_message(issue: Mapping, changed: Mapping,
     """
     message = ''
     if back_to_work:
+        group = (lambda issue: 'VIP линию' if issue['vip_contragent']
+                 else 'WESTCALL линию')(issue)
         message = (f'Обращение номер {issue.get("number")} '
-                   f'вернулось в работу на линию')
+                   f'вернулось в работу на {group}')
         return message
 
     if changed.get('return_to_work_time', False):
@@ -72,7 +74,7 @@ def send_notification(issue: Mapping, *args, **kwargs):
         message = create_update_message(issue, kwargs['changed'], True)
         result = (
             "clamp",
-            {"type": "notification", "subtype": "updated", "issue": issue,
+            {"type": "notification", "subtype": "back_to_work", "issue": issue,
              "text": message, "time": time},
             )
         push_notification_to_telegram.delay(result[1])
@@ -110,7 +112,7 @@ def send_notification(issue: Mapping, *args, **kwargs):
 
     elif kwargs.get('type') == IssueNotification.RETURNED:
         group = (lambda issue: 'VIP линии' if issue['vip_contragent']
-                 else 'первой линии')(issue)
+                 else 'WESTCALL линии')(issue)
         message = (f'{issue.get("return_to_work_time")} '
                    f'на {group} c отложенного шага {issue.get("step")} '
                    f'вернется обращение номер {issue.get("number")}')

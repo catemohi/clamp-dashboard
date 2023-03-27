@@ -368,17 +368,18 @@ def push_to_telegram(notification: Mapping) -> None:
     subtype = notification.get('subtype', '')
     is_vip = notification.get('issue', {}).get('vip_contragent', False)
     text = notification.get('text', '')
+    final_text = ''
     channel = 'vip_line' if is_vip else 'westcall_line'
     if subtype == "new":
-        test_text = massage_on_group(notification.get('issue', {}), channel, False)
-    elif subtype == "update":
-        test_text = massage_on_group(notification.get('issue', {}), channel, True)
+        final_text = massage_on_group(notification.get('issue', {}), channel, False)
+    elif subtype == "back_to_work":
+        final_text = massage_on_group(notification.get('issue', {}), channel, True)
     elif subtype == "returned":
-        test_text = massage_returned(notification.get('issue', {}), channel)
+        final_text = massage_returned(notification.get('issue', {}), channel)
     elif subtype == "burned":
-        test_text = massage_alarm(notification.get('issue', {}), text)
-    send_message_to_channel(text, channel)
-    send_message_to_channel(test_text, 'test')
+        final_text = massage_alarm(notification.get('issue', {}), text)
+    # send_message_to_channel(text, channel)
+    send_message_to_channel(final_text, channel)
 
 
 def get_sl() -> str:

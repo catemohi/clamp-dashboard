@@ -53,7 +53,7 @@ function startWebSocket() {
 				playAudio(notificationAudio);
 			} else if (message.subtype === 'burned') {
 				playAudio(alarmAudio);
-			} else if (message.subtype === 'updated' && message.issue.step === groupStep) {
+			} else if (message.subtype === 'back_to_work') {
 				playAudio(notificationAudio);
 			} else {
 				// pass
