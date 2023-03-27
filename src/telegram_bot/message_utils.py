@@ -321,7 +321,7 @@ def massage_on_group(issue: Mapping, group: str,
 def massage_returned(issue: Mapping, group: str) -> str:
     return_time = issue.get('return_to_work_time', '')
     if return_time:
-        return_time = return_time.split(',')[1]
+        return_time = return_time.split(',')[1].strip()
     head_dict = {
         "westcall_line": EMOJI_MAIL + ' *На группу в {} вернется ТТ!*\n'.format(return_time),
 
