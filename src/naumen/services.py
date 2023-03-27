@@ -839,7 +839,7 @@ def check_issue_return_timers(issue: Mapping, *args, **kwargs) -> None:
     time_difference = int(round(time_difference.total_seconds(), 0))
     pushing = 0 < time_difference < timer.alarm_time
 
-    LOGGER.info('Обращение {num}; Время возврата в работу {return_t}; '.format(
+    LOGGER.debug('Обращение {num}; Время возврата в работу {return_t}; '.format(
          num=issue['number'], return_t=issue_return_to_work_time) +
                  f'До возврата с отложенного шага {time_difference} секунд' +
                  'Состояния флага предпреждения: {}'.format(

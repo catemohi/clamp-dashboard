@@ -14,7 +14,7 @@ from .exceptions import NaumenServiceError
 LOGGER = getLogger(__name__)
 
 
-@shared_task()
+@shared_task(ignore_result=True)
 def update_service_level():
     """Функция обновления уровня SL
     """
@@ -22,7 +22,7 @@ def update_service_level():
     return True
 
 
-@shared_task()
+@shared_task(ignore_result=True)
 def update_mttr_level():
     """Функция обновления уровня MTTR
     """
@@ -30,7 +30,7 @@ def update_mttr_level():
     return True
 
 
-@shared_task()
+@shared_task(ignore_result=True)
 def update_flr_level():
     """Функция обновления уровня FLR
     """
@@ -38,7 +38,7 @@ def update_flr_level():
     return True
 
 
-@shared_task()
+@shared_task(ignore_result=True)
 def update_aht_level():
     """Функция обновления уровня AHT
     """
@@ -59,7 +59,7 @@ def crud_issue(*args, **kwargs):
         LOGGER.exception(err)
 
 
-@shared_task()
+@shared_task(ignore_result=True)
 def update_issues(*args, **kwargs):
     """Задача для обновления обращений в базе данных
     """
