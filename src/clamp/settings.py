@@ -123,7 +123,7 @@ AUTH_LDAP_SERVER_URI = environ.get('LDAP_SERVER_URI')
 
 AUTH_LDAP_BIND_DN = (f'{LDAP_CUSTOMER_NAME},' + f'{LDAP_ORGANIZATIONAL_UNIT},'
                      + f'{LDAP_DOMAIN_COMPONENT}')
-AUTH_LDAP_BIND_PASSWORD = environ.get('NAUMEN_PASSWORD')
+AUTH_LDAP_BIND_PASSWORD = environ.get('LDAP_PASSWORD')
 
 AUTH_LDAP_USER_SEARCH = LDAPSearch(LDAP_DOMAIN_COMPONENT, ldap.SCOPE_SUBTREE,
                                    "(sAMAccountName=%(user)s)")
