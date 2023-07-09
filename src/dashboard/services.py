@@ -270,16 +270,32 @@ def _parse_service_level(dates: Dates, chosen_group: str,
         date=dates.chosen_date)
 
     # Высчитывание проценты SL
-    mountly_sl = sum([report.number_of_trouble_ticket_taken_before_deadline
-                      for report in qs_for_month]) / sum(
-                          [report.total_number_trouble_ticket
-                           for report in qs_for_month])
+    monthly_tickets_before_deadline = sum(
+        [report.number_of_trouble_ticket_taken_before_deadline
+         for report in qs_for_month])
+    monthly_total_ticket = sum(
+        [report.total_number_trouble_ticket
+         for report in qs_for_month])
+    mountly_sl = 0.0
+
+    if monthly_total_ticket:
+        mountly_sl = (
+            monthly_tickets_before_deadline / monthly_total_ticket) * 100
+
     mountly_sl = int(round(mountly_sl, 0))
 
-    weekly_sl = sum([report.number_of_trouble_ticket_taken_before_deadline
-                     for report in qs_for_week]) / sum(
-                         [report.total_number_trouble_ticket
-                          for report in qs_for_week])
+    weekly_tickets_before_deadline = sum(
+        [report.number_of_trouble_ticket_taken_before_deadline
+         for report in qs_for_week])
+    weekly_total_ticket = sum(
+        [report.total_number_trouble_ticket
+         for report in qs_for_week])
+    weekly_sl = 0.0
+
+    if weekly_total_ticket:
+        weekly_sl = (
+            weekly_tickets_before_deadline / weekly_total_ticket) * 100
+
     weekly_sl = int(round(weekly_sl, 0))
 
     dayly_sl = qs_for_chosen_day.first().service_level
@@ -545,17 +561,31 @@ def _parse_flr_level(dates: Dates,
     qs_for_chosen_day = qs_for_month.filter(
         date=dates.chosen_date)
 
-    # Высчитывание проценты SL
-    mountly_flr = sum([report.number_trouble_ticket_closed_independently
-                      for report in qs_for_month]) / sum(
-                          [report.number_primary_trouble_tickets
-                           for report in qs_for_month])
+    # Высчитывание проценты FLR
+    monthly_tickets_closed = sum(
+        [report.number_trouble_ticket_closed_independently
+         for report in qs_for_month])
+    monthly_tickets_primary_closed = sum(
+        [report.number_primary_trouble_tickets
+         for report in qs_for_month])
+    mountly_flr = 0.0
+
+    if monthly_tickets_closed:
+        mountly_flr = (monthly_tickets_primary_closed /
+                       monthly_tickets_closed) * 100
     mountly_flr = int(round(mountly_flr, 0))
 
-    weekly_flr = sum([report.number_trouble_ticket_closed_independently
-                      for report in qs_for_week]) / sum(
-                          [report.number_primary_trouble_tickets
-                           for report in qs_for_week])
+    weekly_tickets_closed = sum(
+        [report.number_trouble_ticket_closed_independently
+         for report in qs_for_week])
+    weekly_tickets_primary_closed = sum(
+        [report.number_primary_trouble_tickets
+         for report in qs_for_week])
+    weekly_flr = 0.0
+
+    if weekly_tickets_closed:
+        weekly_flr = (weekly_tickets_closed /
+                      weekly_tickets_primary_closed) * 100
     weekly_flr = int(round(weekly_flr, 0))
 
     dayly_flr = qs_for_chosen_day.first().flr_level
