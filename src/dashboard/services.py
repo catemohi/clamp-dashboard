@@ -276,7 +276,7 @@ def _parse_service_level(dates: Dates, chosen_group: str,
     monthly_total_ticket = sum(
         [report.total_number_trouble_ticket
          for report in qs_for_month])
-    mountly_sl = 0.0
+    mountly_sl = 100.0
 
     if monthly_total_ticket:
         mountly_sl = (
@@ -290,7 +290,7 @@ def _parse_service_level(dates: Dates, chosen_group: str,
     weekly_total_ticket = sum(
         [report.total_number_trouble_ticket
          for report in qs_for_week])
-    weekly_sl = 0.0
+    weekly_sl = 100.0
 
     if weekly_total_ticket:
         weekly_sl = (
@@ -568,7 +568,7 @@ def _parse_flr_level(dates: Dates,
     monthly_tickets_primary_closed = sum(
         [report.number_primary_trouble_tickets
          for report in qs_for_month])
-    mountly_flr = 0.0
+    mountly_flr = 100.0
 
     if monthly_tickets_closed:
         mountly_flr = (monthly_tickets_primary_closed /
@@ -581,7 +581,7 @@ def _parse_flr_level(dates: Dates,
     weekly_tickets_primary_closed = sum(
         [report.number_primary_trouble_tickets
          for report in qs_for_week])
-    weekly_flr = 0.0
+    weekly_flr = 100.0
 
     if weekly_tickets_closed:
         weekly_flr = (weekly_tickets_closed /
