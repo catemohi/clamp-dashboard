@@ -237,7 +237,7 @@ def get_date_collections(datestring: str) -> Dates:
                  sunday_this_week, chosen_date, next_day, before_day)
 
 
-def z_parse_service_level(dates: Dates, chosen_group: str,
+def _parse_service_level(dates: Dates, chosen_group: str,
                          qs: Union[models.QuerySet,
                                    List[models.Model]]) -> ReportServiceLevel:
     """
