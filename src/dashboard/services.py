@@ -562,7 +562,7 @@ def _parse_flr_level(dates: Dates,
         date=dates.chosen_date)
 
     # Высчитывание проценты FLR
-    monthly_tickets_closed = sum(
+    monthly_tickets_closed_independently = sum(
         [report.number_trouble_ticket_closed_independently
          for report in qs_for_month])
     monthly_tickets_primary_closed = sum(
@@ -570,12 +570,12 @@ def _parse_flr_level(dates: Dates,
          for report in qs_for_month])
     mountly_flr = 100.0
 
-    if monthly_tickets_closed:
-        mountly_flr = (monthly_tickets_primary_closed /
-                       monthly_tickets_closed) * 100
+    if monthly_tickets_primary_closed:
+        mountly_flr = (monthly_tickets_closed_independently /
+                       monthly_tickets_primary_closed) * 100
     mountly_flr = int(round(mountly_flr, 0))
 
-    weekly_tickets_closed = sum(
+    weekly_tickets_closed_independently = sum(
         [report.number_trouble_ticket_closed_independently
          for report in qs_for_week])
     weekly_tickets_primary_closed = sum(
@@ -583,8 +583,8 @@ def _parse_flr_level(dates: Dates,
          for report in qs_for_week])
     weekly_flr = 100.0
 
-    if weekly_tickets_closed:
-        weekly_flr = (weekly_tickets_closed /
+    if weekly_tickets_primary_closed:
+        weekly_flr = (weekly_tickets_closed_independently /
                       weekly_tickets_primary_closed) * 100
     weekly_flr = int(round(weekly_flr, 0))
 
