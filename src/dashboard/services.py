@@ -237,7 +237,7 @@ def get_date_collections(datestring: str) -> Dates:
                  sunday_this_week, chosen_date, next_day, before_day)
 
 
-def _parse_service_level(dates: Dates, chosen_group: str,
+def z_parse_service_level(dates: Dates, chosen_group: str,
                          qs: Union[models.QuerySet,
                                    List[models.Model]]) -> ReportServiceLevel:
     """
@@ -298,7 +298,9 @@ def _parse_service_level(dates: Dates, chosen_group: str,
 
     weekly_sl = int(round(weekly_sl, 0))
 
-    dayly_sl = qs_for_chosen_day.first().service_level
+    dayly_sl = 100.0
+    if qs_for_chosen_day.first().total_number_trouble_ticket:
+        dayly_sl = qs_for_chosen_day.first().service_level
     dayly_sl = int(round(dayly_sl, 0))
 
     # Расскладываем доп. данные
@@ -588,7 +590,9 @@ def _parse_flr_level(dates: Dates,
                       weekly_tickets_primary_closed) * 100
     weekly_flr = int(round(weekly_flr, 0))
 
-    dayly_flr = qs_for_chosen_day.first().flr_level
+    dayly_flr = 100.0
+    if qs_for_chosen_day.first().number_primary_trouble_tickets:
+        dayly_flr = qs_for_chosen_day.first().flr_level
     dayly_flr = int(round(dayly_flr, 0))
 
     # Расскладываем доп. данные
