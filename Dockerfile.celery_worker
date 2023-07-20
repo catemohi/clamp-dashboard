@@ -1,24 +1,4 @@
-FROM python:3.9
-ENV PYTHONUNBUFFERED 1
-
-RUN apt-get update -y && apt-get upgrade -y
-RUN apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev -y
-
-WORKDIR /app
-
-RUN pip install -U pip
-
-COPY ./requirements.txt ./
-
-RUN pip install -r requirements.txt
-RUN git clone https://github.com/catemohi/naumen_api.git && \ 
-cd naumen_api && python3 setup.py install
-
-
-
-COPY ./src .
-COPY .venv/config.json .
+FROM clamp-dashboard-template_image
 COPY ./worker.entrypoint.sh ./
-RUN chmod 777 worker.entrypoint.sh
 ENTRYPOINT [ "./worker.entrypoint.sh"]
 

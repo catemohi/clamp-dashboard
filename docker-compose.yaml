@@ -1,5 +1,10 @@
 version: '3'
 services:
+  template_image:
+    build:
+      dockerfile: Dockerfile.template_image
+      context: .
+
   db:
     image: postgres
     container_name: dashboard_postgress
@@ -11,16 +16,19 @@ services:
       - .:/var/lib/postgresql/data
     expose:
       - 5432
+
   redis:
     container_name: dashboard_redis    
     image: redis
     depends_on:
       - db
     restart: always
+
   webapp:
     container_name: dashboard_webapp
     depends_on:
       - db
+      - template_image
     restart: always
     volumes:
       - .static:/static
@@ -32,11 +40,13 @@ services:
       context: .
     expose:
       - 8000
+
   celery_worker:
     container_name: celery_worker
     restart: always
     depends_on:
-      - webapp    
+      - webapp
+      - template_image
     volumes:
       - .static:/static
       - .media:/media
@@ -45,34 +55,35 @@ services:
     build:
       dockerfile: Dockerfile.celery_worker
       context: .
+
   celery_beat:
     container_name: celery_beat
     depends_on:
       - webapp
+      - template_image
     restart: always
     volumes:
       - .static:/static
       - .media:/media
     env_file:
       - .env
-    build:
-      dockerfile: Dockerfile.celery_beat
-      context: .
+    image: clamp-dashboard-template_image
     command: [ "celery", "-A", "clamp", "beat", "-l", "info", "--scheduler", "django_celery_beat.schedulers:DatabaseScheduler"]
+
   telegram:
     container_name: telegram_bot
     depends_on:
       - webapp
+      - template_image
     restart: always
     volumes:
       - .static:/static
       - .media:/media
     env_file:
       - .env
-    build:
-      dockerfile: Dockerfile.celery_beat
-      context: .
+    image: clamp-dashboard-template_image
     command: [ "python", "manage.py", "bot"]
+
   nginx:
     container_name: dashboard_nginx
     build: ./nginx
