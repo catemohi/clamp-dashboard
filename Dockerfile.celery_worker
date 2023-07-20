@@ -1,4 +1,0 @@
-FROM clamp-dashboard-template_image
-COPY ./worker.entrypoint.sh ./
-ENTRYPOINT [ "./worker.entrypoint.sh"]
-
