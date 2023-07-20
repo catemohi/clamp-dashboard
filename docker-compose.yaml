@@ -38,13 +38,13 @@ services:
     image: clamp-dashboard-template_image
     expose:
       - 8000
+      - 8001
     command: >
       sh -c "python manage.py makemigrations --noinput &&
              python manage.py migrate --noinput &&
              python manage.py collectstatic --noinput &&
-             python manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email test@test.ru &&
-             gunicorn --bind 0.0.0.0:8000 clamp.wsgi:application &&
-             daphne -b 0.0.0.0 -p 8001 clamp.asgi:application"
+             (python manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email test@test.ru || echo $DJANGO_SUPERUSER_USERNAME exist);
+             daphne -b 0.0.0.0 -p 8001 clamp.asgi:application & gunicorn --bind 0.0.0.0:8000 clamp.wsgi:application"
 
   celery_worker:
     container_name: celery_worker
@@ -75,8 +75,7 @@ services:
       - .env
     image: clamp-dashboard-template_image
     command: >
-      sh -c "celery -A clamp beat -l info 
-             --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+      sh -c "celery -A clamp beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler"
 
   telegram:
     container_name: telegram_bot
