@@ -1,8 +1,8 @@
 version: '3'
 services:
-  template_image:
+  app:
     build:
-      dockerfile: Dockerfile.template_image
+      dockerfile: Dockerfile.app
       context: .
 
   db:
@@ -28,14 +28,14 @@ services:
     container_name: dashboard_webapp
     depends_on:
       - db
-      - template_image
+      - app
     restart: always
     volumes:
       - .static:/static
       - .media:/media
     env_file:
       - .env
-    image: clamp-dashboard-template_image
+    image: clamp-dashboard-app
     expose:
       - 8000
       - 8001
@@ -51,13 +51,13 @@ services:
     restart: always
     depends_on:
       - webapp
-      - template_image
+      - app
     volumes:
       - .static:/static
       - .media:/media
     env_file:
       - .env
-    image: clamp-dashboard-template_image
+    image: clamp-dashboard-app
     command: >
       sh -c "celery -A clamp worker -l info -c 1 -Q naumen_crud &&
              celery -A clamp worker -l info -c 10 -Q celery"
@@ -66,14 +66,14 @@ services:
     container_name: celery_beat
     depends_on:
       - webapp
-      - template_image
+      - app
     restart: always
     volumes:
       - .static:/static
       - .media:/media
     env_file:
       - .env
-    image: clamp-dashboard-template_image
+    image: clamp-dashboard-app
     command: >
       sh -c "celery -A clamp beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler"
 
@@ -81,14 +81,14 @@ services:
     container_name: telegram_bot
     depends_on:
       - webapp
-      - template_image
+      - app
     restart: always
     volumes:
       - .static:/static
       - .media:/media
     env_file:
       - .env
-    image: clamp-dashboard-template_image
+    image: clamp-dashboard-app
     command: [ "python", "manage.py", "bot"]
 
   nginx:
