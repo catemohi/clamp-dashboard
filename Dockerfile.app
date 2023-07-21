@@ -1,7 +1,7 @@
 FROM python:3.9 as compile-image
 WORKDIR /app
 
-COPY ./requirements.txt ./src ./.venv/config.json ./
+COPY ./requirements.txt ./src ./.venv ./
 
 RUN apt-get update && apt-get upgrade -y && \
 apt-get install libsasl2-dev python3-dev libldap2-dev libssl-dev -y && \
