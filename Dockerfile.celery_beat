@@ -2,7 +2,7 @@ FROM python:3.9
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update -y && apt-get upgrade -y
-RUN apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev -y
+RUN apt-get install libsasl2-dev python3-dev libldap2-dev libssl-dev -y
 
 WORKDIR /app
 
