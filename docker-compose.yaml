@@ -4,7 +4,7 @@ services:
     image: postgres:15
     container_name: dashboard_postgress
     restart: always
-    user: "${UID}:${GID}"
+    user: "5671:5671"
     env_file:
       - .env.db
     volumes:
