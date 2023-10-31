@@ -33,7 +33,7 @@ class Issue(models.Model):
         default=0, verbose_name='Время шага (сек.)', db_index=True,
         )
     responsible = models.CharField(
-        max_length=50, verbose_name='Ответственный за шаг')
+        max_length=150, verbose_name='Ответственный за шаг')
     last_edit_time = models.DateTimeField(
         auto_now=False, auto_now_add=False,
         verbose_name=('Последнее изменение состояния'), db_index=True,
@@ -44,7 +44,7 @@ class Issue(models.Model):
         auto_now=False, auto_now_add=False, verbose_name='Дата создания',
         )
     uuid_service = models.CharField(
-        max_length=100, null=True, verbose_name='Идентификатор услуги',
+        max_length=200, null=True, verbose_name='Идентификатор услуги',
         )
     name_service = models.TextField(
         null=True, verbose_name='Услуги',
@@ -54,10 +54,10 @@ class Issue(models.Model):
         verbose_name='Ссылка на контрагента',
         )
     uuid_contragent = models.CharField(
-        max_length=100, null=True, verbose_name='Идентификатор контрагента',
+        max_length=200, null=True, verbose_name='Идентификатор контрагента',
         )
     name_contragent = models.CharField(
-        max_length=100, null=True, verbose_name='Контрагент',
+        max_length=200, null=True, verbose_name='Контрагент',
         )
     url_contragent = models.CharField(
         default="#", max_length=150,
